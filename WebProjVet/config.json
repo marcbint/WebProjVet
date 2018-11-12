@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "WebProjVet": "server=localhost;userid=root;password=JapinhA13;database=WebProjVet;"
+  }
+}
