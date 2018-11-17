@@ -1,27 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using WebProjVet.AcessoDados.Interfaces;
 using WebProjVet.Models;
 
 namespace WebProjVet.Controllers
 {
-
-    [Route("api/[Controller]")]
-    public class ServicoController : Controller
+    public class AnimalController : Controller
     {
-        private readonly IServicoRepository _servicoRepository;
-
-        //Injeção de Dependência
-        public ServicoController(IServicoRepository servicoRepository)
+        //Injeção de dependência
+        private readonly IAnimalRepository _animalRepository;
+        public AnimalController(IAnimalRepository animalRepository)
         {
-            //recebe a instância do serviço repository
-            _servicoRepository = servicoRepository;
+            _animalRepository = animalRepository;
         }
+
 
         public IActionResult Index()
         {
-            //Envia a listagem de serviços para view
-            return View(_servicoRepository.ListarServicos());    
+            return View(_animalRepository.Listar());
         }
 
         public IActionResult Create()
@@ -31,23 +30,24 @@ namespace WebProjVet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Servico servico)
+        public IActionResult Create(Animal animal)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _servicoRepository.Salvar(servico);
-
-                    return RedirectToAction("Index");
+                    _animalRepository.Salvar(animal);
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest($"Erro: {ex.Message}");
+                    return BadRequest($"Erro:n{ex.Message}");
                 }
             }
-
-            return View(servico);
+            else
+            {
+                //ModelState.ErrorCount();
+            }
+            return View(animal);
         }
 
 
@@ -56,33 +56,32 @@ namespace WebProjVet.Controllers
             if (id == 0)
             {
                 return RedirectToAction("Index");
+
             }
             else
             {
                 try
                 {
-                    var servico = _servicoRepository.ObterServicoPorId(id);
-
-                    return View(servico);
+                    var animal = _animalRepository.ObterPorId(id);
+                    return View(animal);
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest($"Erro: {ex.Message}");
+                    return BadRequest($"Erro: { ex.Message}");
                 }
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Servico servico)
+        public IActionResult Edit(Animal animal)
         {
             if (ModelState.IsValid)
             {
-                _servicoRepository.Editar(servico);
-                
+                _animalRepository.Editar(animal);
                 return RedirectToAction("Index");
             }
-            return View(servico);
+            return View(animal);
         }
 
 
@@ -96,19 +95,15 @@ namespace WebProjVet.Controllers
             {
                 try
                 {
-                    var servico = _servicoRepository.ObterServicoPorId(id);
-
-                    return View(servico);
+                    var animal = _animalRepository.ObterPorId(id);
+                    return View(animal);
                 }
                 catch (Exception ex)
                 {
                     return BadRequest($"Erro: {ex.Message}");
                 }
             }
-
         }
-
-
 
         public IActionResult Delete(int id)
         {
@@ -120,9 +115,8 @@ namespace WebProjVet.Controllers
             {
                 try
                 {
-                    var servico = _servicoRepository.ObterServicoPorId(id);
-
-                    return View(servico);
+                    var animal = _animalRepository.ObterPorId(id);
+                    return View(animal);
                 }
                 catch (Exception ex)
                 {
@@ -131,15 +125,13 @@ namespace WebProjVet.Controllers
             }
         }
 
-
-        //[HttpPost, ActionName("Delete")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Servico servico)
+        public IActionResult Delete(Animal animal)
         {
             try
             {
-                _servicoRepository.Remover(servico);
+                _animalRepository.Remover(animal);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -148,6 +140,7 @@ namespace WebProjVet.Controllers
             }
         }
 
+
         //Especificado do verbo http que será utilizado
         [HttpGet]
         public IActionResult Get()
@@ -155,7 +148,7 @@ namespace WebProjVet.Controllers
             try
             {
                 //retorno de mensagem bem sucedida
-                return Ok(_servicoRepository.ListarServicos());
+                return Ok(_animalRepository.Listar());
             }
             catch (Exception ex)
             {
@@ -168,8 +161,8 @@ namespace WebProjVet.Controllers
         {
             try
             {
-                var servico = _servicoRepository.ObterServicoPorId(id);
-                return Ok(servico);
+                var animal = _animalRepository.ObterPorId(id);
+                return Ok(animal);
 
             }
             catch (Exception ex)
@@ -179,12 +172,12 @@ namespace WebProjVet.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Servico servico)
+        public IActionResult Post([FromBody]Animal animal)
         {
             try
             {
-                _servicoRepository.Salvar(servico);
-                return Created("/api/servico", servico);
+                _animalRepository.Salvar(animal);
+                return Created("/api/Animal", animal);
 
             }
             catch (Exception ex)

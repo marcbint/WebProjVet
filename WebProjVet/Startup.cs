@@ -56,6 +56,8 @@ namespace WebProjVet
 
             //Mapeamento entre a interface e classe concreta
             services.AddScoped<IServicoRepository, ServicoRepository>();
+            services.AddScoped<IProprietarioRepository, ProprietarioRepository>();
+            services.AddScoped<IAnimalRepository, AnimalRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

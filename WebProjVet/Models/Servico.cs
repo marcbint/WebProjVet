@@ -6,15 +6,15 @@ namespace WebProjVet.Models
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "Nome")]
+        [Display(Name = "NOME")]
         [Required(ErrorMessage = "Você precisa entrar com o {0}")]
         public string Nome { get; set; }
 
-        [Display(Name = "Descrição")]
+        [Display(Name = "DESCRIÇÃO")]
         [Required(ErrorMessage = "Você precisa entrar com o {0}")]
         public string Descricao { get; set; }
 
-        [Display(Name = "Valor")]
+        [Display(Name = "VALOR")]
         [DataType(DataType.Currency)]
         [Required(ErrorMessage = "Você precisa entrar com o {0}")]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]

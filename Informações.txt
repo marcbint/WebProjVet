@@ -1,0 +1,5 @@
+PM> Install-Package Pomelo.EntityFrameworkCore.Mysql (Aula 87)
+PM> Add-Migration Projeto_v1.0 (Para habilitar o Migration - Aula 88)
+PM> Update-Database (Para atualizar a base de dados)
+PM> Install-Package Microsoft.EntityFrameworkCore.Tools -Version 2.1.4
+
