@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,6 +43,19 @@ namespace WebProjVet.AcessoDados.Servicos
         {
             _webProjVetContext.Animais.Add(animal);
             _webProjVetContext.SaveChanges();
+        }
+
+        public Animal GetById(int id)
+        {
+            var query = _webProjVetContext.Set<Animal>().Include(p => p.Proprietarios).Where(e => e.Id == id);
+            if (query.Any())
+                return query.First();
+            return null;
+        }
+
+        public IEnumerable<Animal> All()
+        {
+            return _webProjVetContext.Set<Animal>().Include(p => p.Proprietarios).AsEnumerable();
         }
     }
 }

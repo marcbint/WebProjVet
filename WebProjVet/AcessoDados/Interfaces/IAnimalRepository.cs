@@ -10,6 +10,7 @@ namespace WebProjVet.AcessoDados.Interfaces
     {
         List<Animal> Listar();
         Animal ObterPorId(int id);
+        Animal GetById(int id);
         void Salvar(Animal animal);
         void Editar(Animal animal);
         void Remover(Animal animal);

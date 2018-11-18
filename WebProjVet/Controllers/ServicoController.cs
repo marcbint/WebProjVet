@@ -6,7 +6,7 @@ using WebProjVet.Models;
 namespace WebProjVet.Controllers
 {
 
-    [Route("api/[Controller]")]
+    //[Route("api/[Controller]")]
     public class ServicoController : Controller
     {
         private readonly IServicoRepository _servicoRepository;

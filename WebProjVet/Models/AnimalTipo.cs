@@ -8,8 +8,8 @@ namespace WebProjVet.Models
 {
     public enum AnimalTipo
     {
-        [Description("GARANHÃO")] GARANHAO = 1,
-        [Description("REPRODUTORA")] REPRODUTORA = 2,
-        [Description("MATRIZ")] MATRIZ = 3
+        [Description("DOADOR")] DOADORA = 1,
+        [Description("GARANHÃO")] GARANHAO = 2,
+        [Description("RECEPTOR")] RECEPTORA = 3
     }
 }

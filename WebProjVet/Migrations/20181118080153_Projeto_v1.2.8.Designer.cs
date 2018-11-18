@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebProjVet.AcessoDados;
 
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    partial class WebProjVetContextModelSnapshot : ModelSnapshot
+    [Migration("20181118080153_Projeto_v1.2.8")]
+    partial class Projeto_v128
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebProjVet.AcessoDados;
 
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    partial class WebProjVetContextModelSnapshot : ModelSnapshot
+    [Migration("20181117060025_Projeto_v1.2.2")]
+    partial class Projeto_v122
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,8 +31,6 @@ namespace WebProjVet.Migrations
                     b.Property<string>("Nome")
                         .IsRequired();
 
-                    b.Property<int>("ProprietarioId");
-
                     b.HasKey("Id");
 
                     b.ToTable("Animais");
@@ -41,6 +41,8 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("AnimalId");
+
                     b.Property<string>("Cidade")
                         .IsRequired();
 
@@ -62,42 +64,10 @@ namespace WebProjVet.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnimalId");
 
                     b.ToTable("Proprietarios");
-                });
-
-            modelBuilder.Entity("WebProjVet.Models.ProprietarioViewModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Cidade")
-                        .IsRequired();
-
-                    b.Property<string>("Complemento");
-
-                    b.Property<string>("Email")
-                        .IsRequired();
-
-                    b.Property<string>("Endereco")
-                        .IsRequired();
-
-                    b.Property<string>("Nome")
-                        .IsRequired();
-
-                    b.Property<int?>("ProprietarioId");
-
-                    b.Property<string>("Telefone")
-                        .IsRequired();
-
-                    b.Property<string>("Uf")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProprietarioId");
-
-                    b.ToTable("ProprietarioViewModel");
                 });
 
             modelBuilder.Entity("WebProjVet.Models.Servico", b =>
@@ -118,11 +88,11 @@ namespace WebProjVet.Migrations
                     b.ToTable("Servicos");
                 });
 
-            modelBuilder.Entity("WebProjVet.Models.ProprietarioViewModel", b =>
+            modelBuilder.Entity("WebProjVet.Models.Proprietario", b =>
                 {
                     b.HasOne("WebProjVet.Models.Animal")
-                        .WithMany("Proprietarios")
-                        .HasForeignKey("ProprietarioId");
+                        .WithMany("ListaProprietarios")
+                        .HasForeignKey("AnimalId");
                 });
 #pragma warning restore 612, 618
         }

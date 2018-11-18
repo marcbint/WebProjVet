@@ -8,7 +8,7 @@ using WebProjVet.Models;
 
 namespace WebProjVet.Controllers
 {
-    [Route("api/[Controller]")]
+    //[Route("api/[Controller]")]
     public class ProprietarioController : Controller
     {
         //Injeção de dependência

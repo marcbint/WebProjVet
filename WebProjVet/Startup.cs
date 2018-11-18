@@ -58,6 +58,8 @@ namespace WebProjVet
             services.AddScoped<IServicoRepository, ServicoRepository>();
             services.AddScoped<IProprietarioRepository, ProprietarioRepository>();
             services.AddScoped<IAnimalRepository, AnimalRepository>();
+            services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
+            services.AddSingleton(typeof(AnimalRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

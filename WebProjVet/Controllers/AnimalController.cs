@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using WebProjVet.AcessoDados;
 using WebProjVet.AcessoDados.Interfaces;
+using WebProjVet.AcessoDados.Servicos;
 using WebProjVet.Models;
 
 namespace WebProjVet.Controllers
@@ -12,21 +15,88 @@ namespace WebProjVet.Controllers
     {
         //Injeção de dependência
         private readonly IAnimalRepository _animalRepository;
-        public AnimalController(IAnimalRepository animalRepository)
+        private readonly IProprietarioRepository _proprietarioRepository;
+        private readonly ProprietarioViewModel _proprietariolViewModel;
+
+        private readonly IRepository<Animal> _animalRepository2;
+        private readonly IRepository<Proprietario> _proprietarioRepository2;
+
+        public AnimalController(IAnimalRepository animalRepository, IProprietarioRepository proprietarioRepository)
         {
             _animalRepository = animalRepository;
+            _proprietarioRepository = proprietarioRepository;
+            
         }
 
 
         public IActionResult Index()
         {
+            /*var animais = _animalRepository.Listar();
+            if (animais.Any())
+            {
+                var viewsModels = animais.Select(p => new AnimalViewModel { Id = p.Id, Nome = p.Nome });
+                return View(viewsModels);
+            }
+
+            return View();*/
             return View(_animalRepository.Listar());
+
         }
 
-        public IActionResult Create()
+
+        public IActionResult CreateOrEdit(int id)
         {
+            var viewModel = new Animal();
+            var proprietarios = _proprietarioRepository.ListarProprietarios();
+
+            if (proprietarios.Any())
+                viewModel.Proprietarios = proprietarios.Select(c => new ProprietarioViewModel { Id = c.Id, Nome = c.Nome });
+
+            if (id > 0)
+            {
+                var animal = _animalRepository.GetById(id);
+                viewModel.Id = animal.Id;
+                viewModel.Nome = animal.Nome;
+                viewModel.Abqm = animal.Abqm;
+                viewModel.AnimalTipo = animal.AnimalTipo;
+                viewModel.ProprietarioId = animal.ProprietarioId;
+                return View(viewModel);
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult CreateOrEdit(Animal animal)
+        {
+           
             return View();
         }
+
+
+
+        public IActionResult Create(int id)
+        {
+            var viewModel = new Animal();
+            var proprietarios = _proprietarioRepository.ListarProprietarios();
+
+            if (proprietarios.Any())
+                viewModel.Proprietarios = proprietarios.Select(c => new ProprietarioViewModel { Id = c.Id, Nome = c.Nome });
+
+            if (id > 0)
+            {
+                var animal = _animalRepository.GetById(id);
+                viewModel.Id = animal.Id;
+                viewModel.Nome = animal.Nome;
+                viewModel.Abqm = animal.Abqm;
+                viewModel.AnimalTipo = animal.AnimalTipo;
+                viewModel.ProprietarioId = animal.ProprietarioId;
+                return View(viewModel);
+            }
+
+            return View(viewModel);
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -47,7 +117,8 @@ namespace WebProjVet.Controllers
             {
                 //ModelState.ErrorCount();
             }
-            return View(animal);
+            //return View(animal);
+            return RedirectToAction("Index");
         }
 
 
