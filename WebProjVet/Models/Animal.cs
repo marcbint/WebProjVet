@@ -13,21 +13,21 @@ namespace WebProjVet.Models
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "Nome")]
+        [Display(Name = "NOME")]
         [Required(ErrorMessage = "{0} deve ser informado")]
         public string Nome { get; set; }
 
-        [Display(Name = "ABQM")]
+        [Display(Name = "REGISTRO ABQM")]
         public string Abqm { get; set; }
 
-        [Display(Name = "Proprietário")] 
+        [Display(Name = "PROPRIETÁRIO")] 
         public int ProprietarioId { get; set; }
 
         [ForeignKey("ProprietarioId")]
         //public Proprietario Proprietario { get; set; }
         public IEnumerable<ProprietarioViewModel> Proprietarios { get; set; }
 
-        [Display(Name = "Tipo")]
+        [Display(Name = "TIPO")]
         [Required(ErrorMessage = "{0} deve ser informado")]
         [EnumDataType(typeof(AnimalTipo))]
         public AnimalTipo AnimalTipo { get; set; }

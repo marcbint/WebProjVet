@@ -124,23 +124,27 @@ namespace WebProjVet.Controllers
 
         public IActionResult Edit(int id)
         {
-            if (id == 0)
-            {
-                return RedirectToAction("Index");
 
-            }
-            else
+            var viewModel = new Animal();
+            var proprietarios = _proprietarioRepository.ListarProprietarios();
+
+            if (proprietarios.Any())
+                viewModel.Proprietarios = proprietarios.Select(c => new ProprietarioViewModel { Id = c.Id, Nome = c.Nome });
+
+            if (id > 0)
             {
-                try
-                {
-                    var animal = _animalRepository.ObterPorId(id);
-                    return View(animal);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest($"Erro: { ex.Message}");
-                }
+                var animal = _animalRepository.GetById(id);
+                viewModel.Id = animal.Id;
+                viewModel.Nome = animal.Nome;
+                viewModel.Abqm = animal.Abqm;
+                viewModel.AnimalTipo = animal.AnimalTipo;
+                viewModel.ProprietarioId = animal.ProprietarioId;
+                return View(viewModel);
             }
+
+            return View(viewModel);
+
+
         }
 
         [HttpPost]
@@ -158,22 +162,27 @@ namespace WebProjVet.Controllers
 
         public IActionResult Details(int id)
         {
-            if (id == 0)
+            var viewModel = new Animal();
+            var proprietarios = _proprietarioRepository.ListarProprietarios();
+
+            if (proprietarios.Any())
+                viewModel.Proprietarios = proprietarios.Select(c => new ProprietarioViewModel { Id = c.Id, Nome = c.Nome });
+
+            if (id > 0)
             {
-                return RedirectToAction("Index");
+                var animal = _animalRepository.GetById(id);
+                viewModel.Id = animal.Id;
+                viewModel.Nome = animal.Nome;
+                viewModel.Abqm = animal.Abqm;
+                viewModel.AnimalTipo = animal.AnimalTipo;
+                viewModel.ProprietarioId = animal.ProprietarioId;
+                return View(viewModel);
             }
-            else
-            {
-                try
-                {
-                    var animal = _animalRepository.ObterPorId(id);
-                    return View(animal);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest($"Erro: {ex.Message}");
-                }
-            }
+
+            return View(viewModel);
+
+
+
         }
 
         public IActionResult Delete(int id)

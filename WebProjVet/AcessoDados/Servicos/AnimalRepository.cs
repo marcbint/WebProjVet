@@ -47,10 +47,13 @@ namespace WebProjVet.AcessoDados.Servicos
 
         public Animal GetById(int id)
         {
-            var query = _webProjVetContext.Set<Animal>().Include(p => p.Proprietarios).Where(e => e.Id == id);
-            if (query.Any())
-                return query.First();
-            return null;
+            //var query = _webProjVetContext.Set<Animal>().Include(p => p.Proprietarios).Where(e => e.Id == id);
+
+            var query = _webProjVetContext.Animais.FirstOrDefault(p => p.Id == id);
+
+            //if (query.Any())
+                return query;
+            //return null;
         }
 
         public IEnumerable<Animal> All()
