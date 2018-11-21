@@ -7,6 +7,24 @@
   <ItemGroup>
     <Compile Remove="Migrations\20181111204628_Projeto_v1.0.cs" />
     <Compile Remove="Migrations\20181111204628_Projeto_v1.0.Designer.cs" />
+    <Compile Remove="Migrations\20181117232108_Projeto_v1.2.5.cs" />
+    <Compile Remove="Migrations\20181117232108_Projeto_v1.2.5.Designer.cs" />
+    <Compile Remove="Migrations\20181117232229_Projeto_v1.2.6.cs" />
+    <Compile Remove="Migrations\20181117232229_Projeto_v1.2.6.Designer.cs" />
+    <Compile Remove="Migrations\20181117232405_Projeto_v1.2.7.cs" />
+    <Compile Remove="Migrations\20181117232405_Projeto_v1.2.7.Designer.cs" />
+    <Compile Remove="Migrations\20181118080153_Projeto_v1.2.8.cs" />
+    <Compile Remove="Migrations\20181118080153_Projeto_v1.2.8.Designer.cs" />
+    <Compile Remove="Migrations\20181120151307_Projeto_v1.3.cs" />
+    <Compile Remove="Migrations\20181120151307_Projeto_v1.3.Designer.cs" />
+    <Compile Remove="Migrations\20181120155951_Projeto_v1.3.1.cs" />
+    <Compile Remove="Migrations\20181120155951_Projeto_v1.3.1.Designer.cs" />
+    <Compile Remove="Migrations\20181120163213_Projeto_v1.3.2.cs" />
+    <Compile Remove="Migrations\20181120163213_Projeto_v1.3.2.Designer.cs" />
+    <Compile Remove="Migrations\20181120170825_Projeto_v1.3.3.cs" />
+    <Compile Remove="Migrations\20181120170825_Projeto_v1.3.3.Designer.cs" />
+    <Compile Remove="Migrations\20181120204517_Projeto_v1.3.4.cs" />
+    <Compile Remove="Migrations\20181120204517_Projeto_v1.3.4.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

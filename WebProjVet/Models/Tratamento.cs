@@ -10,9 +10,9 @@ namespace WebProjVet.Models
         public int Id { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime? DataFim { get; set; }
-        public Animal Doador { get; set; }
-        public Animal Garanhao { get; set; }
-        public Animal Receptor { get; set; }
+        //public AnimalDoadora Doador { get; set; }
+        //public AnimalDoadora Garanhao { get; set; }
+        //public AnimalDoadora Receptor { get; set; }
         
     }
 }

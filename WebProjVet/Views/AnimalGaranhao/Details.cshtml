@@ -1,4 +1,4 @@
-﻿@model WebProjVet.Models.Animal
+﻿@model WebProjVet.Models.AnimalGaranhao
 
 @{
     ViewData["Title"] = "Details";
@@ -7,7 +7,7 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Animal</h4>
+    <h4>AnimalGaranhao</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -21,18 +21,6 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Abqm)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ProprietarioId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Proprietarios)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AnimalTipo)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AnimalTipo)
         </dd>
     </dl>
 </div>

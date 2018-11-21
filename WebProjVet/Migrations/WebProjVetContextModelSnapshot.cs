@@ -17,14 +17,12 @@ namespace WebProjVet.Migrations
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("WebProjVet.Models.Animal", b =>
+            modelBuilder.Entity("WebProjVet.Models.AnimalDoadora", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Abqm");
-
-                    b.Property<int>("AnimalTipo");
 
                     b.Property<string>("Nome")
                         .IsRequired();
@@ -33,40 +31,25 @@ namespace WebProjVet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Animais");
+                    b.ToTable("Doadoras");
                 });
 
-            modelBuilder.Entity("WebProjVet.Models.Proprietario", b =>
+            modelBuilder.Entity("WebProjVet.Models.AnimalGaranhao", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Cidade")
-                        .IsRequired();
-
-                    b.Property<string>("Complemento");
-
-                    b.Property<string>("Email")
-                        .IsRequired();
-
-                    b.Property<string>("Endereco")
-                        .IsRequired();
+                    b.Property<string>("Abqm");
 
                     b.Property<string>("Nome")
                         .IsRequired();
 
-                    b.Property<string>("Telefone")
-                        .IsRequired();
-
-                    b.Property<string>("Uf")
-                        .IsRequired();
-
                     b.HasKey("Id");
 
-                    b.ToTable("Proprietarios");
+                    b.ToTable("Garanhao");
                 });
 
-            modelBuilder.Entity("WebProjVet.Models.ProprietarioViewModel", b =>
+            modelBuilder.Entity("WebProjVet.Models.Proprietario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -97,7 +80,7 @@ namespace WebProjVet.Migrations
 
                     b.HasIndex("ProprietarioId");
 
-                    b.ToTable("ProprietarioViewModel");
+                    b.ToTable("Proprietarios");
                 });
 
             modelBuilder.Entity("WebProjVet.Models.Servico", b =>
@@ -118,9 +101,9 @@ namespace WebProjVet.Migrations
                     b.ToTable("Servicos");
                 });
 
-            modelBuilder.Entity("WebProjVet.Models.ProprietarioViewModel", b =>
+            modelBuilder.Entity("WebProjVet.Models.Proprietario", b =>
                 {
-                    b.HasOne("WebProjVet.Models.Animal")
+                    b.HasOne("WebProjVet.Models.AnimalDoadora")
                         .WithMany("Proprietarios")
                         .HasForeignKey("ProprietarioId");
                 });

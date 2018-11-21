@@ -26,7 +26,7 @@ namespace WebProjVet.AcessoDados.Servicos
 
         public List<Proprietario> ListarProprietarios()
         {
-            return _webProjVetContext.Proprietarios.ToList();
+            return _webProjVetContext.Proprietarios.OrderBy(p => p.Nome).ToList();
         }
 
         public Proprietario ObterProprietarioPorId(int id)

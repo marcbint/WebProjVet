@@ -8,57 +8,57 @@ using WebProjVet.Models;
 
 namespace WebProjVet.AcessoDados.Servicos
 {
-    public class AnimalRepository : IAnimalRepository
+    public class AnimalDoadoraRepository : IAnimalDoadoraRepository
     {
         //Injeção de Dependência
         private readonly WebProjVetContext _webProjVetContext;
-        public AnimalRepository (WebProjVetContext webProjVetContext)
+        public AnimalDoadoraRepository (WebProjVetContext webProjVetContext)
         {
             _webProjVetContext = webProjVetContext;
         }
 
-        public void Editar(Animal animal)
+        public void Editar(AnimalDoadora animal)
         {
             _webProjVetContext.Entry(animal).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _webProjVetContext.SaveChanges();
         }
 
-        public List<Animal> Listar()
+        public List<AnimalDoadora> Listar()
         {
-            return _webProjVetContext.Animais.ToList();
+            return _webProjVetContext.Doadoras.ToList();
         }
 
-        public Animal ObterPorId(int id)
+        public AnimalDoadora ObterPorId(int id)
         {
-            return _webProjVetContext.Animais.FirstOrDefault(p => p.Id == id);
+            return _webProjVetContext.Doadoras.FirstOrDefault(p => p.Id == id);
         }
 
-        public void Remover(Animal animal)
+        public void Remover(AnimalDoadora animal)
         {
-            _webProjVetContext.Animais.Remove(animal);
+            _webProjVetContext.Doadoras.Remove(animal);
             _webProjVetContext.SaveChanges();
         }
 
-        public void Salvar(Animal animal)
+        public void Salvar(AnimalDoadora animal)
         {
-            _webProjVetContext.Animais.Add(animal);
+            _webProjVetContext.Doadoras.Add(animal);
             _webProjVetContext.SaveChanges();
         }
 
-        public Animal GetById(int id)
+        public AnimalDoadora GetById(int id)
         {
             //var query = _webProjVetContext.Set<Animal>().Include(p => p.Proprietarios).Where(e => e.Id == id);
 
-            var query = _webProjVetContext.Animais.FirstOrDefault(p => p.Id == id);
+            var query = _webProjVetContext.Doadoras.FirstOrDefault(p => p.Id == id);
 
             //if (query.Any())
                 return query;
             //return null;
         }
 
-        public IEnumerable<Animal> All()
+        public IEnumerable<AnimalDoadora> All()
         {
-            return _webProjVetContext.Set<Animal>().Include(p => p.Proprietarios).AsEnumerable();
+            return _webProjVetContext.Set<AnimalDoadora>().Include(p => p.Proprietarios).AsEnumerable();
         }
     }
 }

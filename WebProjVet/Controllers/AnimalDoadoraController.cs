@@ -8,20 +8,23 @@ using WebProjVet.AcessoDados;
 using WebProjVet.AcessoDados.Interfaces;
 using WebProjVet.AcessoDados.Servicos;
 using WebProjVet.Models;
+using WebProjVet.Models.ViewModels;
 
 namespace WebProjVet.Controllers
 {
-    public class AnimalController : Controller
+    public class AnimalDoadoraController : Controller
     {
         //Injeção de dependência
-        private readonly IAnimalRepository _animalRepository;
+        private readonly IAnimalDoadoraRepository _animalRepository;
         private readonly IProprietarioRepository _proprietarioRepository;
-        private readonly ProprietarioViewModel _proprietariolViewModel;
+        //private readonly ProprietarioViewModel _proprietariolViewModel;
+        private readonly Proprietario _proprietariolViewModel;
 
-        private readonly IRepository<Animal> _animalRepository2;
+
+        private readonly IRepository<AnimalDoadora> _animalRepository2;
         private readonly IRepository<Proprietario> _proprietarioRepository2;
 
-        public AnimalController(IAnimalRepository animalRepository, IProprietarioRepository proprietarioRepository)
+        public AnimalDoadoraController(IAnimalDoadoraRepository animalRepository, IProprietarioRepository proprietarioRepository)
         {
             _animalRepository = animalRepository;
             _proprietarioRepository = proprietarioRepository;
@@ -46,11 +49,11 @@ namespace WebProjVet.Controllers
 
         public IActionResult CreateOrEdit(int id)
         {
-            var viewModel = new Animal();
+            var viewModel = new AnimalDoadora();
             var proprietarios = _proprietarioRepository.ListarProprietarios();
 
             if (proprietarios.Any())
-                viewModel.Proprietarios = proprietarios.Select(c => new ProprietarioViewModel { Id = c.Id, Nome = c.Nome });
+                viewModel.Proprietarios = proprietarios.Select(c => new Proprietario { Id = c.Id, Nome = c.Nome });
 
             if (id > 0)
             {
@@ -58,7 +61,7 @@ namespace WebProjVet.Controllers
                 viewModel.Id = animal.Id;
                 viewModel.Nome = animal.Nome;
                 viewModel.Abqm = animal.Abqm;
-                viewModel.AnimalTipo = animal.AnimalTipo;
+                //viewModel.AnimalTipo = animal.AnimalTipo;
                 viewModel.ProprietarioId = animal.ProprietarioId;
                 return View(viewModel);
             }
@@ -67,7 +70,7 @@ namespace WebProjVet.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOrEdit(Animal animal)
+        public IActionResult CreateOrEdit(AnimalDoadora animal)
         {
            
             return View();
@@ -77,11 +80,11 @@ namespace WebProjVet.Controllers
 
         public IActionResult Create(int id)
         {
-            var viewModel = new Animal();
+            var viewModel = new AnimalDoadora();
             var proprietarios = _proprietarioRepository.ListarProprietarios();
 
             if (proprietarios.Any())
-                viewModel.Proprietarios = proprietarios.Select(c => new ProprietarioViewModel { Id = c.Id, Nome = c.Nome });
+                viewModel.Proprietarios = proprietarios.Select(c => new Proprietario { Id = c.Id, Nome = c.Nome });
 
             if (id > 0)
             {
@@ -89,7 +92,7 @@ namespace WebProjVet.Controllers
                 viewModel.Id = animal.Id;
                 viewModel.Nome = animal.Nome;
                 viewModel.Abqm = animal.Abqm;
-                viewModel.AnimalTipo = animal.AnimalTipo;
+                //viewModel.AnimalTipo = animal.AnimalTipo;
                 viewModel.ProprietarioId = animal.ProprietarioId;
                 return View(viewModel);
             }
@@ -100,7 +103,7 @@ namespace WebProjVet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Animal animal)
+        public IActionResult Create(AnimalDoadora animal)
         {
             if (ModelState.IsValid)
             {
@@ -125,11 +128,11 @@ namespace WebProjVet.Controllers
         public IActionResult Edit(int id)
         {
 
-            var viewModel = new Animal();
+            var viewModel = new AnimalDoadora();
             var proprietarios = _proprietarioRepository.ListarProprietarios();
 
             if (proprietarios.Any())
-                viewModel.Proprietarios = proprietarios.Select(c => new ProprietarioViewModel { Id = c.Id, Nome = c.Nome });
+                viewModel.Proprietarios = proprietarios.Select(c => new Proprietario { Id = c.Id, Nome = c.Nome });
 
             if (id > 0)
             {
@@ -137,7 +140,7 @@ namespace WebProjVet.Controllers
                 viewModel.Id = animal.Id;
                 viewModel.Nome = animal.Nome;
                 viewModel.Abqm = animal.Abqm;
-                viewModel.AnimalTipo = animal.AnimalTipo;
+                //viewModel.AnimalTipo = animal.AnimalTipo;
                 viewModel.ProprietarioId = animal.ProprietarioId;
                 return View(viewModel);
             }
@@ -149,7 +152,7 @@ namespace WebProjVet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Animal animal)
+        public IActionResult Edit(AnimalDoadora animal)
         {
             if (ModelState.IsValid)
             {
@@ -162,11 +165,11 @@ namespace WebProjVet.Controllers
 
         public IActionResult Details(int id)
         {
-            var viewModel = new Animal();
+            var viewModel = new AnimalDoadora();
             var proprietarios = _proprietarioRepository.ListarProprietarios();
 
             if (proprietarios.Any())
-                viewModel.Proprietarios = proprietarios.Select(c => new ProprietarioViewModel { Id = c.Id, Nome = c.Nome });
+                viewModel.Proprietarios = proprietarios.Select(c => new Proprietario { Id = c.Id, Nome = c.Nome });
 
             if (id > 0)
             {
@@ -174,7 +177,7 @@ namespace WebProjVet.Controllers
                 viewModel.Id = animal.Id;
                 viewModel.Nome = animal.Nome;
                 viewModel.Abqm = animal.Abqm;
-                viewModel.AnimalTipo = animal.AnimalTipo;
+                //viewModel.AnimalTipo = animal.AnimalTipo;
                 viewModel.ProprietarioId = animal.ProprietarioId;
                 return View(viewModel);
             }
@@ -207,7 +210,7 @@ namespace WebProjVet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Animal animal)
+        public IActionResult Delete(AnimalDoadora animal)
         {
             try
             {
@@ -252,12 +255,12 @@ namespace WebProjVet.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Animal animal)
+        public IActionResult Post([FromBody]AnimalDoadora animal)
         {
             try
             {
                 _animalRepository.Salvar(animal);
-                return Created("/api/Animal", animal);
+                return Created("/api/AnimalDoadora", animal);
 
             }
             catch (Exception ex)

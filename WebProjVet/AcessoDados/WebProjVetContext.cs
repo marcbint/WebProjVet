@@ -7,7 +7,8 @@ namespace WebProjVet.AcessoDados
     {
         public DbSet<Servico> Servicos { get; set; }
         public DbSet<Proprietario> Proprietarios { get; set; }
-        public DbSet<Animal>Animais { get; set; }
+        public DbSet<AnimalDoadora> Doadoras { get; set; }
+        public DbSet<AnimalGaranhao> Garanhoes { get; set; }
 
         public WebProjVetContext(DbContextOptions<WebProjVetContext> options) : base(options)
         {
@@ -18,7 +19,8 @@ namespace WebProjVet.AcessoDados
         {
             modelBuilder.Entity<Servico>().HasKey(p => p.Id);
             modelBuilder.Entity<Proprietario>().HasKey(p => p.Id);
-            modelBuilder.Entity<Animal>().HasKey(p => p.Id);
+            modelBuilder.Entity<AnimalDoadora>().HasKey(p => p.Id);
+            modelBuilder.Entity<AnimalGaranhao>().HasKey(p => p.Id);
             base.OnModelCreating(modelBuilder);
         }
 
