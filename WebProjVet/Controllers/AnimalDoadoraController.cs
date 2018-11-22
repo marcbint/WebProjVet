@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using WebProjVet.AcessoDados;
 using WebProjVet.AcessoDados.Interfaces;
 using WebProjVet.AcessoDados.Servicos;
@@ -19,21 +20,25 @@ namespace WebProjVet.Controllers
         private readonly IProprietarioRepository _proprietarioRepository;
         //private readonly ProprietarioViewModel _proprietariolViewModel;
         private readonly Proprietario _proprietariolViewModel;
-
+        private readonly WebProjVetContext _webProjVetContext;
 
         private readonly IRepository<AnimalDoadora> _animalRepository2;
         private readonly IRepository<Proprietario> _proprietarioRepository2;
 
-        public AnimalDoadoraController(IAnimalDoadoraRepository animalRepository, IProprietarioRepository proprietarioRepository)
+        public AnimalDoadoraController(IAnimalDoadoraRepository animalRepository, IProprietarioRepository proprietarioRepository, WebProjVetContext webProjVetContext)
         {
             _animalRepository = animalRepository;
             _proprietarioRepository = proprietarioRepository;
+            _webProjVetContext = webProjVetContext;
             
         }
 
 
         public IActionResult Index()
         {
+            //O include retorna as informações das entidades necessárias.
+            var doadoras = _webProjVetContext.Doadoras.Include(p => p.Proprietario).ToList();
+
             /*var animais = _animalRepository.Listar();
             if (animais.Any())
             {
@@ -42,13 +47,18 @@ namespace WebProjVet.Controllers
             }
 
             return View();*/
-            return View(_animalRepository.Listar());
+            //return View(_animalRepository.Listar());
+            return View(doadoras);
 
         }
 
 
         public IActionResult CreateOrEdit(int id)
         {
+            ViewBag.Proprietarios = _webProjVetContext.Proprietarios.ToList();
+            var doadoras = _webProjVetContext.Doadoras.First(p => p.Id == id);
+
+            /*
             var viewModel = new AnimalDoadora();
             var proprietarios = _proprietarioRepository.ListarProprietarios();
 
@@ -66,14 +76,32 @@ namespace WebProjVet.Controllers
                 return View(viewModel);
             }
 
+
             return View(viewModel);
+            */
+            return View(doadoras);
         }
 
         [HttpPost]
-        public IActionResult CreateOrEdit(AnimalDoadora animal)
+        public async Task<IActionResult> CreateOrEdit(AnimalDoadora animal)
         {
-           
-            return View();
+            /* Forma alternativa para localizar o proprietário e adicionar à entidade Propriedade
+            var proprietario = _webProjVetContext.Proprietarios.First(c => c.Id == animal.ProprietarioId);
+            animal.Proprietario = proprietario;
+            */
+
+            if(animal.Id == 0)
+                _webProjVetContext.Doadoras.Add(animal);
+            else
+            {
+                var doadoraSalvo = _webProjVetContext.Doadoras.First(p => p.Id == animal.Id);
+                doadoraSalvo.Id = animal.Id;
+                doadoraSalvo.Nome = animal.Nome;
+                doadoraSalvo.Abqm = animal.Abqm;
+                doadoraSalvo.ProprietarioId = animal.ProprietarioId;
+            }
+            await _webProjVetContext.SaveChangesAsync();
+            return RedirectToAction("Index"); 
         }
 
 
@@ -198,7 +226,8 @@ namespace WebProjVet.Controllers
             {
                 try
                 {
-                    var animal = _animalRepository.ObterPorId(id);
+                    //var animal = _animalRepository.ObterPorId(id);
+                    var animal = _webProjVetContext.Doadoras.First(p => p.Id == id);
                     return View(animal);
                 }
                 catch (Exception ex)
@@ -210,11 +239,13 @@ namespace WebProjVet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(AnimalDoadora animal)
+        public async Task<IActionResult> Delete(AnimalDoadora animal)
         {
             try
             {
-                _animalRepository.Remover(animal);
+                //_animalRepository.Remover(animal);
+                _webProjVetContext.Remove(animal);
+                await _webProjVetContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

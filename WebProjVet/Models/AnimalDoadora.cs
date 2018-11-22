@@ -28,7 +28,7 @@ namespace WebProjVet.Models
         //public Proprietario Proprietario { get; set; }
         //public IEnumerable<ProprietarioViewModel> Proprietarios { get; set; }
         public IEnumerable<Proprietario> Proprietarios { get; set; }
-        //public virtual Proprietario Proprietarios { get; set; }
+        public virtual Proprietario Proprietario { get; set; }
 
         /*
         [Display(Name = "TIPO")]
