@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebProjVet.Models
 {
-    public abstract class Animal
+    public abstract class Animal : Entity
     {
         [Key]
         public int Id { get; set; }

@@ -8,13 +8,14 @@ namespace WebProjVet.AcessoDados
     public class UnitOfWork : IUnitOfWork
     {
         private readonly WebProjVetContext _context;
+
         public UnitOfWork(WebProjVetContext context)
         {
             _context = context;
         }
 
 
-        public async Task Save()
+        public async Task Commit()
         {
             await _context.SaveChangesAsync();
         }

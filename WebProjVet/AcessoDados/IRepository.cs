@@ -10,5 +10,13 @@ namespace WebProjVet.AcessoDados
         TEntity GetById(int id);
         IEnumerable<TEntity> All();
         void Save(TEntity entity);
+
+        //List<TEntity> Listar();
+        //TEntity ObterPorId(int id);
+        //TEntity GetById(int id);
+        //void Salvar(TEntity entity);
+        //void Editar(TEntity entity);
+        //void Remover(TEntity entity);
+
     }
 }

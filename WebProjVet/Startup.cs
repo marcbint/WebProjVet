@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WebProjVet.AcessoDados;
 using WebProjVet.AcessoDados.Interfaces;
 using WebProjVet.AcessoDados.Servicos;
+using WebProjVet.Models;
 
 namespace WebProjVet
 {
@@ -59,8 +60,12 @@ namespace WebProjVet
             services.AddScoped<IProprietarioRepository, ProprietarioRepository>();
             services.AddScoped<IAnimalDoadoraRepository, AnimalDoadoraRepository>();
             services.AddScoped<IAnimalGaranhaoRepository, AnimalGaranhaoRepository>();
-            services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
+            //services.AddScoped<IAnimalReceptoraRepository, AnimalReceptoraRepository>();
+            //services.AddScoped(typeof(IRepository<AnimalReceptora>), typeof(AnimalReceptoraRepository));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            //services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
             //services.AddSingleton(typeof(AnimalDoadoraRepository));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

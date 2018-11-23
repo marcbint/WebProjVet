@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebProjVet.AcessoDados
+namespace WebProjVet.Models
 {
-    public interface IUnitOfWork
+    public class AnimalReceptora : Animal
     {
-        Task Commit();
+
     }
 }

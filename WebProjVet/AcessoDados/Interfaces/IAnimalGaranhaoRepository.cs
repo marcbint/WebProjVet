@@ -6,7 +6,7 @@ using WebProjVet.Models;
 
 namespace WebProjVet.AcessoDados.Interfaces
 {
-    public interface IAnimalGaranhaoRepository
+    public interface IAnimalGaranhaoRepository 
     {
         List<AnimalGaranhao> Listar();
         AnimalGaranhao ObterPorId(int id);
