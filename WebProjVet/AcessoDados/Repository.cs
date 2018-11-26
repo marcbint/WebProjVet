@@ -35,5 +35,17 @@ namespace WebProjVet.AcessoDados
             _context.Set<TEntity>().Add(entity);
             _context.SaveChanges();
         }
+
+        public void Update(TEntity entity)
+        {
+            _context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public void Delete(TEntity entity)
+        {
+            _context.Set<TEntity>().Remove(entity);
+            _context.SaveChanges();
+        }
     }
 }

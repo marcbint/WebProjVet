@@ -11,6 +11,7 @@ namespace WebProjVet.AcessoDados.Servicos
     {
         //Injeção de Dependência
         private readonly WebProjVetContext _webProjVetContext;
+
         public AnimalGaranhaoRepository(WebProjVetContext webProjVetContext)
         {
             _webProjVetContext = webProjVetContext;

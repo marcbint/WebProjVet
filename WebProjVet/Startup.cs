@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebProjVet.AcessoDados;
 using WebProjVet.AcessoDados.Interfaces;
+using WebProjVet.AcessoDados.Repository;
 using WebProjVet.AcessoDados.Servicos;
 using WebProjVet.Models;
 
@@ -60,6 +61,8 @@ namespace WebProjVet
             services.AddScoped<IProprietarioRepository, ProprietarioRepository>();
             services.AddScoped<IAnimalDoadoraRepository, AnimalDoadoraRepository>();
             services.AddScoped<IAnimalGaranhaoRepository, AnimalGaranhaoRepository>();
+            services.AddScoped<IAnimalReceptoraRepository, AnimalReceptoraRepository>();
+            services.AddScoped<ITratamentoRepository, TratamentoRepository>();
             //services.AddScoped<IAnimalReceptoraRepository, AnimalReceptoraRepository>();
             //services.AddScoped(typeof(IRepository<AnimalReceptora>), typeof(AnimalReceptoraRepository));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

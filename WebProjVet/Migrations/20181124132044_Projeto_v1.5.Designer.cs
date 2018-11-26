@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebProjVet.AcessoDados;
 
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    partial class WebProjVetContextModelSnapshot : ModelSnapshot
+    [Migration("20181124132044_Projeto_v1.5")]
+    partial class Projeto_v15
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,10 +58,10 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Codigo")
-                        .IsRequired();
+                    b.Property<string>("Abqm");
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -111,8 +113,7 @@ namespace WebProjVet.Migrations
                     b.Property<string>("Nome")
                         .IsRequired();
 
-                    b.Property<decimal>("Valor")
-                        .HasColumnType("decimal");
+                    b.Property<decimal>("Valor");
 
                     b.HasKey("Id");
 
@@ -149,28 +150,6 @@ namespace WebProjVet.Migrations
                     b.ToTable("Tratamento");
                 });
 
-            modelBuilder.Entity("WebProjVet.Models.ViewModels.TratamentoServicoViewModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DataRegistro");
-
-                    b.Property<int>("ServicoId");
-
-                    b.Property<int>("TratamentoId");
-
-                    b.Property<decimal>("Valor");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServicoId");
-
-                    b.HasIndex("TratamentoId");
-
-                    b.ToTable("TratamentoServico");
-                });
-
             modelBuilder.Entity("WebProjVet.Models.AnimalDoadora", b =>
                 {
                     b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
@@ -201,19 +180,6 @@ namespace WebProjVet.Migrations
                     b.HasOne("WebProjVet.Models.AnimalReceptora", "Receptora")
                         .WithMany()
                         .HasForeignKey("ReceptoraId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WebProjVet.Models.ViewModels.TratamentoServicoViewModel", b =>
-                {
-                    b.HasOne("WebProjVet.Models.Servico", "Servicos")
-                        .WithMany()
-                        .HasForeignKey("ServicoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("WebProjVet.Models.Tratamento", "Tratamento")
-                        .WithMany("TratamentoServico")
-                        .HasForeignKey("TratamentoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

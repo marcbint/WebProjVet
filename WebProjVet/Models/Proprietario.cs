@@ -21,6 +21,7 @@ namespace WebProjVet.Models
 
         [Display(Name = "Email")]
         [DataType(DataType.EmailAddress)]
+        [RegularExpression(@"^[a-zA-Z]+(([\'\,\.\- ][a-zA-Z ])?[a-zA-Z]*)*\s+<(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})>$|^(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})$", ErrorMessage = "Formato do E-mail Inválido")]
         [Required(ErrorMessage = "{0} deve ser informado")]
         public string Email { get; set; }
 

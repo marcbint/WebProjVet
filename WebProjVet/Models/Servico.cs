@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace WebProjVet.Models
 {
     public class Servico
@@ -16,11 +18,17 @@ namespace WebProjVet.Models
 
         [Display(Name = "VALOR")]
         [DataType(DataType.Currency)]
+        //[Column(TypeName = "money")]
+        [Column(TypeName = "decimal")]
         [Required(ErrorMessage = "Você precisa entrar com o {0}")]
-        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
+        //[DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:###.##0,00}")]
+
         public decimal Valor { get; set; }
 
-
+        //public virtual Tratamento Tratamento { get; set; }
         
     }
 }

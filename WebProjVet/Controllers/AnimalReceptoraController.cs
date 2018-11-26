@@ -28,7 +28,7 @@ namespace WebProjVet.Controllers
             if (receptora.Any())
                 return View(receptora);
 
-            return View();
+            return View(receptora);
         }
 
 
@@ -42,6 +42,85 @@ namespace WebProjVet.Controllers
         {
             _receptoraRepository.Save(animalReceptora);
             return RedirectToAction("Index");
+        }
+
+
+
+        public IActionResult Edit(int id)
+        {
+
+            if (id > 0)
+            {
+                var animal = _receptoraRepository.GetById(id);
+                
+                return View(animal);
+            }
+
+            return View();
+
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(AnimalReceptora receptora)
+        {
+            if (ModelState.IsValid)
+            {
+                _receptoraRepository.Update(receptora);
+                return RedirectToAction("Index");
+            }
+            return View(receptora);
+        }
+
+
+        public IActionResult Details(int id)
+        {
+         
+            if (id > 0)
+            {
+                var animal = _receptoraRepository.GetById(id);
+                
+                return View(animal);
+            }
+
+            return View();   
+        }
+
+
+        public IActionResult Delete(int id)
+        {
+            if (id == 0)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                try
+                {
+                    var receptora = _receptoraRepository.GetById(id);
+                    return View(receptora);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest($"Erro: {ex.Message}");
+                }
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(AnimalReceptora receptora)
+        {
+            try
+            {
+                _receptoraRepository.Delete(receptora);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro: {ex.Message}");
+            }
         }
 
 

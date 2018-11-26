@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebProjVet.AcessoDados;
 
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    partial class WebProjVetContextModelSnapshot : ModelSnapshot
+    [Migration("20181125182352_Projeto_v1.5.7")]
+    partial class Projeto_v157
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,8 +113,7 @@ namespace WebProjVet.Migrations
                     b.Property<string>("Nome")
                         .IsRequired();
 
-                    b.Property<decimal>("Valor")
-                        .HasColumnType("decimal");
+                    b.Property<decimal>("Valor");
 
                     b.HasKey("Id");
 
@@ -153,8 +154,6 @@ namespace WebProjVet.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DataRegistro");
 
                     b.Property<int>("ServicoId");
 
