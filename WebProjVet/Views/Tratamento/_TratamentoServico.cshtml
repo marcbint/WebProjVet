@@ -11,23 +11,46 @@
             <select asp-for="TratamentoId" class ="form-control" asp-items="ViewBag.TratamentoId"></select>
         </div>*@
             <div class="form-group">
-                <label asp-for="ServicoId" class="control-label"></label>
-                <select asp-for="ServicoId" class="form-control"
-                        asp-items="@(new SelectList(ViewBag.ServicoId, "Id", "Nome"))">
-                    <option selected="selected" value="">Selecione</option>
-                </select>
-                <span asp-validation-for="ServicoId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Valor" class="control-label"></label>
-                <input asp-for="Valor" class="form-control" />
-                <span asp-validation-for="Valor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Adicionar" class="btn btn-default" />
+                <div class="col-lg-8">
+                    <!--<label asp-for="ServicoId" class="control-label"></label>-->
+                    <select id="sltServico" asp-for="ServicoId" class="form-control"
+                            asp-items="@(new SelectList(ViewBag.ServicoId, "Id", "Nome"))">
+                        <option selected="selected" value="">Selecione</option>
+                    </select>
+                    <span asp-validation-for="ServicoId" class="text-danger"></span>
+                </div>
+                <div class="col-lg-2">
+                    <!--<label asp-for="Valor" class="control-label"></label>-->
+                    <input id="txtValor" asp-for="Valor" class="form-control" />
+                    <span asp-validation-for="Valor" class="text-danger"></span>
+                </div>
+                <div class="col-lg-2">
+                    <input type="button" value="Adicionar" class="btn btn-primary" onclick="AdicionarServico()" />
+                </div>
             </div>
         </form>
     </div>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>NOME</td>
+            <td>VALOR</td>
+        </tr>
+    </thead>
+    <tbody id="listaServicos"></tbody>
+</table>
+
+<div style="float:left; font-size:22px">Total: R$</div>
+<div id="divTotal" style="float:left; font-size:22px; margin-left:5px">0.00</div>
+<br /><br />
+
+<textarea asp-for="Servicos" id="ListaServicoJson"></textarea>
+
+<div class="form-group">
+    <input type="submit" value="Save" class="btn btn-default" />
 </div>
 
 <div>
@@ -37,3 +60,42 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+<script>
+    var Itens = new Object();
+    Itens.Servicos = new Array();
+
+    var CodigoServico = document.getElementById("sltServico");
+    var ValorServico = document.getElementById("txtValor");
+    var ListaServico = document.getElementById("listaServicos");
+    var TotalServico = document.getElementById("divTotal");
+    var ListaServicoJson = document.getElementById("ListaServicoJson");
+
+    function AdicionarServico() {
+
+        var valorFormatado = ValorServico.value;
+        valorFormatado = Math.round(valorFormatado * 100) / 100;
+        
+
+        Itens.Servicos.push({
+            "CodigoServico": CodigoServico.value,
+            "NomeServico": CodigoServico.options[CodigoServico.selectedIndex].text,
+            "ValorServico": valorFormatado //ValorServico.value
+
+        });
+
+        ListaServicoJson.innerHTML = JSON.stringify(Itens.Servicos);
+
+        var servico = "<tr>" +
+            "<td>" + CodigoServico.value + "</td>" +
+            "<td>" + CodigoServico.options[CodigoServico.selectedIndex].text + "</td>" +
+            "<td> R$" + valorFormatado + "</td>" +
+            //"<td> R$" + ValorServico.value + "</td>" +
+            "</tr>";
+
+        ListaServico.innerHTML += servico;
+        var totalGeral = Math.round((TotalServico.innerText * 1 + valorFormatado) * 100) / 100;
+        TotalServico.innerHTML = totalGeral;
+    }
+</script>

@@ -18,6 +18,7 @@ namespace WebProjVet.Controllers
         private readonly IAnimalGaranhaoRepository _garanhaoRepository;
         private readonly IAnimalDoadoraRepository _doadoraRepository;
         private readonly ITratamentoRepository _tratamentoRepository;
+        private readonly IServicoRepository _servicoRepository;
         private Tratamento _tratamento;
 
 
@@ -26,7 +27,8 @@ namespace WebProjVet.Controllers
             IAnimalReceptoraRepository receptoraRepository,
             IAnimalGaranhaoRepository garanhaoRepository, 
             IAnimalDoadoraRepository doadoraRepository,
-            ITratamentoRepository tratamentoRepository
+            ITratamentoRepository tratamentoRepository,
+            IServicoRepository servicoRepository
             )
         {
             _context = context;
@@ -34,13 +36,14 @@ namespace WebProjVet.Controllers
             _garanhaoRepository = garanhaoRepository;
             _doadoraRepository = doadoraRepository;
             _tratamentoRepository = tratamentoRepository;
+            _servicoRepository = servicoRepository;
         }
 
         public IActionResult Index()
         {
             //var tratamento = _tratamentoRepository.Listar();
 
-            var tratamento = _context.Tratamento.Include(p => p.Receptora).Include(c => c.Doadora).Include(d => d.Garanhao).ToList();
+            var tratamento = _context.Tratamentos.Include(p => p.Receptora).Include(c => c.Doadora).Include(d => d.Garanhao).ToList();
 
             if (tratamento.Any())
                 return View(tratamento);
@@ -54,6 +57,7 @@ namespace WebProjVet.Controllers
             ViewBag.ReceptoraId = _context.Receptoras.ToList();
             ViewBag.DoadoraId = _context.Doadoras.ToList();
             ViewBag.GaranhaoId = _context.Garanhoes.ToList();
+            ViewBag.ServicoId = _context.Servicos.ToList();
 
             return View();
         }
@@ -63,7 +67,7 @@ namespace WebProjVet.Controllers
         {
             tratamento.DataAtualizacao = DateTime.Now;
 
-            _context.Tratamento.Add(tratamento);
+            _context.Tratamentos.Add(tratamento);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");

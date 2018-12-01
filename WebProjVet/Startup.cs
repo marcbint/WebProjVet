@@ -55,6 +55,11 @@ namespace WebProjVet
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            //Adicionar Session
+            services.AddSession();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
 
             //Mapeamento entre a interface e classe concreta
             services.AddScoped<IServicoRepository, ServicoRepository>();

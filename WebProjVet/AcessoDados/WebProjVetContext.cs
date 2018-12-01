@@ -39,7 +39,7 @@ namespace WebProjVet.AcessoDados
             return base.SaveChanges();
         }
 
-        public DbSet<WebProjVet.Models.Tratamento> Tratamento { get; set; }
+
 
 
     }

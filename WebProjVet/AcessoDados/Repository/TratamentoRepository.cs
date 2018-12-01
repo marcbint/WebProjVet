@@ -19,12 +19,12 @@ namespace WebProjVet.AcessoDados.Repository
         
         public List<Tratamento> Listar()
         {
-            return _webProjVetContext.Tratamento.ToList();
+            return _webProjVetContext.Tratamentos.ToList();
         }
 
         public Tratamento ObterPorId(int id)
         {
-            return _webProjVetContext.Tratamento.FirstOrDefault(p => p.Id == id);
+            return _webProjVetContext.Tratamentos.FirstOrDefault(p => p.Id == id);
         }
 
         public void Editar(Tratamento tratamento)

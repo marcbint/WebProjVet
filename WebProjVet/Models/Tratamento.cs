@@ -51,5 +51,14 @@ namespace WebProjVet.Models
         public TratamentoTipo TratamentoTipo { get; set; }
 
         public List<TratamentoServicoViewModel> TratamentoServico { get; set; }
+
+        /*
+        [Display(Name = "SERVIÇO")]
+        public int ServicoId { get; set; }
+
+        [Display(Name = "SERVIÇO")]
+        [ForeignKey("ServicoId")]
+        public virtual List<Servico> Servico { get; set; }
+        */
     }
 }
