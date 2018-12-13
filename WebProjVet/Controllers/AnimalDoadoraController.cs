@@ -20,16 +20,16 @@ namespace WebProjVet.Controllers
         private readonly IProprietarioRepository _proprietarioRepository;
         //private readonly ProprietarioViewModel _proprietariolViewModel;
         private readonly Proprietario _proprietariolViewModel;
-        private readonly WebProjVetContext _webProjVetContext;
+        private readonly WebProjVetContext _context;
 
-        private readonly IRepository<AnimalDoadora> _animalRepository2;
-        private readonly IRepository<Proprietario> _proprietarioRepository2;
+        //private readonly IRepository<AnimalDoadora> _animalRepository2;
+        //private readonly IRepository<Proprietario> _proprietarioRepository2;
 
         public AnimalDoadoraController(IAnimalDoadoraRepository animalRepository, IProprietarioRepository proprietarioRepository, WebProjVetContext webProjVetContext)
         {
             _animalRepository = animalRepository;
             _proprietarioRepository = proprietarioRepository;
-            _webProjVetContext = webProjVetContext;
+            _context = webProjVetContext;
             
         }
 
@@ -37,7 +37,7 @@ namespace WebProjVet.Controllers
         public IActionResult Index()
         {
             //O include retorna as informações das entidades necessárias.
-            var doadoras = _webProjVetContext.Doadoras.Include(p => p.Proprietario).ToList();
+            var doadoras = _context.Doadoras.Include(p => p.Proprietario).ToList();
 
             /*var animais = _animalRepository.Listar();
             if (animais.Any())
@@ -55,8 +55,8 @@ namespace WebProjVet.Controllers
 
         public IActionResult CreateOrEdit(int id)
         {
-            ViewBag.Proprietarios = _webProjVetContext.Proprietarios.ToList();
-            var doadoras = _webProjVetContext.Doadoras.First(p => p.Id == id);
+            ViewBag.Proprietarios = _context.Proprietarios.ToList();
+            var doadoras = _context.Doadoras.First(p => p.Id == id);
 
             /*
             var viewModel = new AnimalDoadora();
@@ -91,16 +91,16 @@ namespace WebProjVet.Controllers
             */
 
             if(animal.Id == 0)
-                _webProjVetContext.Doadoras.Add(animal);
+                _context.Doadoras.Add(animal);
             else
             {
-                var doadoraSalvo = _webProjVetContext.Doadoras.First(p => p.Id == animal.Id);
+                var doadoraSalvo = _context.Doadoras.First(p => p.Id == animal.Id);
                 doadoraSalvo.Id = animal.Id;
                 doadoraSalvo.Nome = animal.Nome;
                 doadoraSalvo.Abqm = animal.Abqm;
                 doadoraSalvo.ProprietarioId = animal.ProprietarioId;
             }
-            await _webProjVetContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return RedirectToAction("Index"); 
         }
 
@@ -108,24 +108,17 @@ namespace WebProjVet.Controllers
 
         public IActionResult Create(int id)
         {
+            ViewBag.ProprietarioId = _context.Proprietarios.ToList();
+
             var viewModel = new AnimalDoadora();
             var proprietarios = _proprietarioRepository.ListarProprietarios();
 
             if (proprietarios.Any())
                 viewModel.Proprietarios = proprietarios.Select(c => new Proprietario { Id = c.Id, Nome = c.Nome });
 
-            if (id > 0)
-            {
-                var animal = _animalRepository.GetById(id);
-                viewModel.Id = animal.Id;
-                viewModel.Nome = animal.Nome;
-                viewModel.Abqm = animal.Abqm;
-                //viewModel.AnimalTipo = animal.AnimalTipo;
-                viewModel.ProprietarioId = animal.ProprietarioId;
-                return View(viewModel);
-            }
+            
 
-            return View(viewModel);
+            return View();
         }
 
 
@@ -227,7 +220,7 @@ namespace WebProjVet.Controllers
                 try
                 {
                     //var animal = _animalRepository.ObterPorId(id);
-                    var animal = _webProjVetContext.Doadoras.First(p => p.Id == id);
+                    var animal = _context.Doadoras.First(p => p.Id == id);
                     return View(animal);
                 }
                 catch (Exception ex)
@@ -244,8 +237,8 @@ namespace WebProjVet.Controllers
             try
             {
                 //_animalRepository.Remover(animal);
-                _webProjVetContext.Remove(animal);
-                await _webProjVetContext.SaveChangesAsync();
+                _context.Remove(animal);
+                await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

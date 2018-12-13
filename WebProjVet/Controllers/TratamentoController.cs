@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WebProjVet.AcessoDados;
 using WebProjVet.AcessoDados.Interfaces;
 using WebProjVet.Models;
@@ -11,6 +12,7 @@ using WebProjVet.Models.ViewModels;
 
 namespace WebProjVet.Controllers
 {
+    //[Route("api/[Controller]")]
     public class TratamentoController : Controller
     {
         private readonly WebProjVetContext _context;
@@ -43,7 +45,7 @@ namespace WebProjVet.Controllers
         {
             //var tratamento = _tratamentoRepository.Listar();
 
-            var tratamento = _context.Tratamentos.Include(p => p.Receptora).Include(c => c.Doadora).Include(d => d.Garanhao).ToList();
+            var tratamento = _context.Tratamentos.Include(p => p.Receptora).Include(c => c.Doadora).Include(d => d.Garanhao).Include(e => e.TratamentoServicos).ToList();
 
             if (tratamento.Any())
                 return View(tratamento);
@@ -58,6 +60,7 @@ namespace WebProjVet.Controllers
             ViewBag.DoadoraId = _context.Doadoras.ToList();
             ViewBag.GaranhaoId = _context.Garanhoes.ToList();
             ViewBag.ServicoId = _context.Servicos.ToList();
+            
 
             return View();
         }
@@ -65,7 +68,7 @@ namespace WebProjVet.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Tratamento tratamento)
         {
-            tratamento.DataAtualizacao = DateTime.Now;
+            
 
             _context.Tratamentos.Add(tratamento);
             await _context.SaveChangesAsync();
@@ -76,6 +79,8 @@ namespace WebProjVet.Controllers
 
         public IActionResult Edit(int id)
         {
+            //Somar o valor de serviços lançados no tratamento
+            ViewBag.Total = _context.TratamentoServicos.Where(x => x.TratamentoId == id).Sum(x => x.Valor);
 
             if (id > 0)
             {
@@ -84,7 +89,14 @@ namespace WebProjVet.Controllers
                 ViewBag.GaranhaoId = _context.Garanhoes.ToList();
                 ViewBag.ServicoId = _context.Servicos.ToList();
 
-                var tratamento = _tratamentoRepository.ObterPorId(id);
+                //Tratamento tratamento = _tratamentoRepository.ObterPorId(id);
+
+                var tratamento = _context.Tratamentos
+                    .Include(e => e.TratamentoServicos)
+                    .Include(p => p.Receptora)
+                    .Include(c => c.Doadora)
+                    .Include(d => d.Garanhao).ToList().First(p => p.Id == id);
+
 
                 _tratamento = tratamento;
                 return View(tratamento);
@@ -101,6 +113,25 @@ namespace WebProjVet.Controllers
             if (ModelState.IsValid)
             {
                 _tratamentoRepository.Editar(tratamento);
+
+                //Processo de inclusão de serviços
+                List<TratamentoServico> listaTratamentoServico = JsonConvert.DeserializeObject<List<TratamentoServico>>(tratamento.TratamentoServicosJson);
+                for(int i =0; i < listaTratamentoServico.Count; i++)
+                {
+                    if (listaTratamentoServico[i].Id == 0)
+                    {
+                        TratamentoServico objTratamentoServico = new TratamentoServico();
+                        objTratamentoServico.TratamentoId = listaTratamentoServico[i].TratamentoId;
+                        objTratamentoServico.ServicoId = listaTratamentoServico[i].ServicoId;
+                        objTratamentoServico.Valor = listaTratamentoServico[i].Valor;
+                        objTratamentoServico.Data = listaTratamentoServico[i].Data;
+
+                        _context.TratamentoServicos.Add(objTratamentoServico);
+                    }
+                    
+                }
+
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(tratamento);
@@ -108,7 +139,7 @@ namespace WebProjVet.Controllers
 
 
         [HttpPost]
-        public void AddServico(TratamentoServicoViewModel tratamentoServicoViewModel)
+        public void AddServico(TratamentoServico tratamentoServicoViewModel)
         {
             tratamentoServicoViewModel.TratamentoId = 1;
 
@@ -121,7 +152,31 @@ namespace WebProjVet.Controllers
             //return View();
         }
 
+        public string Teste(string parameter)
+        {
+            return DateTime.Today.ToString() + "-->>>" + parameter + "!!!!";
+        }
 
+        // GET: api/GetAllStudents
+        
+        //[Route("api/Tratamento/GetAllTratamentos")]
+        [Route("GetAllTratamentos")]
+        public IActionResult GetAllTratamentos()
+        {
+            var tratamentos = _context.Tratamentos.Include(p => p.Receptora).Include(c => c.Doadora).Include(d => d.Garanhao).Include(e => e.TratamentoServicos).ToList();
+
+
+            return new JsonResult(tratamentos);
+        }
+
+        //Mapeia as requisições GET para http://localhost:{porta}/api/books/v1/
+        //Get sem parâmetros para o FindAll --> Busca Todos
+        [HttpGet]
+        public IActionResult Get()
+        {
+            
+            return Ok(_tratamentoRepository.Listar());
+        }
 
     }
 }

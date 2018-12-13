@@ -25,6 +25,7 @@ namespace WebProjVet.AcessoDados.Repository
         public Tratamento ObterPorId(int id)
         {
             return _webProjVetContext.Tratamentos.FirstOrDefault(p => p.Id == id);
+            
         }
 
         public void Editar(Tratamento tratamento)

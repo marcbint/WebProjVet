@@ -16,8 +16,8 @@ namespace WebProjVet.Models
         [Display(Name = "DATA INÍCIO")]
         public DateTime DataInicio { get; set; }
 
-        [Display(Name = "DATA ATUALIZAÇÃO")]
-        public DateTime DataAtualizacao { get; set; }
+        //[Display(Name = "DATA ATUALIZAÇÃO")]
+        //public DateTime DataAtualizacao { get; set; }
 
         [Display(Name = "DATA FINALIZAÇÃO")]
         public DateTime? DataFim { get; set; }
@@ -47,10 +47,13 @@ namespace WebProjVet.Models
         //public IEnumerable<AnimalReceptora> Receptoras { get; set; }
 
         [Display(Name = "SITUAÇÃO")]
-        [EnumDataType(typeof(TratamentoTipo))]
-        public TratamentoTipo TratamentoTipo { get; set; }
+        [EnumDataType(typeof(TratamentoSituacao))]
+        public TratamentoSituacao TratamentoSituacao { get; set; }
 
-        public List<TratamentoServicoViewModel> TratamentoServico { get; set; }
+        public virtual ICollection<TratamentoServico> TratamentoServicos { get; set; }
+
+        [NotMapped]
+        public string TratamentoServicosJson { get; set; }
 
         /*
         [Display(Name = "SERVIÇO")]
@@ -60,5 +63,10 @@ namespace WebProjVet.Models
         [ForeignKey("ServicoId")]
         public virtual List<Servico> Servico { get; set; }
         */
+
+        public Tratamento()
+        {
+            TratamentoServicos = new List<TratamentoServico>();
+        }
     }
 }

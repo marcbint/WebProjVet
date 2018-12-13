@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebProjVet.AcessoDados;
 
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    partial class WebProjVetContextModelSnapshot : ModelSnapshot
+    [Migration("20181211135813_Projeto_v1.6.7")]
+    partial class Projeto_v167
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,7 +206,7 @@ namespace WebProjVet.Migrations
             modelBuilder.Entity("WebProjVet.Models.TratamentoServico", b =>
                 {
                     b.HasOne("WebProjVet.Models.Servico", "Servico")
-                        .WithMany()
+                        .WithMany("TratamentoServicos")
                         .HasForeignKey("ServicoId")
                         .OnDelete(DeleteBehavior.Cascade);
 

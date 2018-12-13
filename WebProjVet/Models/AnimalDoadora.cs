@@ -27,7 +27,7 @@ namespace WebProjVet.Models
         [ForeignKey("ProprietarioId")]
         //public Proprietario Proprietario { get; set; }
         //public IEnumerable<ProprietarioViewModel> Proprietarios { get; set; }
-        public IEnumerable<Proprietario> Proprietarios { get; set; }
+        public virtual IEnumerable<Proprietario> Proprietarios { get; set; }
         public virtual Proprietario Proprietario { get; set; }
 
         /*

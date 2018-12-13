@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebProjVet.AcessoDados;
 
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    partial class WebProjVetContextModelSnapshot : ModelSnapshot
+    [Migration("20181207211728_Projeto_v1.6")]
+    partial class Projeto_v16
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,7 +107,8 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Codigo");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
                     b.Property<string>("Nome")
                         .IsRequired();
@@ -123,6 +126,8 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("DataAtualizacao");
+
                     b.Property<DateTime?>("DataFim");
 
                     b.Property<DateTime>("DataInicio");
@@ -133,7 +138,7 @@ namespace WebProjVet.Migrations
 
                     b.Property<int>("ReceptoraId");
 
-                    b.Property<int>("TratamentoSituacao");
+                    b.Property<int>("TratamentoTipo");
 
                     b.HasKey("Id");
 
@@ -146,20 +151,20 @@ namespace WebProjVet.Migrations
                     b.ToTable("Tratamentos");
                 });
 
-            modelBuilder.Entity("WebProjVet.Models.TratamentoServico", b =>
+            modelBuilder.Entity("WebProjVet.Models.ViewModels.TratamentoServicoViewModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("TratamentoId");
+                    b.Property<DateTime>("DataRegistro");
 
                     b.Property<int>("ServicoId");
 
-                    b.Property<DateTime>("Data");
+                    b.Property<int>("TratamentoId");
 
                     b.Property<decimal>("Valor");
 
-                    b.HasKey("Id", "TratamentoId", "ServicoId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ServicoId");
 
@@ -201,15 +206,15 @@ namespace WebProjVet.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WebProjVet.Models.TratamentoServico", b =>
+            modelBuilder.Entity("WebProjVet.Models.ViewModels.TratamentoServicoViewModel", b =>
                 {
-                    b.HasOne("WebProjVet.Models.Servico", "Servico")
+                    b.HasOne("WebProjVet.Models.Servico", "Servicos")
                         .WithMany()
                         .HasForeignKey("ServicoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebProjVet.Models.Tratamento", "Tratamento")
-                        .WithMany("TratamentoServicos")
+                        .WithMany("TratamentoServico")
                         .HasForeignKey("TratamentoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

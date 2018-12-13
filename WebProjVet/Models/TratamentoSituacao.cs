@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace WebProjVet.Models
 {
-    public enum TratamentoTipo
+    public enum TratamentoSituacao
     {
         [Description("ABERTO")] ABERTO = 1,
-        [Description("FINALIZADO")] FINALIZADO = 2
+        [Description("CANCELADO")] CANCELADO = 2,
+        [Description("FINALIZADO")] FINALIZADO = 3
      }
 }

@@ -14,17 +14,13 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="DataInicio" class="control-label"></label>
-                <input asp-for="DataInicio" class="form-control" />
+                <input type="date" asp-for="DataInicio" class="form-control" />
                 <span asp-validation-for="DataInicio" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DataAtualizacao" class="control-label"></label>
-                <input asp-for="DataAtualizacao" class="form-control" />
-                <span asp-validation-for="DataAtualizacao" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="DataFim" class="control-label"></label>
-                <input asp-for="DataFim" class="form-control" />
+                <input type="date" asp-for="DataFim" class="form-control" />
                 <span asp-validation-for="DataFim" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -49,11 +45,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="TratamentoTipo" class="control-label"></label>
-                <select asp-for="TratamentoTipo" asp-items="Html.GetEnumSelectList<TratamentoTipo>()" class="form-control">
+                <label asp-for="TratamentoSituacao" class="control-label"></label>
+                <select asp-for="TratamentoSituacao" asp-items="Html.GetEnumSelectList<TratamentoSituacao>()" class="form-control">
                     <option selected="selected" value="">Selecione</option>
                 </select>
-                <span asp-validation-for="TratamentoTipo" class="text-danger"></span>
+                <span asp-validation-for="TratamentoSituacao" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
@@ -62,7 +58,7 @@
     </div>
 </div>
 
-@Html.Partial("_TratamentoServico.cshtml", Model.TratamentoServico)
+@*@Html.Partial("_TratamentoServico.cshtml", Model.TratamentoServicos)*@
 
 <div>
     <a asp-action="Index">Back to List</a>

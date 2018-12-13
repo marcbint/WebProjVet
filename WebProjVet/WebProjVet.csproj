@@ -27,6 +27,14 @@
     <Compile Remove="Migrations\20181120204517_Projeto_v1.3.4.Designer.cs" />
     <Compile Remove="Migrations\20181125174453_Projeto_v1.5.6.cs" />
     <Compile Remove="Migrations\20181125174453_Projeto_v1.5.6.Designer.cs" />
+    <Compile Remove="Migrations\20181211045256_Projeto_v1.6.5.cs" />
+    <Compile Remove="Migrations\20181211045256_Projeto_v1.6.5.Designer.cs" />
+    <Compile Remove="Migrations\20181211050233_Projeto_v1.6.6.cs" />
+    <Compile Remove="Migrations\20181211050233_Projeto_v1.6.6.Designer.cs" />
+    <Compile Remove="Migrations\20181211053711_Projeto_v1.6.7.cs" />
+    <Compile Remove="Migrations\20181211053711_Projeto_v1.6.7.Designer.cs" />
+    <Compile Remove="Migrations\20181211054556_Projeto_v1.6.5.cs" />
+    <Compile Remove="Migrations\20181211054556_Projeto_v1.6.5.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +46,15 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Tratamento\Edit - Cópia %282%29.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Tratamento\Edit - Cópia.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

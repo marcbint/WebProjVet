@@ -4,6 +4,82 @@
     ViewData["Title"] = "Index";
 }
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#buttonDemo1').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/demo/demo1',
+                success: function (result) {
+                    $('#result1').html(result);
+                }
+            });
+        });
+
+        $('#buttonDemo2').click(function () {
+            var fullName = $('#fullName').val();
+            $.ajax({
+                type: 'GET',
+                url: '/demo/demo2/' + fullName,
+                success: function (result) {
+                    $('#result2').html(result);
+                }
+            });
+        });
+
+        $('#buttonDemo3').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/demo/demo3',
+                success: function (result) {
+                    var s = 'Id: ' + result.id;
+                    s += '<br>Name: ' + result.name;
+                    s += '<br>Price: ' + result.price;
+                    $('#result3').html(s);
+                }
+            });
+        });
+
+        $('#buttonDemo4').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/demo/demo4',
+                success: function (result) {
+                    var s = '';
+                    for (var i = 0; i < result.length; i++) {
+                        s += '<br>Id: ' + result[i].id;
+                        s += '<br>Name: ' + result[i].name;
+                        s += '<br>Price: ' + result[i].price;
+                        s += '<br>------------------';
+                    }
+                    $('#result4').html(s);
+                }
+            });
+        });
+
+        $('#buttonDemo5').click(function () {
+            $.ajax({
+                type: 'GET',
+                //url: '/demo/demo5',
+                url: '/api/ServicoAPI/demo5',
+                success: function (result) {
+                    var s = '';
+                    for (var i = 0; i < result.length; i++) {
+                        s += '<br>Id: ' + result[i].id;
+                        s += '<br>Código: ' + result[i].codigo;
+                        s += '<br>Valor: ' + result[i].valor;
+                        s += '<br>------------------';
+                    }
+                    $('#result5').html(s);
+                }
+            });
+        });
+
+    });
+</script>
+
 <h2>Index</h2>
 
 <p>
@@ -13,10 +89,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nome)
+                @Html.DisplayNameFor(model => model.Codigo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Descricao)
+                @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Valor)
@@ -25,23 +101,264 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Valor)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Codigo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+
+@using (Html.BeginForm())
+{
+    <button id="buttonDemo5">Buscar Demo 5</button>
+    <button id="buttonDemo4">Buscar Demo 4</button>
+    <button id="btnGetCategorias">Buscar Categorias</button>
+    <button id="btnGetCategoria">Buscar Categoria</button>
+    <button id="btnAddCategorias">ADD Categorias</button>
+    <button id="btnUpdateCategorias">Editar Categorias</button>
+    <button id="btnDeleteCategorias">Deletar Categorias</button>
+    <br /><br />
+
+    <input id="txtCategoriaId" Type="text" placeholder="Id Categoria" />
+    <input id="txtDescricao" Type="text" placeholder="Descrição" />
+
+    <br /><br />
+
+    <div id="lblMensagem"></div>
+    <div id="result4"></div>
+    <div id="result5"></div>
+
+
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#btnGetCategorias").on("click", function () {
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/ServicoAPI/demo5',
+                    //datatype: 'json',
+                    //cache: false,
+                })
+
+
+                    .success(function (data) {
+                        var saida = '';
+                        for (var i = 0; i < data.length; i++) {
+                            saida += '<br><br>';
+                            saida += '<b>Categoria ID: </b>' + data[i].Id + '<br>';
+                            saida += '<b>Descrição: </b>' + data[i].Codigo + '<br>';
+                            saida += '<b>Valor: </b>' + data[i].Valor + '<br>';
+                        }
+                        $("#lblMensagem").html(saida);
+                    })
+
+                    .error(function (xhr, ajaxOptions, throwError) {
+                        $("#lblMensagem").html("Ocorreu um Erro");
+
+                    });
+                return false;
+            });
+
+            $("#btnGetCategoria").on("click", function () {
+
+                var categoriaId = $('#txtCategoriaId').val();
+                if (categoriaId == "") {
+                    $("#lblMensagem").html("É preciso informar um ID para Categoria");
+                    return false;
+                }
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/ServicoAPI/' + categoriaId,
+                    datatype: 'json',
+                    cache: false,
+                })
+
+
+                    .success(function (data) {
+                        if (data != null) {
+                            var saida = '';
+
+                            saida += '<hr><br>';
+                            saida += '<b>Categoria ID: </b>' + data.CategoriaId + '<br>';
+                            saida += '<b>Descrição: </b>' + data.Descricao + '<br>';
+
+                            $("#lblMensagem").html(saida);
+                        } else {
+                            $("#lblMensagem").html("Esta categoria não existe");
+                        }
+                    })
+
+                    .error(function (xhr, ajaxOptions, throwError) {
+                        $("#lblMensagem").html("Ocorreu um Erro");
+
+                    });
+                return false;
+            });
+
+            $("#btnAddCategorias").on("click", function () {
+
+                var descricao = $('#txtDescricao').val();
+                if (descricao == "") {
+                    $("#lblMensagem").html("É preciso informar a descrição!");
+                    return false;
+                }
+
+                var categoria = { Descricao: descricao }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/CategoriaAPI/',
+                    data: categoria,
+                    datatype: 'json',
+                    cache: false,
+                })
+
+
+                    .success(function (data) {
+
+                        var saida = '';
+
+                        saida += '<hr>Categoria Adicionada <br>';
+                        saida += '<b>Categoria ID: </b>' + data.CategoriaId + '<br>';
+                        saida += '<b>Descrição: </b>' + data.Descricao + '<br>';
+
+                        $("#lblMensagem").html(saida);
+
+                    })
+
+                    .error(function (xhr, ajaxOptions, throwError) {
+                        $("#lblMensagem").html("Ocorreu um Erro");
+
+                    });
+
+                return false;
+            });
+
+            $("#btnUpdateCategorias").on("click", function () {
+
+                var descricao = $('#txtDescricao').val();
+                if (descricao == "") {
+                    $("#lblMensagem").html("É preciso informar a descrição!");
+                    return false;
+                }
+
+                var categoriaId = $('#txtCategoriaId').val();
+                if (categoriaId == "") {
+                    $("#lblMensagem").html("É preciso informar um ID para Categoria");
+                    return false;
+                }
+
+                var categoria = { CategoriaId: categoriaId, Descricao: descricao }
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/api/CategoriaAPI/' + categoriaId,
+                    data: categoria,
+                    datatype: 'json',
+                    cache: false,
+                })
+
+
+                    .success(function (data) {
+
+                        var saida = '';
+
+                        saida += '<hr>Categoria Editada com Sucesso <br>';
+
+
+                        $("#lblMensagem").html(saida);
+
+                    })
+
+                    .error(function (xhr, ajaxOptions, throwError) {
+                        $("#lblMensagem").html("Ocorreu um Erro");
+
+                    });
+
+
+                return false;
+            });
+
+            $("#btnDeleteCategorias").on("click", function () {
+
+
+                var categoriaId = $('#txtCategoriaId').val();
+                if (categoriaId == "") {
+                    $("#lblMensagem").html("É preciso informar um ID para Categoria");
+                    return false;
+                }
+
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/api/CategoriaAPI/' + categoriaId,
+                    datatype: 'json',
+                    cache: false,
+                })
+
+
+                    .success(function (data) {
+                        if (data != null) {
+                            var saida = '';
+
+                            saida += '<hr>Categoria excluida com sucesso!!<br>';
+                            saida += '<b>Categoria ID: </b>' + data.CategoriaId + '<br>';
+                            saida += '<b>Descrição: </b>' + data.Descricao + '<br>';
+
+                            $("#lblMensagem").html(saida);
+                        } else {
+                            $("#lblMensagem").html("Esta categoria não existe");
+                        }
+                    })
+
+                    .error(function (xhr, ajaxOptions, throwError) {
+                        $("#lblMensagem").html("Ocorreu um Erro");
+
+                    });
+
+                return false;
+            });
+
+
+
+        });
+    </script>
+
+}
+
+<style type="text/css">
+    #loading {
+        display: none;
+        background-color: gray;
+        z-index: 999999;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        padding-top: 300px;
+        filter: alpha(opacity=75);
+        opacity: 0.75;
+    }
+</style>
+<div id="loading"><img src="~/Images/loader.gif" /></div>

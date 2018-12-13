@@ -14,12 +14,12 @@ namespace WebProjVet.Migrations
                 oldClrType: typeof(string),
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<string>(
+            /*migrationBuilder.AlterColumn<string>(
                 name: "Descricao",
                 table: "Servicos",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldNullable: true);
+                oldNullable: true);*/
 
             migrationBuilder.CreateTable(
                 name: "Proprietarios",
@@ -52,11 +52,11 @@ namespace WebProjVet.Migrations
                 nullable: true,
                 oldClrType: typeof(string));
 
-            migrationBuilder.AlterColumn<string>(
+            /*migrationBuilder.AlterColumn<string>(
                 name: "Descricao",
                 table: "Servicos",
                 nullable: true,
-                oldClrType: typeof(string));
+                oldClrType: typeof(string));*/
         }
     }
 }

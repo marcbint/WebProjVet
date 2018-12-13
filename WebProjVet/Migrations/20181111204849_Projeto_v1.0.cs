@@ -13,8 +13,7 @@ namespace WebProjVet.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(nullable: true),
-                    Descricao = table.Column<string>(nullable: true),
+                    Nome = table.Column<string>(nullable: false),                   
                     Valor = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>

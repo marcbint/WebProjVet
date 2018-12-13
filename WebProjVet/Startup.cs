@@ -28,7 +28,10 @@ namespace WebProjVet
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsetting.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("config.json", optional: true, reloadOnChange: true); ;
+                .AddJsonFile("config.json", optional: true, reloadOnChange: true); 
+
+            //.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                //.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             _configuration = builder.Build();
         }

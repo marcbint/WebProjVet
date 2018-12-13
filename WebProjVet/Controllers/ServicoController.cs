@@ -18,6 +18,7 @@ namespace WebProjVet.Controllers
             _servicoRepository = servicoRepository;
         }
 
+
         public IActionResult Index()
         {
             //Envia a listagem de serviços para view
@@ -148,7 +149,8 @@ namespace WebProjVet.Controllers
             }
         }
 
-        //Especificado do verbo http que será utilizado
+        //Mapeia as requisições GET para http://localhost:{porta}/api/books/v1/
+        //Get sem parâmetros para o FindAll --> Busca Todos
         [HttpGet]
         public IActionResult Get()
         {
