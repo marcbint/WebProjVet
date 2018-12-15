@@ -4,66 +4,339 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<!--------------------------------------------------------------------------------------------->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<h4>Tratamento</h4>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#getvalor').click(function () {
+            var idServico = document.getElementById("sltServico");
+            $.ajax({
+                type: 'GET',
+                url: '/api/ServicoAPI/getvalor/' + idServico,
+                success: function (result) {
+                    var s = result.valor;
+
+                    $('#resultGetValor').html(s);
+                }
+            });
+        });
+
+    });
+</script>
+
+<h3 class="text-center">TRATAMENTO</h3>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="DataInicio" class="control-label"></label>
-                <input type="date" asp-for="DataInicio" class="form-control" />
-                <span asp-validation-for="DataInicio" class="text-danger"></span>
+
+<form asp-action="Create">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" id="idTratamento">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label asp-for="DoadoraId" class="control-label"></label>
+                                <select asp-for="DoadoraId" class="form-control"
+                                        asp-items="@(new SelectList(ViewBag.DoadoraId, "Id", "Nome"))">
+                                    <option selected="selected" value="">Selecione</option>
+                                </select>
+                                <span asp-validation-for="DoadoraId" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-4">
+                                <label asp-for="GaranhaoId" class="control-label"></label>
+                                <select asp-for="GaranhaoId" class="form-control"
+                                        asp-items="@(new SelectList(ViewBag.GaranhaoId, "Id", "Nome"))">
+                                    <option selected="selected" value="">Selecione</option>
+                                </select>
+                                <span asp-validation-for="GaranhaoId" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-4">
+                                <label asp-for="ReceptoraId" class="control-label"></label>
+                                <select asp-for="ReceptoraId" class="form-control"
+                                        asp-items="@(new SelectList(ViewBag.ReceptoraId, "Id", "Codigo"))">
+                                    <option selected="selected" value="">Selecione</option>
+                                </select>
+                                <span asp-validation-for="ReceptoraId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:20px">
+                            <div class="col-lg-4">
+                                <label asp-for="DataInicio" class="control-label"></label>
+                                <input type="date" asp-for="DataInicio" class="form-control" />
+                                <span asp-validation-for="DataInicio" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-4">
+                                <label asp-for="TratamentoSituacao" class="control-label"></label>
+                                <select asp-for="TratamentoSituacao" asp-items="Html.GetEnumSelectList<TratamentoSituacao>()" class="form-control">
+                                    <option selected="selected" value="">Selecione</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                                <label asp-for="DataFim" class="control-label"></label>
+                                <input asp-for="DataFim" disabled="disabled" class="form-control" />
+                                <span asp-validation-for="DataFim" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:20px">
+                            <div class="col-lg-12">
+                                <p>
+                                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                        DIÁRIA
+                                    </button>
+                                </p>
+                                <div class="collapse" id="collapseExample">
+                                    <div class="col-lg-12">
+                                        <input type="hidden" id="idDiaria">
+                                    </div>
+                                    <div class="col-lg-4 col-lg-offset-1">
+                                        <label class="control-label">DATA INÍCIO</label>
+                                        <input type="datetime-local" id="txtData" class="form-control" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="control-label">DATA FIM</label>
+                                        <input type="datetime-local" id="txtData" class="form-control" />
+                                    </div>
+                                    <div class="col-lg-2 card card-body">
+                                        <label class="control-label">VALOR</label>
+                                        <input id="txtValorEstadia" class="form-control text-right" />
+                                    </div>
+                                    <div>
+                                        <br />
+                                        <input type="button" value="SALVAR" class="btn btn-primary" onclick="AdicionarDiaria()" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row " style="padding-top:20px">
+                            <div class="col-lg-12">
+                                <input type="submit" value="ATUALIZAR TRATAMENTO" class="btn btn-success btn-lg btn-block" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <textarea asp-for="TratamentoServicosJson" style="display:none" id="ListaServicoJson"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <div class="form-group">
-                <label asp-for="DataFim" class="control-label"></label>
-                <input type="date" asp-for="DataFim" class="form-control" />
-                <span asp-validation-for="DataFim" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DoadoraId" class="control-label"></label>
-                <select asp-for="DoadoraId" class="form-control"
-                        asp-items="@(new SelectList(ViewBag.DoadoraId, "Id", "Nome"))">
-                    <option selected="selected" value="">Selecione</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="GaranhaoId" class="control-label"></label>
-                <select asp-for="GaranhaoId" class="form-control"
-                        asp-items="@(new SelectList(ViewBag.GaranhaoId, "Id", "Nome"))">
-                    <option selected="selected" value="">Selecione</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReceptoraId" class="control-label"></label>
-                <select asp-for="ReceptoraId" class="form-control"
-                        asp-items="@(new SelectList(ViewBag.ReceptoraId, "Id", "Codigo"))">
-                    <option selected="selected" value="">Selecione</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="TratamentoSituacao" class="control-label"></label>
-                <select asp-for="TratamentoSituacao" asp-items="Html.GetEnumSelectList<TratamentoSituacao>()" class="form-control">
-                    <option selected="selected" value="">Selecione</option>
-                </select>
-                <span asp-validation-for="TratamentoSituacao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+
+        </div>
     </div>
-</div>
 
-@*@Html.Partial("_TratamentoServico.cshtml", Model.TratamentoServicos)*@
+    <div class="container">
+        <div class="row">
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+            <div class="col-md-12">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <label class="control-label">SERVIÇOS</label>
+                                <!--<select id="sltServico" class="form-control"-->
+                                <select id="sltServico" class="form-control" onchange="getValorServico()"
+                                        asp-items="@(new SelectList(ViewBag.ServicoId, "Id", "Nome", "Valor")) ">
+                                    <option selected="selected" value="">SELECIONE</option>
+                                </select>
+                                <!--https://demos.telerik.com/aspnet-core/dropdownlist/api-->
+                                <!--http://www.binaryintellect.net/articles/6d0b21c8-2bbc-42c0-9403-4cd1880c123f.aspx-->
+                            </div>
+                            <div class="col-lg-2">
+                                <label class="control-label">VALOR</label>
+                                <input id="txtValor" class="form-control text-right" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label class="control-label">DATA</label>
+                                <input type="date" id="txtData" class="form-control" />
+                            </div>
+                            <div class="col-lg-2">
+                                <br />
+                                <input type="button" value="ADICIONAR SERVIÇO" class="btn btn-primary" onclick="AdicionarServico()" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped table-bordered table-list">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>NOME</th>
+                                    <th>VALOR</th>
+                                    <th>DATA</th>
+                                    <th><em class="fa fa-cog"></em></th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaServicos">
+                                <!--Lista dos serviços cadastrados -->
+                                <!--https://stackoverflow.com/questions/14165632/asp-net-mvc-4-for-loop-posts-model-collection-properties-but-foreach-does-not-->
+                                @*
+        @foreach (var item in Model.TratamentoServicos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Servico.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td align="center" style="display:inline-block">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><em class="glyphicon glyphicon-pencil"></em> </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+
+                </td>
+            </tr>
+        }*@
+
+                            </tbody>
+                        </table>
+                        <div style="float:left; font-size:22px">Total: R$</div>
+                        <div id="divTotal" style="float:left; font-size:22px; margin-left:5px">@ViewBag.Total</div>
+
+                    </div>
+                    @*
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col col-xs-4">
+                                    Page 1 of 5
+                                </div>
+                                <div class="col col-xs-8">
+                                    <ul class="pagination hidden-xs pull-right">
+                                        <li><a href="#">1</a></li>
+                                        <li><a href="#">2</a></li>
+                                        <li><a href="#">3</a></li>
+                                        <li><a href="#">4</a></li>
+                                        <li><a href="#">5</a></li>
+                                    </ul>
+                                    <ul class="pagination visible-xs pull-right">
+                                        <li><a href="#">«</a></li>
+                                        <li><a href="#">»</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>*@
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script>
+        var Itens = new Object();
+        Itens.Servicos = new Array();
+
+        var CodigoTratamento = document.getElementById("idTratamento");
+        var CodigoServico = document.getElementById("sltServico");
+        var ValorServico = document.getElementById("txtValor");
+        var DataServico = document.getElementById("txtData");
+        var ListaServico = document.getElementById("listaServicos");
+        var TotalServico = document.getElementById("divTotal");
+        var ListaServicoJson = document.getElementById("ListaServicoJson");
+        var DataRegistro = Date.now();
+
+
+        function AdicionarServico() {
+
+            var valorFormatado = ValorServico.value;
+            valorFormatado = Math.round(valorFormatado * 100) / 100;
+            var btnApagar = "apagar";
+
+
+            Itens.Servicos.push({
+                //"TratamentoId": CodigoTratamento.value,
+                "ServicoId": CodigoServico.value,
+                //"NomeServico": CodigoServico.options[CodigoServico.selectedIndex].text,
+                "Valor": valorFormatado, //ValorServico.value,
+                "Data": DataServico.value
+
+            });
+
+            ListaServicoJson.innerHTML = JSON.stringify(Itens.Servicos);
+
+            var servico =
+                "<tr>" +
+                "<td>" + "" + "</td>" +
+                "<td>" + CodigoServico.options[CodigoServico.selectedIndex].text + "</td>" +
+                "<td> R$" + valorFormatado + "</td>" +
+                "<td>" + DataServico.value + "</td>" +
+                "<td>" + "apagar" + "</td>"
+            "</tr>";
+
+            ListaServico.innerHTML += servico;
+            var totalGeral = Math.round((TotalServico.innerText * 1 + valorFormatado) * 100) / 100;
+            TotalServico.innerHTML = totalGeral;
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#mytable #checkall").click(function () {
+                if ($("#mytable #checkall").is(':checked')) {
+                    $("#mytable input[type=checkbox]").each(function () {
+                        $(this).prop("checked", true);
+                    });
+
+                } else {
+                    $("#mytable input[type=checkbox]").each(function () {
+                        $(this).prop("checked", false);
+                    });
+                }
+            });
+
+            $("[data-toggle=tooltip]").tooltip();
+        });
+    </script>
+
+    <script>
+        //Exemplo de execução através do evento onchange do select
+        //<select id="sltServico" class="form-control" onchange="getValorServico()"
+        function getValorServico() {
+
+            var idServico = '1';
+            var dpl = document.getElementById("sltServico");
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/ServicoAPI/getvalor/' + dpl.value,
+                success: function (result) {
+                    var servicoValor = result.valor;
+
+                    //$('#resultGetValor').html(servicoValor);
+                    $('#txtValor').val(servicoValor);
+                }
+
+            });
+
+            //alert(dpl.value);
+
+
+        }
+    </script>
+
+
+
+
 }

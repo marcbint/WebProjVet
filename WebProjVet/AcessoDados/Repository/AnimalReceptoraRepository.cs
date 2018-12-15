@@ -17,31 +17,31 @@ namespace WebProjVet.AcessoDados.Servicos
         }
 
 
-        public void Editar(AnimalReceptora animal)
+        public void Editar(Receptora animal)
         {
             _webProjVetContext.Entry(animal).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _webProjVetContext.SaveChanges();
 
         }
 
-        public List<AnimalReceptora> Listar()
+        public List<Receptora> Listar()
         {
             return _webProjVetContext.Receptoras.ToList();
         }
 
-        public AnimalReceptora ObterPorId(int id)
+        public Receptora ObterPorId(int id)
         {
             return _webProjVetContext.Receptoras.FirstOrDefault(p => p.Id == id);
         }
 
-        public void Remover(AnimalReceptora animal)
+        public void Remover(Receptora animal)
         {
             _webProjVetContext.Receptoras.Remove(animal);
             _webProjVetContext.SaveChanges();
 
         }
 
-        public void Salvar(AnimalReceptora animal)
+        public void Salvar(Receptora animal)
         {
             _webProjVetContext.Receptoras.Add(animal);
             _webProjVetContext.SaveChanges();

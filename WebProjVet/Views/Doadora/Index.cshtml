@@ -1,10 +1,8 @@
-﻿@model IEnumerable<WebProjVet.Models.Servico>
+﻿@model IEnumerable<WebProjVet.Models.Doadora>
 
 @{
     ViewData["Title"] = "Index";
 }
-
-
 
 <!------ Responsável pelo processo de busca ---------->
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -16,7 +14,7 @@
 
     <div class="container">
         <div class="row">
-            <h3 class="text-center">SERVIÇOS</h3>
+            <h3 class="text-center">DOADORAS</h3>
         </div>
         <input id="myInput" class="pull-right form-inline" type="text" placeholder="Buscar...">
         <p>
@@ -28,9 +26,9 @@
                 <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>CÓDIGO</th>
+                            <th>ID</th>
                             <th>NOME</th>
-                            <th>VALOR</th>
+                            <th>ABQM</th>
                             <th>EDITAR</th>
                             <th>EXCLUIR</th>
                         </tr>
@@ -40,13 +38,13 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Codigo)
+                                    @Html.DisplayFor(modelItem => item.Id)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Nome)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Valor)
+                                    @Html.DisplayFor(modelItem => item.Abqm)
                                 </td>
                                 <td><p data-placement="top" data-toggle="tooltip" title="EDITAR"><a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></p></td>
                                 <td><p data-placement="top" data-toggle="tooltip" title="EXCLUIR"><a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a></p></td>
@@ -60,8 +58,6 @@
     </div>
 
 </body>
-
-@section Scripts{
 
 <script>
     $(document).ready(function () {
@@ -83,6 +79,4 @@
     });
 </script>
 
-
-}
 

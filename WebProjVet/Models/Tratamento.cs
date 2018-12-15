@@ -33,17 +33,17 @@ namespace WebProjVet.Models
 
         [Display(Name = "DOADORA")]
         [ForeignKey("DoadoraId")]
-        public virtual AnimalDoadora Doadora { get; set; }
+        public virtual Doadora Doadora { get; set; }
         //public IEnumerable<AnimalDoadora> Doadoras { get; set; }
 
         [Display(Name = "GARANHÃO")]
         [ForeignKey("GaranhaoId")]
-        public virtual AnimalGaranhao Garanhao { get; set; }
+        public virtual Garanhao Garanhao { get; set; }
         //public IEnumerable<AnimalGaranhao> Garanhoes { get; set; }
 
         [Display(Name = "RECEPTORA")]
         [ForeignKey("ReceptoraId")]
-        public virtual AnimalReceptora Receptora { get; set; }
+        public virtual Receptora Receptora { get; set; }
         //public IEnumerable<AnimalReceptora> Receptoras { get; set; }
 
         [Display(Name = "SITUAÇÃO")]
@@ -52,8 +52,13 @@ namespace WebProjVet.Models
 
         public virtual ICollection<TratamentoServico> TratamentoServicos { get; set; }
 
+        public virtual ICollection<TratamentoDiaria> TratamentoDiarias { get; set; }
+
         [NotMapped]
         public string TratamentoServicosJson { get; set; }
+
+        [NotMapped]
+        public string TratamentoDiariaJson { get; set; }
 
         /*
         [Display(Name = "SERVIÇO")]

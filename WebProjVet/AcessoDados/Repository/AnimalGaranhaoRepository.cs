@@ -17,35 +17,35 @@ namespace WebProjVet.AcessoDados.Servicos
             _webProjVetContext = webProjVetContext;
         }
 
-        public void Editar(AnimalGaranhao animalGaranhao)
+        public void Editar(Garanhao animalGaranhao)
         {
             _webProjVetContext.Entry(animalGaranhao).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _webProjVetContext.SaveChanges();
         }
 
-        public List<AnimalGaranhao> Listar()
+        public List<Garanhao> Listar()
         {
             return _webProjVetContext.Garanhoes.ToList();
         }
 
-        public AnimalGaranhao ObterPorId(int id)
+        public Garanhao ObterPorId(int id)
         {
             return _webProjVetContext.Garanhoes.FirstOrDefault(p => p.Id == id);
         }
 
-        public void Remover(AnimalGaranhao animalGaranhao)
+        public void Remover(Garanhao animalGaranhao)
         {
             _webProjVetContext.Garanhoes.Remove(animalGaranhao);
             _webProjVetContext.SaveChanges();
         }
 
-        public void Salvar(AnimalGaranhao animalGaranhoes)
+        public void Salvar(Garanhao animalGaranhoes)
         {
             _webProjVetContext.Garanhoes.Add(animalGaranhoes);
             _webProjVetContext.SaveChanges();
         }
 
-        public AnimalGaranhao GetById(int id)
+        public Garanhao GetById(int id)
         {
             //var query = _webProjVetContext.Set<Animal>().Include(p => p.Proprietarios).Where(e => e.Id == id);
 

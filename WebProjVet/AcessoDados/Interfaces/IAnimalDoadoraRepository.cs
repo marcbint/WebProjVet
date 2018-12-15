@@ -8,11 +8,11 @@ namespace WebProjVet.AcessoDados.Interfaces
 {
     public interface IAnimalDoadoraRepository
     {
-        List<AnimalDoadora> Listar();
-        AnimalDoadora ObterPorId(int id);
-        AnimalDoadora GetById(int id);
-        void Salvar(AnimalDoadora animal);
-        void Editar(AnimalDoadora animal);
-        void Remover(AnimalDoadora animal);
+        List<Doadora> Listar();
+        Doadora ObterPorId(int id);
+        Doadora GetById(int id);
+        void Salvar(Doadora animal);
+        void Editar(Doadora animal);
+        void Remover(Doadora animal);
     }
 }

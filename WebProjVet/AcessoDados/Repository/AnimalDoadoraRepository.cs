@@ -17,35 +17,35 @@ namespace WebProjVet.AcessoDados.Servicos
             _webProjVetContext = webProjVetContext;
         }
 
-        public void Editar(AnimalDoadora animal)
+        public void Editar(Doadora animal)
         {
             _webProjVetContext.Entry(animal).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _webProjVetContext.SaveChanges();
         }
 
-        public List<AnimalDoadora> Listar()
+        public List<Doadora> Listar()
         {
             return _webProjVetContext.Doadoras.ToList();
         }
 
-        public AnimalDoadora ObterPorId(int id)
+        public Doadora ObterPorId(int id)
         {
             return _webProjVetContext.Doadoras.FirstOrDefault(p => p.Id == id);
         }
 
-        public void Remover(AnimalDoadora animal)
+        public void Remover(Doadora animal)
         {
             _webProjVetContext.Doadoras.Remove(animal);
             _webProjVetContext.SaveChanges();
         }
 
-        public void Salvar(AnimalDoadora animal)
+        public void Salvar(Doadora animal)
         {
             _webProjVetContext.Doadoras.Add(animal);
             _webProjVetContext.SaveChanges();
         }
 
-        public AnimalDoadora GetById(int id)
+        public Doadora GetById(int id)
         {
             //var query = _webProjVetContext.Set<Animal>().Include(p => p.Proprietarios).Where(e => e.Id == id);
 
@@ -56,9 +56,10 @@ namespace WebProjVet.AcessoDados.Servicos
             //return null;
         }
 
-        public IEnumerable<AnimalDoadora> All()
+        public IEnumerable<Doadora> All()
         {
-            return _webProjVetContext.Set<AnimalDoadora>().Include(p => p.Proprietarios).AsEnumerable();
+            //return _webProjVetContext.Set<AnimalDoadora>().Include(p => p.Proprietarios).AsEnumerable();
+            return _webProjVetContext.Set<Doadora>();
         }
     }
 }

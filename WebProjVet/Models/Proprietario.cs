@@ -39,5 +39,10 @@ namespace WebProjVet.Models
         [Display(Name = "UF")]
         [Required(ErrorMessage = "{0} deve ser informado")]
         public string Uf { get; set; }
+
+        public Proprietario()
+        {
+
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace WebProjVet.Models.ViewModels
 {
     public class DoadoraViewModel
     {
-        public AnimalDoadora AnimalDoadora { get; set; }
+        public Doadora AnimalDoadora { get; set; }
         public IEnumerable<Proprietario> Proprietarios { get; set; }
     }
 }

@@ -34,21 +34,15 @@ namespace WebProjVet.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Servico servico)
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _servicoRepository.Salvar(servico);
+            
+            _servicoRepository.Salvar(servico);
 
-                    return RedirectToAction("Index");
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest($"Erro: {ex.Message}");
-                }
-            }
+            return RedirectToAction("Index");
 
-            return View(servico);
+                
+           
+
+            //return View(servico);
         }
 
 

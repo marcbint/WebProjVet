@@ -55,6 +55,9 @@ namespace WebProjVet.Controllers
 
         public IActionResult Create()
         {
+            //Somar o valor de serviços lançados no tratamento
+            ViewBag.Total = _context.TratamentoServicos.Where(x => x.TratamentoId == 0).Sum(x => x.Valor);
+
 
             ViewBag.ReceptoraId = _context.Receptoras.ToList();
             ViewBag.DoadoraId = _context.Doadoras.ToList();
@@ -69,12 +72,44 @@ namespace WebProjVet.Controllers
         public async Task<IActionResult> Create(Tratamento tratamento)
         {
             
-
             _context.Tratamentos.Add(tratamento);
+            await _context.SaveChangesAsync();
+
+            var tratamentoId = tratamento.Id;
+
+            //Realiza a inclusão se existirem itens
+            if (tratamento.TratamentoServicosJson != null)
+            {
+                //Processo de inclusão de itens
+                List<TratamentoServico> listaTratamentoServico = JsonConvert.DeserializeObject<List<TratamentoServico>>(tratamento.TratamentoServicosJson);
+
+                if (listaTratamentoServico.Count > 0)
+                {
+                    for (int i = 0; i < listaTratamentoServico.Count; i++)
+                    {
+                        if (listaTratamentoServico[i].Id == 0)
+                        {                            
+                            TratamentoServico objTratamentoServico = new TratamentoServico();
+                            objTratamentoServico.TratamentoId = tratamentoId;
+                            objTratamentoServico.ServicoId = listaTratamentoServico[i].ServicoId;
+                            objTratamentoServico.Valor = listaTratamentoServico[i].Valor;
+                            objTratamentoServico.Data = listaTratamentoServico[i].Data;
+                            objTratamentoServico.ValorOriginal = GetValorOriginal(listaTratamentoServico[i].ServicoId);
+                            
+                            _context.TratamentoServicos.Add(objTratamentoServico);
+
+                        }
+
+                    }
+                }
+            }          
+
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
+
+        
 
 
         public IActionResult Edit(int id)
@@ -124,7 +159,10 @@ namespace WebProjVet.Controllers
                         objTratamentoServico.TratamentoId = listaTratamentoServico[i].TratamentoId;
                         objTratamentoServico.ServicoId = listaTratamentoServico[i].ServicoId;
                         objTratamentoServico.Valor = listaTratamentoServico[i].Valor;
-                        objTratamentoServico.Data = listaTratamentoServico[i].Data;
+                        objTratamentoServico.Data = listaTratamentoServico[i].Data;                   
+                        objTratamentoServico.ValorOriginal = GetValorOriginal(listaTratamentoServico[i].ServicoId);
+                       
+                        
 
                         _context.TratamentoServicos.Add(objTratamentoServico);
                     }
@@ -135,6 +173,12 @@ namespace WebProjVet.Controllers
                 return RedirectToAction("Index");
             }
             return View(tratamento);
+        }
+
+        public decimal GetValorOriginal(int id)
+        {
+            var valor = _context.Servicos.First(p => p.Id.Equals(id)).Valor;
+            return valor;
         }
 
 

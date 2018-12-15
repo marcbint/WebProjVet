@@ -32,7 +32,9 @@ namespace WebProjVet.Models
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:###.##0,00}")]
         public decimal Valor { get; set; }
 
-        //public virtual ICollection<TratamentoServico> TratamentoServicos { get; set; }
+        [Display(Name = "TIPO")]
+        [EnumDataType(typeof(ServicoTipo))]
+        public ServicoTipo ServicoTipo { get; set; }
 
         public Servico()
         {

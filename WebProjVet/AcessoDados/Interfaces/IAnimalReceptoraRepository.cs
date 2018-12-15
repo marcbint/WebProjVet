@@ -8,10 +8,10 @@ namespace WebProjVet.AcessoDados.Interfaces
 {
     public interface IAnimalReceptoraRepository
     {
-        List<AnimalReceptora> Listar();
-        AnimalReceptora ObterPorId(int id);
-        void Salvar(AnimalReceptora animal);
-        void Editar(AnimalReceptora animal);
-        void Remover(AnimalReceptora animal);
+        List<Receptora> Listar();
+        Receptora ObterPorId(int id);
+        void Salvar(Receptora animal);
+        void Editar(Receptora animal);
+        void Remover(Receptora animal);
     }
 }
