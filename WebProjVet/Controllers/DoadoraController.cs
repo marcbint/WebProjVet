@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebProjVet.AcessoDados;
+using WebProjVet.AcessoDados.Entidades;
 using WebProjVet.AcessoDados.Interfaces;
 using WebProjVet.AcessoDados.Servicos;
 using WebProjVet.Models;
@@ -333,5 +334,7 @@ namespace WebProjVet.Controllers
                 return BadRequest($"Erro: {ex.Message}");
             }
         }
+
+        
     }
 }

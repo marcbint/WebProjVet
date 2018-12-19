@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebProjVet.Models;
+using System.IO;
+using Newtonsoft.Json;
+using WebProjVet.AcessoDados.Entidades;
 
 namespace WebProjVet.Controllers
 {
@@ -11,6 +14,7 @@ namespace WebProjVet.Controllers
     /// http://learningprogramming.net/net/asp-net-core-mvc/ajax-in-asp-net-core-mvc/
     /// </summary>
     [Route("demo")]
+    //[Route("api/[controller]")]
     public class DemoController : Controller
     {
         //[Route("")]
@@ -68,5 +72,41 @@ namespace WebProjVet.Controllers
             };
             return new JsonResult(products);
         }
+
+        [Route("getTeste/{fullName}")]
+        public IActionResult GetValor(string fullName)
+        {
+            //https://www.talkingdotnet.com/handle-ajax-requests-in-asp-net-core-razor-pages/
+            string sPostValue1 = "";
+            string sPostValue2 = "";
+            string sPostValue3 = "";
+            {
+                MemoryStream stream = new MemoryStream();
+                Request.Body.CopyTo(stream);
+                stream.Position = 0;
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    string requestBody = reader.ReadToEnd();
+                    if (requestBody.Length > 0)
+                    {
+                        var obj = JsonConvert.DeserializeObject<PostData>(requestBody);
+                        if (obj != null)
+                        {
+                            sPostValue1 = obj.Item1;
+                            sPostValue2 = obj.Item2;
+                            sPostValue3 = obj.Item3;
+                        }
+                    }
+                }
+            }
+            List<string> lstString = new List<string>()
+            {
+                sPostValue1,
+                sPostValue2,
+                sPostValue3
+            };
+            return new JsonResult(lstString);
+        }
+
     }
 }

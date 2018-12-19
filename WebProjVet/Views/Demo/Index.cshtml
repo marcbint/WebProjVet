@@ -1,4 +1,6 @@
-﻿@{
+﻿@model WebProjVet.Models.Doadora
+
+@{
     Layout = null;
 }
 
@@ -9,6 +11,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -64,6 +67,72 @@
             });
 
         });
+
+        $('#buttonPost').click(function () {
+            var fullName = 'teste';
+            //var doadoraId = $('#idDoadora').val();
+            //var proprietarioId = $('#sltSelect').val();
+
+
+            var item1 = '1';
+            var item2 = '2';
+            var item3 = '3';
+
+            $.ajax({
+                type: 'POST',
+                url: '/demo/getTeste/' + fullName,
+
+                data: JSON.stringify({
+                    Item1: item1,
+                    Item2: item2,
+                    Item3: item3
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#resultP').html(result);
+                }
+            });
+        });
+
+        $('#buttonDemo5').click(function () {
+            var fullName = 'teste';
+            $.ajax({
+                type: 'GET',
+                url: '/demo/getTeste/' + fullName,
+                success: function (result) {
+                    $('#result2').html(result);
+                }
+            });
+        });
+    </script>
+    <script>
+        $('#buttonDemo6').click(function () {
+            var fullName = 'teste';
+            //var doadoraId = $('#idDoadora').val();
+            //var proprietarioId = $('#sltSelect').val();
+
+
+            var item1 = '1';
+            var item2 = '2';
+            var item3 = '3';
+
+            $.ajax({
+                type: 'GET',
+                url: '/demo/getTeste/' + fullName,
+
+                data: JSON.stringify({
+                    Item1: item1,
+                    Item2: item2,
+                    Item3: item3
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#result2').html(result);
+                }
+            });
+        });
     </script>
 </head>
 <body>
@@ -95,6 +164,14 @@
         <input type="button" value="Demo 4" id="buttonDemo4" />
         <br />
         <span id="result4"></span>
+    </fieldset>
+    <fieldset>
+        <legend>Exemplo Post</legend>
+        <div class="col-lg-2">
+            <br />
+            <input id="buttonDemo6" type="button" value="ADICIONAR PROPRIETÁRIO" class="btn btn-primary" />
+        </div>
+        <span id="resultPost"></span>
     </fieldset>
 
 </body>

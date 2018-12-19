@@ -150,23 +150,26 @@ namespace WebProjVet.Controllers
                 _tratamentoRepository.Editar(tratamento);
 
                 //Processo de inclusão de serviços
-                List<TratamentoServico> listaTratamentoServico = JsonConvert.DeserializeObject<List<TratamentoServico>>(tratamento.TratamentoServicosJson);
-                for(int i =0; i < listaTratamentoServico.Count; i++)
+                if (tratamento.TratamentoServicosJson != null)
                 {
-                    if (listaTratamentoServico[i].Id == 0)
+                    List<TratamentoServico> listaTratamentoServico = JsonConvert.DeserializeObject<List<TratamentoServico>>(tratamento.TratamentoServicosJson);
+                    for (int i = 0; i < listaTratamentoServico.Count; i++)
                     {
-                        TratamentoServico objTratamentoServico = new TratamentoServico();
-                        objTratamentoServico.TratamentoId = listaTratamentoServico[i].TratamentoId;
-                        objTratamentoServico.ServicoId = listaTratamentoServico[i].ServicoId;
-                        objTratamentoServico.Valor = listaTratamentoServico[i].Valor;
-                        objTratamentoServico.Data = listaTratamentoServico[i].Data;                   
-                        objTratamentoServico.ValorOriginal = GetValorOriginal(listaTratamentoServico[i].ServicoId);
-                       
-                        
+                        if (listaTratamentoServico[i].Id == 0)
+                        {
+                            TratamentoServico objTratamentoServico = new TratamentoServico();
+                            objTratamentoServico.TratamentoId = listaTratamentoServico[i].TratamentoId;
+                            objTratamentoServico.ServicoId = listaTratamentoServico[i].ServicoId;
+                            objTratamentoServico.Valor = listaTratamentoServico[i].Valor;
+                            objTratamentoServico.Data = listaTratamentoServico[i].Data;
+                            objTratamentoServico.ValorOriginal = GetValorOriginal(listaTratamentoServico[i].ServicoId);
 
-                        _context.TratamentoServicos.Add(objTratamentoServico);
+
+
+                            _context.TratamentoServicos.Add(objTratamentoServico);
+                        }
+
                     }
-                    
                 }
 
                 _context.SaveChanges();
