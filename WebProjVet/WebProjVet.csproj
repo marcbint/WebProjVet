@@ -51,6 +51,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Doadora\Edit-bkp.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Tratamento\Edit - Cópia %282%29.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

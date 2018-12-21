@@ -1,0 +1,851 @@
+﻿@model WebProjVet.Models.Doadora
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+<link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css" />
+
+
+<h3 class="text-center">DOADORA</h3>
+
+
+<form asp-action="Edit">
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" id="idDoadora">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label asp-for="Nome" class="control-label"></label>
+                                <input asp-for="Nome" class="form-control text-uppercase" />
+                                <span asp-validation-for="Nome" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:20px">
+                            <div class="col-lg-4">
+                                <label asp-for="Abqm" class="control-label"></label>
+                                <input asp-for="Abqm" class="form-control text-uppercase" />
+                                <span asp-validation-for="Abqm" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <!--<textarea asp-for="DoadoraProprietarioJson" style="display:none" id="listaTabelaJson"></textarea>-->
+                                <textarea asp-for="DoadoraProprietariosJson" style="display:none" id="listaTabelaJson"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @*<div class="container">
+        <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default panel-table">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="control-label">PROPRIETÁRIOS</label>
+                                    <select id="sltSelect" asp-items="@(new SelectList(ViewBag.ProprietarioId, "Id", "Nome" ))" class="form-control">
+                                        <option selected="selected" value="">SELECIONE</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2">
+                                    <br />
+                                    <input id="btnAddProprietario" type="button" value="ADICIONAR PROPRIETÁRIO" class="btn btn-primary" />
+                                </div>
+                                <div class="col-lg-12">
+                                    <span id="resultAddProprietario" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-list">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>NOME</th>
+                                        <th><em class="fa fa-cog"></em></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listaTabela">
+                                    <!--Lista dos serviços cadastrados -->
+                                    <!--https://stackoverflow.com/questions/14165632/asp-net-mvc-4-for-loop-posts-model-collection-properties-but-foreach-does-not-->
+
+                                    @foreach (var item in Model.DoadoraProprietarios)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Proprietario.Nome)
+                                            </td>
+                                            <td align="center" style="display:inline-block">
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><em class="glyphicon glyphicon-pencil"></em> </a>
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+
+                                            </td>
+                                        </tr>
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--<div class="panel-footer">
+                        <div class="row">
+                            <div class="col col-xs-4">
+                                Page 1 of 5
+                            </div>
+                            <div class="col col-xs-8">
+                                <ul class="pagination hidden-xs pull-right">
+                                    <li><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">4</a></li>
+                                    <li><a href="#">5</a></li>
+                                </ul>
+                                <ul class="pagination visible-xs pull-right">
+                                    <li><a href="#">«</a></li>
+                                    <li><a href="#">»</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>-->
+
+
+                    </div>
+                </div>
+            </div>*@
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-table">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label class="control-label">PROPRIETÁRIOS</label>
+                            <select id="sltSelect" asp-items="@(new SelectList(ViewBag.ProprietarioId, "Id", "Nome" ))" class="form-control">
+                                <option selected="selected" value="">SELECIONE</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <br />
+                            <input id="btnAddProprietario" type="button" value="ADICIONAR PROPRIETÁRIO" class="btn btn-primary" />
+                        </div>
+                        <div class="col-lg-12">
+                            <span id="resultAddProprietario" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="panel-body">
+                            <table id="itensDataTable"
+                                   class="table table-striped table-bordered  table-hover responsive" width="100%">
+                                <!--class="table table-striped table-bordered table-hover responsive" -->
+
+                                <thead class="thin-border-bottom">
+
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nome</th>
+                                        <!--<th>ABQM</th>-->
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listaTabela"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    @*Teste chamado a criação do datatable através de function
+        <div class="panel-body">
+            <table id="tblFuncionario" class="table table-striped table-bordered table-list">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NOME</th>
+                        <th><em class="fa fa-cog"></em></th>
+                    </tr>
+                </thead>
+                <tbody id="listaTabela">
+                    <!--Lista dos serviços cadastrados -->
+                    <!--https://stackoverflow.com/questions/14165632/asp-net-mvc-4-for-loop-posts-model-collection-properties-but-foreach-does-not-->
+
+                    @foreach (var item in Model.DoadoraProprietarios)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Proprietario.Nome)
+                            </td>
+                            <td align="center" style="display:inline-block">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><em class="glyphicon glyphicon-pencil"></em> </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+                    *@
+                    <!--<div class="panel-footer">
+        <div class="row">
+            <div class="col col-xs-4">
+                Page 1 of 5
+            </div>
+            <div class="col col-xs-8">
+                <ul class="pagination hidden-xs pull-right">
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                </ul>
+                <ul class="pagination visible-xs pull-right">
+                    <li><a href="#">«</a></li>
+                    <li><a href="#">»</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>-->
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <input type="submit" value="REGISTRAR" class="btn btn-primary btn-lg btn-block" />
+            </div>
+        </div>
+        <div class="row" style="padding-top:20px">
+            <div class="col-md-12">
+                <a asp-action="Index" class="btn btn-info btn-lg btn-block">VOLTAR</a>
+            </div>
+        </div>
+    </div>
+    <input type="button" value="LISTAR PROPRIETÁRIO" class="btn btn-primary" onclick="consultaProprietario()" />
+    <div id="listaDiv"></div>
+</form>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>
+    <script>
+        
+        //Carrega o datatable no momento da inicialização da tela.
+        (function ($) {
+            var doadoraId = $('#idDoadora').val();
+            var generateTable = $("#itensDataTable")
+                .dataTable({                  
+                    "processing": true,
+                    //"retrieve": true,
+                    "serverSide": true,
+                    "ajax": {
+                        //"url": "/api/DoadoraApi/LoadData",
+                        "url": "/api/Doadora/lista/",
+                        "method": "POST"
+                    },
+                    //"columns": [
+                    //  { "data": "Nome" },
+                    //{ "data": "Abqm" }
+                    //],
+                    "columns": [
+
+                        { "data": "id", "name": "id", "autoWidth": true },
+                        { "data": "nome", "name": "nome", "autoWidth": true }
+                        //{ "data": "abqm", "name": "abqm", "autoWidth": true }
+
+                        //{ "data": "itemId" },
+                        //{ "data": "name" },
+                        //{ "data": "description" }
+
+                    ],
+                    "ordering": true,
+                    "paging": true,
+                    "pagingType": "full_numbers",
+                    "pageLength": 3
+                });
+        })(jQuery);
+            
+
+        //Função que será chamada após o processo de inclusão/exclusão de registros no datatable
+        function consultaProprietario() {
+            var doadoraId = $('#idDoadora').val();
+            var generateCustomerTable = $("#itensDataTable")
+                .dataTable({
+                    "processing": true,
+                    "retrieve": true,
+                    "serverSide": true,
+                    "ajax": {
+                        //"url": "/api/DoadoraApi/LoadData",
+                        "url": "/api/DoadoraApi/lista/",
+                        //"data": JSON.stringify(doadoraId),
+                        "method": "POST"
+                    },
+                    //"columns": [
+                    //  { "data": "Nome" },
+                    //{ "data": "Abqm" }
+                    //],
+                    "columns": [
+
+                        { "data": "id", "name": "id", "autoWidth": true },
+                        { "data": "nome", "name": "nome", "autoWidth": true }
+                        //{ "data": "abqm", "name": "abqm", "autoWidth": true }
+
+                        //{ "data": "itemId" },
+                        //{ "data": "name" },
+                        //{ "data": "description" }
+
+                    ],
+                    "ordering": true,
+                    ///"paging": true, 
+                    "paging": false,
+                    "pagingType": "full_numbers",
+                    "pageLength": 3
+                });
+        }(jQuery);
+
+        //Responsável pelo processo de inclusão no momento do clique no botão adicionar proprietário
+        //do processo de edição de Doadora
+        $('#btnAddProprietario').click(function () {
+            var fullName = 'teste';
+            var doadoraId = $('#idDoadora').val();
+            var proprietarioId = $('#sltSelect').val();
+
+            var obj = {};
+            obj.DoadoraId = $("#idDoadora").val();
+            obj.ProprietarioId = $("#sltSelect").val();
+
+            //Id do datatable
+            var tabela = $("#itensDataTable");
+            
+
+
+            var proprietario =
+                "<tr>" +
+                "<td>" + "" + "</td>" +
+                "<td>" + CodigoProprietario.options[CodigoProprietario.selectedIndex].text + "</td>" +
+                "<td>" + "apagar" + "</td>"
+            "</tr>",
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/DoadoraApi/postAddProprietario/' + doadoraId,
+                    data: JSON.stringify(obj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result == 'NOVO')
+                            //$('#resultAddProprietario').html(result),
+
+                            //listaTabela.innerHTML += proprietario,
+                            //tabela.replaceAll(),
+                                //consultaProprietario(),
+                                //tabela.DataTable().ajax.refresh(),
+                            location.reload();
+                        
+                        else {
+                            $('#resultAddProprietario')
+                                .html('O Proprietário selecionado já está associado à Doadora! Selecione outro Proprietário!');
+                                //alert(result)
+                        };
+                        tabela.DataTable().ajax.reload();
+                        
+                    }
+
+                });
+        });
+
+        
+    </script>
+
+    
+
+    <script>
+        
+
+        //Não utilizada
+        $('#btnConsultaProprietario').click(function () {
+            var fullName = 'teste';
+            var doadoraId = $('#idDoadora').val();
+            var proprietarioId = $('#sltSelect').val();
+
+            var obj = {};
+            obj.DoadoraId = $("#idDoadora").val();
+            obj.ProprietarioId = $("#sltSelect").val();
+
+            var proprietario =
+                "<tr>" +
+                "<td>" + "" + "</td>" +
+                "<td>" + CodigoProprietario.options[CodigoProprietario.selectedIndex].text + "</td>" +
+                "<td>" + "apagar" + "</td>"
+            "</tr>",
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/DoadoraApi/getProprietario/',
+                    //data: JSON.stringify(obj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        alert('Passou aqui')
+
+                        if (result == 'NOVO')
+                            $('#resultAddProprietario').html(result),
+
+                                //consultaProprietario(),
+                                //alert('Passou aqui'),
+                                $('#listaTabela').empty();
+
+                        //listaTabela.innerHTML += proprietario;
+                        else {
+                            $('#resultAddProprietario').html('O Proprietário selecionado já está associado à Doadora! Selecione outro Proprietário!'),
+                                alert(result)
+                        };
+                    }
+                });
+        });
+
+        //Retorna registros mas com undefined
+        @*function consultaProprietario() {
+            var fullName = 'teste';
+            var doadoraId = $('#idDoadora').val();
+            var proprietarioId = $('#sltSelect').val();
+
+            var obj = {};
+            obj.DoadoraId = $("#idDoadora").val();
+            obj.ProprietarioId = $("#sltSelect").val();
+
+            var proprietario =
+                "<tr>" +
+                "<td>" + "" + "</td>" +
+                "<td>" + CodigoProprietario.options[CodigoProprietario.selectedIndex].text + "</td>" +
+                "<td>" + "apagar" + "</td>"
+            "</tr>",
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/DoadoraApi/getProprietario/',
+                    //data: JSON.stringify(obj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                success: function (result) {
+
+                    var tblBody = $('#listaTabela');
+                    tblBody.empty();
+                    var tblFuncionario = $("#tblFuncionario");
+                    //tblFuncionario.empty();
+
+
+
+
+                    //var cols = "";
+
+                    //for (var i = 0; i < result.length; i++) {
+                      //  cols += "<tr>";
+                        //cols += "<td>" + result[i].Id + "</td>";
+                        //cols += "<td>" + result[i].Nome + "</td>";
+                        //cols += "<td>" + "Apagar" + "</td>";
+                        //cols += "</tr>";
+                    //}
+
+                    //tblFuncionario.append(cols);
+
+
+
+                    $.each(result, function (index, item) {
+                        var tr = $("<tr></tr>");
+                        tr.html(("<td>" + item.Id + "</td>")
+                            + " " + ("<td>" + item.Nome + "</td>")
+                            + " " + ("<td>" + "Apagar" + "</td>"));
+                        tblFuncionario.append(tr).serializeArray();
+                    });
+
+                }
+                });
+        };
+        *@
+
+        @*
+        //Exemplo
+        //https://www.talkingdotnet.com/handle-ajax-requests-in-asp-net-core-razor-pages/
+        function consultaProprietario-exemplo() {
+            var fullName = 'teste';
+            var doadoraId = $('#idDoadora').val();
+            var proprietarioId = $('#sltSelect').val();
+
+            var obj = {};
+            obj.DoadoraId = $("#idDoadora").val();
+            obj.ProprietarioId = $("#sltSelect").val();
+
+            var proprietario =
+                "<tr>" +
+                "<td>" + "" + "</td>" +
+                "<td>" + CodigoProprietario.options[CodigoProprietario.selectedIndex].text + "</td>" +
+                "<td>" + "apagar" + "</td>"
+            "</tr>",
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/DoadoraApi/getProprietario/',
+                    //data: JSON.stringify(obj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        alert('Passou pela function')
+
+                        if (result == 'NOVO')
+                            $('#resultAddProprietario').html(result),
+
+                                //alert('Passou aqui'),
+                                $('#listaTabela').empty();
+                        //listaTabela.innerHTML += proprietario;
+                        else {
+                            $('#resultAddProprietario').html('O Proprietário selecionado já está associado à Doadora! Selecione outro Proprietário!'),
+                                alert(result)
+                        };
+                    }
+                });
+        };
+*@
+
+
+
+    </script>
+
+    <script>
+        //Utilizado no processo de inclusão de nova Doadora
+        var Itens = new Object();
+        Itens.Tabela = new Array();
+
+        var CodigoDoadora = document.getElementById("idDoadora");
+        var CodigoProprietario = document.getElementById("sltSelect");
+        var ListaProprietario = document.getElementById("listaTabela");
+        var ListaProprietarioJson = document.getElementById("listaTabelaJson");
+
+
+        function AdicionarTabela() {
+            var btnApagar = "apagar";
+
+
+            Itens.Tabela.push({
+                //"DoadoraId": CodigoDoadora.value,
+                "ProprietarioId": CodigoProprietario.value,
+
+            });
+
+            listaTabelaJson.innerHTML = JSON.stringify(Itens.Tabela);
+
+            var proprietario =
+                "<tr>" +
+                "<td>" + "" + "</td>" +
+                "<td>" + CodigoProprietario.options[CodigoProprietario.selectedIndex].text + "</td>" +
+                "<td>" + "apagar" + "</td>"
+            "</tr>";
+
+            listaTabela.innerHTML += proprietario;
+
+        }
+    </script>
+
+}
+
+
+
+
+
+
+
+
+<script>
+    $('#btnListaProprietario-bkp').click(function () {
+
+        //Tentando desenvolver
+
+        var id = $('#idDoadora').val();
+
+        $.ajax({
+            type: 'GET',
+            //url: '/api/DoadoraApi/listaProprietario/' + id,
+            url: '/api/DoadoraApi/LoadData',
+
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (dados) {
+
+                $(dados).each(function (i) {
+
+                    //$('#listaDiv').html(dados);
+
+                    document.writeln("<p>Nome: " + dados[i].DoadoraId + "</p>")
+                });
+
+
+            }
+        });
+    });
+</script>
+
+
+<script>
+    //Não utilizado
+    $('#btnListaProprietario').click(function () {
+
+        //Tentando desenvolver
+
+        var id = $('#idDoadora').val();
+
+        $.ajax({
+
+
+            type: 'GET',
+            //url: '/api/DoadoraApi/listaProprietario/' + id,
+            url: '/api/DoadoraApi/LoadData',
+
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (dados) {
+
+                $(dados).each(function (i) {
+
+                    //$('#listaDiv').html(dados);
+
+                    document.writeln("<p>Nome: " + dados[i].DoadoraId + "</p>")
+                });
+
+
+            }
+        });
+    });
+</script>
+
+<script>
+    //Exemplo não utilizado
+    $(document).ready(function () {
+
+
+
+        $("#example").DataTable({
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": true, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/api/DoadoraApi/LoadData",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columnDefs":
+                [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+            "columns": [
+                { "data": "CustomerID", "name": "CustomerID", "autoWidth": true },
+                { "data": "Name", "name": "Name", "autoWidth": true },
+                { "data": "Address", "name": "Address", "autoWidth": true },
+                { "data": "Country", "name": "Country", "autoWidth": true },
+                { "data": "City", "name": "City", "autoWidth": true },
+                { "data": "Phoneno", "name": "Phoneno", "autoWidth": true },
+                {
+                    "render": function (data, type, full, meta) { return '<a class="btn btn-info" href="/DemoGrid/Edit/' + full.CustomerID + '">Edit</a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return "<a href='#' class='btn btn-danger' onclick=DeleteData('" + row.CustomerID + "'); >Delete</a>";
+                    }
+                },
+            ]
+
+        });
+    });
+
+
+
+
+
+
+</script>
+
+
+<script>
+    //Exemplo não utilizado
+    $('#btnAddExemplo').click(function () {
+
+        var fullName = 'teste';
+        var doadoraId = $('#idDoadora').val();
+        var proprietarioId = $('#sltSelect').val();
+
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/DoadoraApi/postAddProprietario/' + doadoraId,
+
+
+            data: JSON.stringify({
+                DoadoraId: doadoraId,
+                ProprietarioId: proprietarioId
+            }),
+
+
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $('#resultAddProprietario').html(result);
+            }
+        });
+    });
+</script>
+
+
+<script>
+    //Não utilizado.
+    //Exemplo de requisição Post
+    $('#buttonDemo2').click(function () {
+        var fullName = 'teste';
+        //var doadoraId = $('#idDoadora').val();
+        //var proprietarioId = $('#sltSelect').val();
+
+
+        var item1 = '1';
+        var item2 = '2';
+        var item3 = '3';
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/DoadoraApi/getTeste/' + fullName,
+
+            data: JSON.stringify({
+                Item1: item1,
+                Item2: item2,
+                Item3: item3
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $('#result2').html(result);
+            }
+        });
+    });
+</script>
+
+<script>
+        //Script não utilizado.
+
+        $(document).ready(function ()
+        {
+
+
+
+            $("#example").DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "ajax": {
+                    "url": "/api/DoadoraApi/LoadData-bkp",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columnDefs":
+                [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+                "columns": [
+                    { "data": "CustomerID", "name": "CustomerID", "autoWidth": true },
+                    { "data": "Name", "name": "Name", "autoWidth": true },
+                    { "data": "Address", "name": "Address", "autoWidth": true },
+                    { "data": "Country", "name": "Country", "autoWidth": true },
+                    { "data": "City", "name": "City", "autoWidth": true },
+                    { "data": "Phoneno", "name": "Phoneno", "autoWidth": true },
+                    {
+                        "render": function (data, type, full, meta)
+                        { return '<a class="btn btn-info" href="/DemoGrid/Edit/' + full.CustomerID + '">Edit</a>'; }
+                    },
+                    {
+                        data: null, render: function (data, type, row)
+                        {
+                            return "<a href='#' class='btn btn-danger' onclick=DeleteData('" + row.CustomerID + "'); >Delete</a>";
+                        }
+                    },
+                ]
+
+            });
+        });
+
+
+    function DeleteData(CustomerID)
+        {
+            if (confirm("Are you sure you want to delete ...?"))
+            {
+                Delete(CustomerID);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        function Delete(CustomerID)
+    {
+        var url = '@Url.Content("~/")' + "DemoGrid/Delete";
+
+        $.post(url, { ID: CustomerID }, function (data)
+                {
+                    if (data)
+                    {
+                        oTable = $('#example').DataTable();
+                        oTable.draw();
+                    }
+                    else
+                    {
+                        alert("Something Went Wrong!");
+                    }
+                });
+    }
+
+</script>

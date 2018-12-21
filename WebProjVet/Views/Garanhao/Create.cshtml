@@ -26,13 +26,13 @@
                                 <span asp-validation-for="Nome" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="row" style="padding-top:20px">
+                        <div class="row" style="padding-top:10px">
                             <div class="col-lg-4">
                                 <label asp-for="Abqm" class="control-label"></label>
                                 <input asp-for="Abqm" class="form-control text-uppercase" />
                                 <span asp-validation-for="Abqm" class="text-danger"></span>
                             </div>
-                        </div>                       
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,10 +43,49 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <input type="submit" value="GRAVAR" class="btn btn-primary btn-lg btn-block" />
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <label class="control-label">PROPRIETÁRIOS</label>
+                                <!--<select id="sltSelect" asp-for="ProprietarioId" asp-items="@(new SelectList(ViewBag.ProprietarioId, "Id", "Nome" ))" class="form-control">-->
+                                <select id="sltSelect" asp-items="@(new SelectList(ViewBag.ProprietarioId, "Id", "Nome" ))" class="form-control">
+                                    <option selected="selected" value="">SELECIONE</option>
+                                </select>
+                                <!--<span asp-validation-for="ProprietarioId" class="text-danger"></span>-->
+                                <!--https://demos.telerik.com/aspnet-core/dropdownlist/api-->
+                                <!--http://www.binaryintellect.net/articles/6d0b21c8-2bbc-42c0-9403-4cd1880c123f.aspx-->
+                            </div>
+                            <div class="col-lg-2">
+                                <br />
+                                <input type="button" value="ADICIONAR PROPRIETÁRIO" class="btn btn-primary" onclick="AdicionarTabela()" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table id="itensTabela" class="table table-striped table-bordered table-list">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>NOME</th>
+                                    <th align="center"><em class="fa fa-cog"></em></th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaTabela"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row" style="padding-top:20px">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <input type="submit" value="REGISTRAR" class="btn btn-success btn-lg btn-block" />
+            </div>
+        </div>
+        <div class="row" style="padding-top:10px">
             <div class="col-md-12">
                 <a asp-action="Index" class="btn btn-info btn-lg btn-block">VOLTAR</a>
             </div>
@@ -57,4 +96,40 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        //https://codepedia.info/remove-table-row-tr-in-jquery
+        $("#itensTabela").on('click', '.btnDelete', function () {
+            $(this).closest('tr').remove();
+        });
+    </script>
+
+    <script>
+        var Itens = new Object();
+        Itens.Tabela = new Array();
+
+        var CodigoProprietario = document.getElementById("sltSelect");
+        var ListaProprietario = document.getElementById("listaTabela");
+        var ListaProprietarioJson = document.getElementById("listaTabelaJson");
+
+
+        function AdicionarTabela() {
+
+            Itens.Tabela.push({               
+                "ProprietarioId": CodigoProprietario.value,
+            });
+
+            listaTabelaJson.innerHTML = JSON.stringify(Itens.Tabela);
+
+            var proprietario =
+                "<tr>" +
+                "<td>" + "" + "</td>" +
+                "<td>" + CodigoProprietario.options[CodigoProprietario.selectedIndex].text + "</td>" +
+                "<td align='center'>" + "<button class='btnDelete btn btn-danger btn-xs'><span class='glyphicon glyphicon-trash'></span></button>" + "</td>"
+            "</tr>";
+
+            listaTabela.innerHTML += proprietario;
+        }
+    </script>
 }
+

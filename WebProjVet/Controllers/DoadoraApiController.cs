@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace WebProjVet.Controllers
 {
-    [Route("api/[controller]")]
+    
     public class DoadoraAPIController : Controller
     {
         private readonly WebProjVetContext _context;
@@ -32,23 +32,17 @@ namespace WebProjVet.Controllers
         }
 
         [Route("getProprietario")]
-        public IActionResult GetProprietario()
+
+        public List<Proprietario> GetProprietario()
         {
-            /*
             var query = (from propi in _context.Proprietarios
                          join doaprop in _context.DoadoraProprietarios on propi.Id equals doaprop.ProprietarioId
                          //where doaprop.DoadoraId == 1
                          select new { Proprietario = propi }
                          ).ToList();
 
-            //List<Proprietario> lstItems = _context.Doadoras.ToList();
-            //List<Proprietario> lstItems = query.AsEnumerable().Cast<Proprietario>().ToList();
-
-            //List<Proprietario> lstItems = _context.Proprietarios.ToList();
-            //List<Proprietario> lstObjeto = new List<Proprietario>();
-
             var lstItems = new List<Proprietario>();
-            foreach(var h in query)
+            foreach (var h in query)
             {
                 var model = new Proprietario();
                 model.Id = h.Proprietario.Id;
@@ -56,19 +50,9 @@ namespace WebProjVet.Controllers
                 lstItems.Add(model);
             }
 
-            //List<Proprietario> lstItems = new List<Proprietario>(query.Cast<Proprietario>());
-            //List<Proprietario> lstItems = query.AsEnumerable().Cast<Proprietario>().ToList();
-            //List<Proprietario> lstItems = query.AsEnumerable().Cast<Proprietario>().ToList();
-
-
-            //return lstItems;
-
-
-
-            //return new JsonResult(lstItems);
-            */
-            return new JsonResult("NOVO");
+            return lstItems;
         }
+
 
         //Exemplo de requisição Post
         [Route("getTeste/{fullName}")]
@@ -105,7 +89,6 @@ namespace WebProjVet.Controllers
             };
             return new JsonResult(lstString);
         }
-
 
 
         [Route("postAddProprietario/{idDoadora}")]
@@ -307,12 +290,22 @@ namespace WebProjVet.Controllers
         
         // POST api/values
         [HttpPost]
-        [Route("lista")]
+
+        //[Route("api/[controller]/lista")]
+        //[Route("lista")]
         public IActionResult Post()
         {
             //Get form data from client side
             var requestFormData = Request.Form;
-            List<Proprietario> lstItems = GetData();
+
+            //Pega a session
+            var value = HttpContext.Session.GetString("sessionDoadora");
+
+            List<Proprietario> lstItems = GetData(Convert.ToInt32(value));
+
+            //Destruir a session
+            HttpContext.Session.Remove("sessionDoadora");
+            HttpContext.Session.Clear();           
 
             var listItems = ProcessCollection(lstItems, requestFormData);
 
@@ -331,23 +324,30 @@ namespace WebProjVet.Controllers
         /// Get a list of Items
         /// </summary>
         /// <returns>list of items</returns>
-        private List<Proprietario> GetData()
+        private List<Proprietario> GetData(int id)
         {
             
             
             var query = (from propi in _context.Proprietarios
                          join doaprop in _context.DoadoraProprietarios on propi.Id equals doaprop.ProprietarioId
-                         //where doaprop.DoadoraId == 1
+                         where doaprop.DoadoraId == id
                          select new { Proprietario = propi }
                          ).ToList();
+
+            var lstItems = new List<Proprietario>();
+            foreach (var h in query)
+            {
+                var model = new Proprietario();
+                model.Id = h.Proprietario.Id;
+                model.Nome = h.Proprietario.Nome;
+                lstItems.Add(model);
+            }
 
             //List<Proprietario> lstItems = _context.Doadoras.ToList();
             //List<Proprietario> lstItems = query.AsEnumerable().Cast<Proprietario>().ToList();
 
-            List<Proprietario> lstItems = _context.Proprietarios.ToList();
+            //List<Proprietario> lstItems = _context.Proprietarios.ToList();
             //List<Proprietario> lstObjeto = new List<Proprietario>();
-
-           
 
             //List<Proprietario> lstItems = new List<Proprietario>(query.Cast<Proprietario>());
             //List<Proprietario> lstItems = query.AsEnumerable().Cast<Proprietario>().ToList();
@@ -416,6 +416,7 @@ namespace WebProjVet.Controllers
             
             return null;
         }
+        
         
 
 /*

@@ -59,6 +59,7 @@ namespace WebProjVet
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //Adicionar Session
+            services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -96,6 +97,8 @@ namespace WebProjVet
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            //Para habilitar o uso de Session
+            app.UseSession();
             
             app.UseMvc(routes =>
             {
