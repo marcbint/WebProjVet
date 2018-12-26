@@ -10,10 +10,11 @@ namespace WebProjVet.Models
 {
     public class Tratamento
     {
-        [Display(Name = "NÚMERO")]
+        [Display(Name = "NÚMERO"), MaxLength(20)]
         public int Id { get; set; }
 
         [Display(Name = "DATA INÍCIO")]
+        [Required(ErrorMessage = "{0} deve ser informado!")]
         public DateTime DataInicio { get; set; }
 
         //[Display(Name = "DATA ATUALIZAÇÃO")]

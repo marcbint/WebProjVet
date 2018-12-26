@@ -1,48 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebProjVet.Models
 {
-    public class Proprietario
+    public class Proprietario : Pessoa
     {
         [Key]
-        public int Id { get; set; }
+        public int Id { get; set; }        
 
-        [Display(Name = "Nome")]
-        [Required(ErrorMessage = "{0} deve ser informado")]
-        public string Nome { get; set; }
+        [Display(Name = "RAZÃO SOCIAL"), MaxLength(100)]
+        public string RazaoSocial { get; set; }
 
-        [Display(Name = "Telefone")]
-        [Required(ErrorMessage = "{0} deve ser informado")]
+        [Display(Name = "INSCRIÇÃO ESTADUAL"), MaxLength(20)]
+        public string InscricaoEstadual { get; set; }
+
+        [Display(Name = "TELEFONE"), MaxLength(20)]
+        [Required(ErrorMessage = "{0} deve ser informado!")]
         public string Telefone { get; set; }
 
-        [Display(Name = "Email")]
+        [Display(Name = "EMAIL"), MaxLength(50)]
         [DataType(DataType.EmailAddress)]
         [RegularExpression(@"^[a-zA-Z]+(([\'\,\.\- ][a-zA-Z ])?[a-zA-Z]*)*\s+<(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})>$|^(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})$", ErrorMessage = "Formato do E-mail Inválido")]
-        [Required(ErrorMessage = "{0} deve ser informado")]
+        [Required(ErrorMessage = "{0} deve ser informado!")]
         public string Email { get; set; }
 
-        [Display(Name = "Endereço")]
-        [Required(ErrorMessage = "{0} deve ser informado")]
-        public string Endereco { get; set; }
 
-        [Display(Name = "Complemento")]
-        public string Complemento { get; set; }
+        [NotMapped]
+        public string TabelaItensEnderecoJson { get; set; }
 
-        [Display(Name = "Cidade")]
-        [Required(ErrorMessage = "{0} deve ser informado")]
-        public string Cidade { get; set; }
+        [NotMapped]
+        [Display(Name = "TIPO")]
+        [EnumDataType(typeof(EnderecoTipo))]
+        public EnderecoTipo EnderecoTipo { get; set; }
 
-        [Display(Name = "UF")]
-        [Required(ErrorMessage = "{0} deve ser informado")]
-        public string Uf { get; set; }
+        public virtual ICollection<ProprietarioEndereco> ProprietarioEnderecos { get; set; }
 
         public Proprietario()
         {
-
+            ProprietarioEnderecos = new List<ProprietarioEndereco>();
         }
+        
     }
 }

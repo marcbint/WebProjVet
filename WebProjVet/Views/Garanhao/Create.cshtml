@@ -22,15 +22,20 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <label asp-for="Nome" class="control-label"></label>
-                                <input asp-for="Nome" class="form-control text-uppercase" />
+                                <input asp-for="Nome" class="form-control" />
                                 <span asp-validation-for="Nome" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row" style="padding-top:10px">
                             <div class="col-lg-4">
                                 <label asp-for="Abqm" class="control-label"></label>
-                                <input asp-for="Abqm" class="form-control text-uppercase" />
-                                <span asp-validation-for="Abqm" class="text-danger"></span>
+                                <input asp-for="Abqm" class="form-control" />                               
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <!--<textarea asp-for="DoadoraProprietarioJson" style="display:none" id="listaTabelaJson"></textarea>-->
+                                <textarea asp-for="TabelaItensJson" style="display:none" id="listaTabelaJson"></textarea>
                             </div>
                         </div>
                     </div>
@@ -61,6 +66,9 @@
                                 <br />
                                 <input type="button" value="ADICIONAR PROPRIETÁRIO" class="btn btn-primary" onclick="AdicionarTabela()" />
                             </div>
+                            <div class="col-lg-12">
+                                <span id="resultAddTabela" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -79,6 +87,7 @@
             </div>
         </div>
     </div>
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -112,14 +121,9 @@
         var ListaProprietario = document.getElementById("listaTabela");
         var ListaProprietarioJson = document.getElementById("listaTabelaJson");
 
-
         function AdicionarTabela() {
 
-            Itens.Tabela.push({               
-                "ProprietarioId": CodigoProprietario.value,
-            });
-
-            listaTabelaJson.innerHTML = JSON.stringify(Itens.Tabela);
+            $('#resultAddTabela').empty();
 
             var proprietario =
                 "<tr>" +
@@ -128,7 +132,21 @@
                 "<td align='center'>" + "<button class='btnDelete btn btn-danger btn-xs'><span class='glyphicon glyphicon-trash'></span></button>" + "</td>"
             "</tr>";
 
-            listaTabela.innerHTML += proprietario;
+            if (CodigoProprietario.options[CodigoProprietario.selectedIndex].text != 'SELECIONE')
+
+                Itens.Tabela.push({
+                    "ProprietarioId": CodigoProprietario.value,
+                }),
+
+                    listaTabelaJson.innerHTML = JSON.stringify(Itens.Tabela),
+
+                    listaTabela.innerHTML += proprietario;
+
+            else {
+                $('#resultAddTabela')
+                    .html('Selecione um Proprietário!');
+            };
+            
         }
     </script>
 }

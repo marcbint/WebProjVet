@@ -10,5 +10,14 @@ namespace WebProjVet.Models
     public class Garanhao : Animal
     {
         
+        [NotMapped]
+        public string TabelaItensJson { get; set; }
+
+        public virtual ICollection<GaranhaoProprietario> GaranhaoProprietarios { get; set; }
+
+        public Garanhao()
+        {
+            GaranhaoProprietarios = new List<GaranhaoProprietario>();
+        }
     }
 }

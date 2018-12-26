@@ -6,11 +6,12 @@ namespace WebProjVet.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            /*migrationBuilder.RenameColumn(
+            migrationBuilder.RenameColumn(
                 name: "DataServiço",
                 table: "TratamentoServico",
                 newName: "Data");
 
+            /*
             migrationBuilder.AlterColumn<string>(
                 name: "Descricao",
                 table: "Servicos",
@@ -29,11 +30,12 @@ namespace WebProjVet.Migrations
                 name: "Codigo",
                 table: "Servicos");
 
-            /*migrationBuilder.RenameColumn(
+            migrationBuilder.RenameColumn(
                 name: "Data",
                 table: "TratamentoServico",
                 newName: "DataServiço");
 
+            /*
             migrationBuilder.AlterColumn<string>(
                 name: "Descricao",
                 table: "Servicos",

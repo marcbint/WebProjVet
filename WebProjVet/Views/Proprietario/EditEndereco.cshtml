@@ -1,0 +1,83 @@
+﻿@model WebProjVet.Models.ProprietarioEndereco
+
+@{
+    ViewData["Title"] = "EditEndereco";
+}
+
+<h3 class="text-center">ENDEREÇO</h3>
+
+<form asp-action="EditEndereco">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" id="idPrimary">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="ProprietarioId">
+                            </div>
+                        </div>                      
+                        <div class="row" style="padding-top:20px">
+                            <div class="col-lg-4">
+                                <label asp-for="EnderecoTipo" class="control-label"></label>
+                                <select asp-for="EnderecoTipo" asp-items="Html.GetEnumSelectList<EnderecoTipo>()" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label asp-for="Endereco" class="control-label"></label>
+                                <input asp-for="Endereco" class="form-control" />
+                                <span asp-validation-for="Endereco" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:20px">
+                            <div class="col-lg-4">
+                                <label asp-for="Complemento" class="control-label"></label>
+                                <input asp-for="Complemento" class="form-control" />
+                                <span asp-validation-for="Complemento" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:20px">
+                            <div class="col-lg-4">
+                                <label asp-for="Cidade" class="control-label"></label>
+                                <input asp-for="Cidade" class="form-control" />
+                                <span asp-validation-for="Cidade" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:20px">
+                            <div class="col-lg-4">
+                                <label asp-for="Uf" class="control-label"></label>
+                                <input asp-for="Uf" class="form-control" />
+                                <span asp-validation-for="Uf" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <input type="submit" value="GRAVAR" class="btn btn-primary btn-lg btn-block" />
+            </div>
+        </div>
+        <div class="row" style="padding-top:20px">
+            <div class="col-md-12">
+                <a asp-action="Edit" asp-controller="Proprietario" asp-route-id="@Model.ProprietarioId" class="btn btn-info btn-lg btn-block">VOLTAR</a>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

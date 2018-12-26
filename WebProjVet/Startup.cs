@@ -72,6 +72,7 @@ namespace WebProjVet
             services.AddScoped<IAnimalGaranhaoRepository, AnimalGaranhaoRepository>();
             services.AddScoped<IAnimalReceptoraRepository, AnimalReceptoraRepository>();
             services.AddScoped<ITratamentoRepository, TratamentoRepository>();
+            services.AddScoped<IProprietarioEnderecoRepository, ProprietarioEnderecoRepository>();
             //services.AddScoped<IAnimalReceptoraRepository, AnimalReceptoraRepository>();
             //services.AddScoped(typeof(IRepository<AnimalReceptora>), typeof(AnimalReceptoraRepository));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

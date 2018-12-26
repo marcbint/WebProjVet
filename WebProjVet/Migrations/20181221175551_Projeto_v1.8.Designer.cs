@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebProjVet.AcessoDados;
 
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    partial class WebProjVetContextModelSnapshot : ModelSnapshot
+    [Migration("20181221175551_Projeto_v1.8")]
+    partial class Projeto_v18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,12 +24,10 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Abqm")
-                        .HasMaxLength(20);
+                    b.Property<string>("Abqm");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -59,12 +59,10 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Abqm")
-                        .HasMaxLength(20);
+                    b.Property<string>("Abqm");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -96,64 +94,29 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Documento")
-                        .IsRequired()
-                        .HasMaxLength(20);
+                    b.Property<string>("Cidade")
+                        .IsRequired();
+
+                    b.Property<string>("Complemento");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                        .IsRequired();
 
-                    b.Property<string>("InscricaoEstadual")
-                        .HasMaxLength(20);
+                    b.Property<string>("Endereco")
+                        .IsRequired();
 
                     b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<int>("PessoaTipo");
-
-                    b.Property<string>("RazaoSocial")
-                        .HasMaxLength(100);
+                        .IsRequired();
 
                     b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasMaxLength(20);
+                        .IsRequired();
+
+                    b.Property<string>("Uf")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
                     b.ToTable("Proprietarios");
-                });
-
-            modelBuilder.Entity("WebProjVet.Models.ProprietarioEndereco", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Cidade")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Complemento")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("Endereco")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<int>("EnderecoTipo");
-
-                    b.Property<int>("ProprietarioId");
-
-                    b.Property<string>("Uf")
-                        .IsRequired()
-                        .HasMaxLength(2);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProprietarioId");
-
-                    b.ToTable("ProprietarioEndereco");
                 });
 
             modelBuilder.Entity("WebProjVet.Models.Receptora", b =>
@@ -162,11 +125,9 @@ namespace WebProjVet.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Codigo")
-                        .IsRequired()
-                        .HasMaxLength(10);
+                        .IsRequired();
 
-                    b.Property<string>("Nome")
-                        .HasMaxLength(100);
+                    b.Property<string>("Nome");
 
                     b.HasKey("Id");
 
@@ -178,13 +139,10 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Codigo")
-                        .IsRequired()
-                        .HasMaxLength(10);
+                    b.Property<string>("Codigo");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                        .IsRequired();
 
                     b.Property<int>("ServicoTipo");
 
@@ -199,8 +157,7 @@ namespace WebProjVet.Migrations
             modelBuilder.Entity("WebProjVet.Models.Tratamento", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime?>("DataFim");
 
@@ -297,14 +254,6 @@ namespace WebProjVet.Migrations
 
                     b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
                         .WithMany()
-                        .HasForeignKey("ProprietarioId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WebProjVet.Models.ProprietarioEndereco", b =>
-                {
-                    b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
-                        .WithMany("ProprietarioEnderecos")
                         .HasForeignKey("ProprietarioId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

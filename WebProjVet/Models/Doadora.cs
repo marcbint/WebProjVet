@@ -14,11 +14,11 @@ namespace WebProjVet.Models
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "NOME")]
-        [Required(ErrorMessage = "{0} deve ser informado")]
+        [Display(Name = "NOME"), MaxLength(100)]
+        [Required(ErrorMessage = "{0} deve ser informado!")]
         public string Nome { get; set; }
 
-        [Display(Name = "REGISTRO ABQM")]
+        [Display(Name = "REGISTRO ABQM"), MaxLength(20)]
         public string Abqm { get; set; }
         
         //[Display(Name = "PROPRIETÁRIO")] 

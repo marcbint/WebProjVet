@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebProjVet.Models
 {
-    public enum ServicoTipo
+    public enum PessoaTipo
     {
-        [Description("OUTROS")] OUTROS = 1,
-        [Description("DIÁRIA")] DIÁRIA = 2
+        [Description("FISICA")] FÍSICA = 1,
+        [Description("JURIDICA")] JURÍDICA = 2
     }
 }

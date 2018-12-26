@@ -9,12 +9,12 @@ namespace WebProjVet.Models
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "CÓDIGO")]
-        //[Required(ErrorMessage = "Você precisa entrar com o {0}")]
+        [Display(Name = "CÓDIGO"), MaxLength(10)]
+        [Required(ErrorMessage = "{0} deve ser informado!")]
         public string Codigo { get; set; }
 
-        [Display(Name = "NOME")]
-        [Required(ErrorMessage = "Você precisa entrar com o {0}")]
+        [Display(Name = "NOME"), MaxLength(100)]
+        [Required(ErrorMessage = "{0} deve ser informado!")]
         public string Nome { get; set; }
 
         //[Display(Name = "DESCRIÇÃO")]
@@ -23,10 +23,9 @@ namespace WebProjVet.Models
 
         [Display(Name = "VALOR")]
         [DataType(DataType.Currency)]
-        //[Column(TypeName = "money")]
         [Column(TypeName = "decimal")]
         [Required(ErrorMessage = "Você precisa entrar com o {0}")]
-        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = true)]
         //[DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
         //[DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:###.##0,00}")]

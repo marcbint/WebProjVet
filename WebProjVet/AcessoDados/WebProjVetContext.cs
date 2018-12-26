@@ -15,6 +15,8 @@ namespace WebProjVet.AcessoDados
         public DbSet<Tratamento> Tratamentos { get; set; }
         public DbSet<TratamentoServico> TratamentoServicos { get; set; }
         public DbSet<DoadoraProprietario> DoadoraProprietarios { get; set; }
+        public DbSet<GaranhaoProprietario> GaranhaoProprietarios { get; set; }
+        public DbSet<ProprietarioEndereco> ProprietarioEnderecos { get; set; }
 
         public WebProjVetContext(DbContextOptions<WebProjVetContext> options) : base(options)
         {
@@ -53,10 +55,23 @@ namespace WebProjVet.AcessoDados
             modelBuilder.Entity<TratamentoServico>()
                 .HasOne(ts => ts.Servico);
 
-            //Relacionamento Many to Many entre doadora e proprietarios
-            //https://www.learnentityframeworkcore.com/configuration/many-to-many-relationship-configuration
+
             modelBuilder.Entity<Doadora>().HasKey(p => p.Id);
             modelBuilder.Entity<Proprietario>().HasKey(p => p.Id);
+
+            //Relacionamento entre proprietario e endereços
+            modelBuilder.Entity<Proprietario>()
+                .HasMany(c => c.ProprietarioEnderecos)
+                .WithOne(e => e.Proprietario);
+
+            modelBuilder.Entity<ProprietarioEndereco>().ToTable("ProprietarioEndereco");
+            modelBuilder.Entity<ProprietarioEndereco>().HasKey(p => p.Id);
+            modelBuilder.Entity<ProprietarioEndereco>()
+                .HasOne(e => e.Proprietario)
+                .WithMany(c => c.ProprietarioEnderecos);
+
+            //Relacionamento Many to Many entre doadora e proprietarios
+            //https://www.learnentityframeworkcore.com/configuration/many-to-many-relationship-configuration
             modelBuilder.Entity<DoadoraProprietario>().ToTable("DoadoraProprietario");
             modelBuilder.Entity<DoadoraProprietario>().HasKey(ts => new { ts.Id, ts.DoadoraId, ts.ProprietarioId });
             modelBuilder.Entity<DoadoraProprietario>()
@@ -66,11 +81,23 @@ namespace WebProjVet.AcessoDados
             modelBuilder.Entity<DoadoraProprietario>()
                 .HasOne(ts => ts.Proprietario);
 
+            //Relacionamento Many to Many entre garanhão e proprietários
+            modelBuilder.Entity<GaranhaoProprietario>().ToTable("GaranhaoProprietario");
+            modelBuilder.Entity<GaranhaoProprietario>().HasKey(ts => new { ts.Id, ts.GaranhaoId, ts.ProprietarioId });
+            modelBuilder.Entity<GaranhaoProprietario>()
+                 .HasOne(ts => ts.Garanhao)
+                .WithMany(t => t.GaranhaoProprietarios)
+                .HasForeignKey(ts => ts.GaranhaoId);
+            modelBuilder.Entity<GaranhaoProprietario>()
+                .HasOne(ts => ts.Proprietario);
+
+            //Relacionamento Proprietario e Endereços
+            
 
 
 
 
-                 
+
 
 
 

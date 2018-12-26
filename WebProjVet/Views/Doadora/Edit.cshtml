@@ -215,6 +215,9 @@
         //Responsável pelo processo de inclusão no momento do clique no botão adicionar proprietário
         //do processo de edição de Doadora
         $('#btnAddProprietario').click(function () {
+
+            $('#resultAddProprietario').empty();
+
             var fullName = 'teste';
             var doadoraId = $('#idDoadora').val();
             var proprietarioId = $('#sltSelect').val();
@@ -224,7 +227,7 @@
             obj.ProprietarioId = $("#sltSelect").val();
 
             //Id do datatable
-            var tabela = $("#itensDataTable");           
+            var tabela = $("#itensDataTable");
 
             var proprietario =
                 "<tr>" +
@@ -233,10 +236,10 @@
                 "<td>" + "apagar" + "</td>"
             "</tr>";
 
-                
+
             if (CodigoProprietario.options[CodigoProprietario.selectedIndex].text != 'SELECIONE')
-                
-            
+
+
                 $.ajax({
                     type: 'POST',
                     url: '/api/Doadora/postAddProprietario/' + doadoraId,
@@ -261,7 +264,6 @@
                             //alert(result)
                         };
 
-
                     }
 
                 });
@@ -270,7 +272,7 @@
                 $('#resultAddProprietario')
                     .html('Selecione um Proprietário!');
             };
-                                    
+
         });
 
         

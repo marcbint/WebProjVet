@@ -11,11 +11,11 @@ namespace WebProjVet.Models
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "CÓDIGO")]
-        [Required(ErrorMessage = "{0} deve ser informado.")]
+        [Display(Name = "CÓDIGO"), MaxLength(10)]
+        [Required(ErrorMessage = "{0} deve ser informado!")]
         public string Codigo { get; set; }
 
-        [Display(Name = "NOME")]
+        [Display(Name = "NOME"), MaxLength(100)]
         public string Nome { get; set; }
 
 

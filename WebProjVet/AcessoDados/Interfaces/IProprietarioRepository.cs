@@ -13,5 +13,7 @@ namespace WebProjVet.AcessoDados.Interfaces
         void Salvar(Proprietario proprietario);
         void Editar(Proprietario proprietario);
         void Remover(Proprietario proprietario);
+
+        
     }
 }

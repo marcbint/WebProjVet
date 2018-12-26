@@ -37,6 +37,12 @@
     <Compile Remove="Migrations\20181211054556_Projeto_v1.6.5.Designer.cs" />
     <Compile Remove="Migrations\20181215180223_Projeto_v1.7.3.cs" />
     <Compile Remove="Migrations\20181215180223_Projeto_v1.7.3.Designer.cs" />
+    <Compile Remove="Migrations\20181223032710_Projeto_v1.9.1.cs" />
+    <Compile Remove="Migrations\20181223032710_Projeto_v1.9.1.Designer.cs" />
+    <Compile Remove="Migrations\20181223221559_Projeto_v1.9.2.cs" />
+    <Compile Remove="Migrations\20181223221559_Projeto_v1.9.2.Designer.cs" />
+    <Compile Remove="Migrations\20181223223053_Projeto_v1.9.3.cs" />
+    <Compile Remove="Migrations\20181223223053_Projeto_v1.9.3.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

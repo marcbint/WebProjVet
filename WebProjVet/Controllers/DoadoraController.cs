@@ -120,21 +120,10 @@ namespace WebProjVet.Controllers
 
 
         
-        public IActionResult Create(int id)
+        public IActionResult Create()
         {
             ViewBag.ProprietarioId = _context.Proprietarios.ToList();
-
-            var viewModel = new Doadora();
-            var proprietarios = _proprietarioRepository.ListarProprietarios();
-
             
-
-
-            //if (proprietarios.Any())
-            //viewModel.Proprietarios = proprietarios.Select(c => new Proprietario { Id = c.Id, Nome = c.Nome });
-
-
-
             return View();
         }
 
@@ -189,7 +178,7 @@ namespace WebProjVet.Controllers
                     .FirstOrDefault(p => p.Id == id);
 
                 //Cria a session utilizada para realizar a consulta do datatable
-                https://benjii.me/2016/07/using-sessions-and-httpcontext-in-aspnetcore-and-mvc-core/
+                //https://benjii.me/2016/07/using-sessions-and-httpcontext-in-aspnetcore-and-mvc-core/
                 var sessionDoadora = id.ToString();
                 //Seta a session
                 HttpContext.Session.SetString("sessionDoadora", id.ToString());
@@ -271,41 +260,37 @@ namespace WebProjVet.Controllers
 
         public IActionResult Delete(int id)
         {
-            if (id == 0)
+            if (id > 0)
             {
-                return RedirectToAction("Index");
+                ViewBag.ProprietarioId = _context.Proprietarios.ToList();
+
+                var doadoras = _context.Doadoras
+                    .Where(p => p.Id.Equals(id))
+                    .Include(e => e.DoadoraProprietarios)
+                    .ToList()
+                    .FirstOrDefault(p => p.Id == id);
+              
+                return View(doadoras);
             }
-            else
-            {
-                try
-                {
-                    //var animal = _animalRepository.ObterPorId(id);
-                    var animal = _context.Doadoras.First(p => p.Id == id);
-                    return View(animal);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest($"Erro: {ex.Message}");
-                }
-            }
+
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Doadora animal)
+        public IActionResult Delete(Doadora doadora)
         {
-            try
+            if (ModelState.IsValid)
             {
-                //_animalRepository.Remover(animal);
-                _context.Remove(animal);
-                await _context.SaveChangesAsync();
+                _animalRepository.Remover(doadora);
+                var doadoraId = doadora.Id;
+
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                return BadRequest($"Erro: {ex.Message}");
-            }
+            return View(doadora);
         }
+
 
 
         //Especificado do verbo http que será utilizado
