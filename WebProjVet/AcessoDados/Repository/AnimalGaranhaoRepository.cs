@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,7 +31,9 @@ namespace WebProjVet.AcessoDados.Servicos
 
         public Garanhao ObterPorId(int id)
         {
-            return _webProjVetContext.Garanhoes.FirstOrDefault(p => p.Id == id);
+            return _webProjVetContext.Garanhoes
+                .Include(p => p.GaranhaoProprietarios)
+                .FirstOrDefault(p => p.Id == id);
         }
 
         public void Remover(Garanhao animalGaranhao)

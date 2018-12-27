@@ -87,6 +87,7 @@ namespace WebProjVet.Controllers
         }
 
 
+
         public IActionResult Edit(int id)
         {
             if (id > 0)
@@ -128,6 +129,8 @@ namespace WebProjVet.Controllers
             
         }
 
+
+
         public IActionResult Delete(int id)
         {
             if (id > 0)
@@ -168,6 +171,7 @@ namespace WebProjVet.Controllers
             return RedirectToAction("Index");
 
         }
+
 
 
         [Route("api/[controller]/AddEnderecoTable/{id}")]
@@ -217,6 +221,8 @@ namespace WebProjVet.Controllers
             return new JsonResult(retorno);
         }
 
+
+
         public IActionResult EditEndereco(int id)
         {
             if (id > 0)
@@ -234,7 +240,6 @@ namespace WebProjVet.Controllers
             return View();
         }
 
-
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public IActionResult EditEndereco(ProprietarioEndereco proprietarioEndereco)
@@ -244,6 +249,7 @@ namespace WebProjVet.Controllers
            
             return RedirectToRoute(new {Controller="Proprietario", Action="Edit", id = proprietarioEndereco.ProprietarioId });            
         }
+
 
 
         public IActionResult DeleteEndereco(int id)
@@ -261,7 +267,6 @@ namespace WebProjVet.Controllers
 
             return View();
         }
-
 
         [HttpPost]
         //[ValidateAntiForgeryToken]

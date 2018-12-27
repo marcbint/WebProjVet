@@ -39,9 +39,14 @@ namespace WebProjVet.Models
 
         public virtual ICollection<ProprietarioEndereco> ProprietarioEnderecos { get; set; }
 
+        public virtual ICollection<DoadoraProprietario> DoadoraProprietarios { get; set; }
+
+        public virtual ICollection<GaranhaoProprietario> GaranhaoProprietarios { get; set; }
+
         public Proprietario()
         {
             ProprietarioEnderecos = new List<ProprietarioEndereco>();
+            DoadoraProprietarios = new List<DoadoraProprietario>();
         }
         
     }

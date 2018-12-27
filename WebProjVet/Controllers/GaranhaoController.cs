@@ -125,13 +125,7 @@ namespace WebProjVet.Controllers
                     .Where(p => p.Id.Equals(id))
                     .Include(e => e.GaranhaoProprietarios)
                     .ToList()
-                    .FirstOrDefault(p => p.Id == id);
-
-                //Cria a session utilizada para realizar a consulta do datatable
-                //https://benjii.me/2016/07/using-sessions-and-httpcontext-in-aspnetcore-and-mvc-core/                
-
-                //Seta a session
-                HttpContext.Session.SetString("sessionId", id.ToString());
+                    .FirstOrDefault(p => p.Id == id);               
 
                 return View(garanhao);
             }
@@ -253,38 +247,85 @@ namespace WebProjVet.Controllers
 
         public IActionResult Delete(int id)
         {
-            if (id == 0)
-            {
+            ViewBag.ProprietarioId = _context.Proprietarios.ToList();
+
+            //var garanhao = _animalGaranhaoRepository.ObterPorId(id);
+
+            var garanhao = _context.Garanhoes
+                    .Where(p => p.Id.Equals(id))
+                    .Include(e => e.GaranhaoProprietarios)
+                    .ToList()
+                    .FirstOrDefault(p => p.Id == id);
+
+            return View(garanhao);              
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public IActionResult Delete(Garanhao garanhao)
+        {
+            
+                _animalGaranhaoRepository.Remover(garanhao);
                 return RedirectToAction("Index");
-            }
-            else
+            
+        }
+
+        public IActionResult DeleteProprietario(int id)
+        {
+            if (id > 0)
             {
-                try
-                {
-                    var garanhao = _animalGaranhaoRepository.ObterPorId(id);
-                    return View(garanhao);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest($"Erro: {ex.Message}");
-                }
+                //ViewBag.ProprietarioId = _context.Proprietarios.ToList();
+
+
+                var garanhaoProprietario = _context.GaranhaoProprietarios
+                    .Where(p => p.Id.Equals(id))
+                    .Include(e => e.Proprietario)
+                    .ToList()
+                    .FirstOrDefault(p => p.Id == id);
+
+
+
+                return View(garanhaoProprietario);
             }
+
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Garanhao garanhao)
+        public IActionResult DeleteProprietario(GaranhaoProprietario garanhaoProprietario)
         {
-            try
-            {
-                _animalGaranhaoRepository.Remover(garanhao);
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Erro: {ex.Message}");
-            }
+            GaranhaoProprietario registro = _context.GaranhaoProprietarios
+                .Where(p => p.Id.Equals(garanhaoProprietario.Id))
+                .FirstOrDefault(p => p.Id == garanhaoProprietario.Id);
+
+            _context.GaranhaoProprietarios.Remove(registro);
+            _context.SaveChanges();
+
+            return RedirectToRoute(new { Controller = "Garanhao", Action = "Edit", id = garanhaoProprietario.GaranhaoId });
+
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //Especificado do verbo http que será utilizado

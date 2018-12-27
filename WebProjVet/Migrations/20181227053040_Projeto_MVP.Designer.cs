@@ -9,8 +9,8 @@ using WebProjVet.AcessoDados;
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    [Migration("20181224013204_Projeto_v1.9.2")]
-    partial class Projeto_v192
+    [Migration("20181227053040_Projeto_MVP")]
+    partial class Projeto_MVP
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,10 +24,12 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Abqm");
+                    b.Property<string>("Abqm")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Nome")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -39,13 +41,13 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("Data");
+
                     b.Property<int>("DoadoraId");
 
                     b.Property<int>("ProprietarioId");
 
-                    b.Property<DateTime>("Data");
-
-                    b.HasKey("Id", "DoadoraId", "ProprietarioId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DoadoraId");
 
@@ -59,10 +61,12 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Abqm");
+                    b.Property<string>("Abqm")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Nome")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -74,13 +78,13 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("Data");
+
                     b.Property<int>("GaranhaoId");
 
                     b.Property<int>("ProprietarioId");
 
-                    b.Property<DateTime>("Data");
-
-                    b.HasKey("Id", "GaranhaoId", "ProprietarioId");
+                    b.HasKey("Id");
 
                     b.HasIndex("GaranhaoId");
 
@@ -94,20 +98,29 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<string>("Documento")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
-                    b.Property<string>("InscricaoEstadual");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("InscricaoEstadual")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Nome")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(100);
 
                     b.Property<int>("PessoaTipo");
 
-                    b.Property<string>("RazaoSocial");
+                    b.Property<string>("RazaoSocial")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Telefone")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -120,19 +133,23 @@ namespace WebProjVet.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Cidade")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(100);
 
-                    b.Property<string>("Complemento");
+                    b.Property<string>("Complemento")
+                        .HasMaxLength(30);
 
                     b.Property<string>("Endereco")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(100);
 
                     b.Property<int>("EnderecoTipo");
 
                     b.Property<int>("ProprietarioId");
 
                     b.Property<string>("Uf")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(2);
 
                     b.HasKey("Id");
 
@@ -147,9 +164,11 @@ namespace WebProjVet.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Codigo")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(10);
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -161,10 +180,13 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Codigo");
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(10);
 
                     b.Property<string>("Nome")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(100);
 
                     b.Property<int>("ServicoTipo");
 
@@ -179,7 +201,8 @@ namespace WebProjVet.Migrations
             modelBuilder.Entity("WebProjVet.Models.Tratamento", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20);
 
                     b.Property<DateTime?>("DataFim");
 
@@ -262,7 +285,7 @@ namespace WebProjVet.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
-                        .WithMany()
+                        .WithMany("DoadoraProprietarios")
                         .HasForeignKey("ProprietarioId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -275,7 +298,7 @@ namespace WebProjVet.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
-                        .WithMany()
+                        .WithMany("GaranhaoProprietarios")
                         .HasForeignKey("ProprietarioId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

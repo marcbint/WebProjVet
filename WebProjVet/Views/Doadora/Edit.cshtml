@@ -38,14 +38,14 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <label asp-for="Nome" class="control-label"></label>
-                                <input asp-for="Nome" class="form-control text-uppercase" />
+                                <input asp-for="Nome" class="form-control" />
                                 <span asp-validation-for="Nome" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row" style="padding-top:10px">
                             <div class="col-lg-4">
                                 <label asp-for="Abqm" class="control-label"></label>
-                                <input asp-for="Abqm" class="form-control text-uppercase" />
+                                <input asp-for="Abqm" class="form-control" />
                                 <span asp-validation-for="Abqm" class="text-danger"></span>
                             </div>
                         </div>
@@ -58,7 +58,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -84,7 +83,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <table class="table table-striped table-bordered table-list">
+                        <table id="itensDataTable" class="table table-striped table-bordered table-list">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -106,7 +105,7 @@
                                             @Html.DisplayFor(modelItem => item.Proprietario.Nome)
                                         </td>
                                         <td align="center">
-                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>                                                                              
+                                            <a asp-action="DeleteProprietario" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
                                         </td>
                                     </tr>
                                 }
@@ -136,14 +135,14 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>
+    @*<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>*@
     <script>
-        
+
         //Carrega o datatable no momento da inicialização da tela.
         (function ($) {
             var doadoraId = $('#idDoadora').val();
             var generateTable = $("#itensDataTable")
-                .dataTable({                  
+                .dataTable({
                     "processing": true,
                     //"retrieve": true,
                     "serverSide": true,
@@ -173,7 +172,7 @@
                     "pageLength": 3
                 });
         })(jQuery);
-            
+
 
         //Função que será chamada após o processo de inclusão/exclusão de registros no datatable
         function consultaProprietario() {
@@ -205,22 +204,28 @@
 
                     ],
                     "ordering": true,
-                    ///"paging": true, 
+                    ///"paging": true,
                     "paging": false,
                     "pagingType": "full_numbers",
                     "pageLength": 3
                 });
-        }(jQuery);
+        } (jQuery);
 
         //Responsável pelo processo de inclusão no momento do clique no botão adicionar proprietário
         //do processo de edição de Doadora
+
+
+
+    </script>
+
+
+    <script>
         $('#btnAddProprietario').click(function () {
 
             $('#resultAddProprietario').empty();
 
-            var fullName = 'teste';
             var doadoraId = $('#idDoadora').val();
-            var proprietarioId = $('#sltSelect').val();
+            var CodigoProprietario = document.getElementById("sltSelect");
 
             var obj = {};
             obj.DoadoraId = $("#idDoadora").val();
@@ -242,7 +247,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '/api/Doadora/postAddProprietario/' + doadoraId,
+                    url: '/api/Doadora/AddProprietario/' + doadoraId,
                     data: JSON.stringify(obj),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
@@ -274,46 +279,8 @@
             };
 
         });
-
-        
     </script>
 
-    
 
-
-    <script>
-        //Utilizado no processo de inclusão de nova Doadora
-        var Itens = new Object();
-        Itens.Tabela = new Array();
-
-        var CodigoDoadora = document.getElementById("idDoadora");
-        var CodigoProprietario = document.getElementById("sltSelect");
-        var ListaProprietario = document.getElementById("listaTabela");
-        var ListaProprietarioJson = document.getElementById("listaTabelaJson");
-
-
-        function AdicionarTabela() {
-            var btnApagar = "apagar";
-
-
-            Itens.Tabela.push({
-                //"DoadoraId": CodigoDoadora.value,
-                "ProprietarioId": CodigoProprietario.value,
-
-            });
-
-            listaTabelaJson.innerHTML = JSON.stringify(Itens.Tabela);
-
-            var proprietario =
-                "<tr>" +
-                "<td>" + "" + "</td>" +
-                "<td>" + CodigoProprietario.options[CodigoProprietario.selectedIndex].text + "</td>" +
-                "<td>" + "apagar" + "</td>"
-            "</tr>";
-
-            listaTabela.innerHTML += proprietario;
-
-        }
-    </script>
 
 }

@@ -292,6 +292,64 @@ namespace WebProjVet.Controllers
         }
 
 
+        public IActionResult DeleteProprietario(int id)
+        {
+            if (id > 0)
+            {
+                //ViewBag.ProprietarioId = _context.Proprietarios.ToList();
+
+                
+                var doadoraProprietario = _context.DoadoraProprietarios
+                    .Where(p => p.Id.Equals(id))
+                    .Include(e => e.Proprietario)
+                    .ToList()
+                    .FirstOrDefault(p => p.Id == id);
+                    
+              
+
+                return View(doadoraProprietario);
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteProprietario(DoadoraProprietario doadoraProprietario)
+        {
+            DoadoraProprietario registro = _context.DoadoraProprietarios
+                .Where(p => p.Id.Equals(doadoraProprietario.Id))
+                .FirstOrDefault(p => p.Id == doadoraProprietario.Id);
+
+            _context.DoadoraProprietarios.Remove(registro);
+            _context.SaveChanges();            
+            
+            return RedirectToRoute(new { Controller = "Doadora", Action = "Edit", id = doadoraProprietario.DoadoraId });
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //Especificado do verbo http que será utilizado
         [HttpGet]
@@ -461,7 +519,7 @@ namespace WebProjVet.Controllers
 
 
 
-        [Route("api/[controller]/postAddProprietario/{idDoadora}")]
+        [Route("api/[controller]/AddProprietario/{idDoadora}")]
         public IActionResult PostAddProprietario(int idDoadora)
         {
             //https://www.talkingdotnet.com/handle-ajax-requests-in-asp-net-core-razor-pages/

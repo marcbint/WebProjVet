@@ -39,13 +39,13 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("Data");
+
                     b.Property<int>("DoadoraId");
 
                     b.Property<int>("ProprietarioId");
 
-                    b.Property<DateTime>("Data");
-
-                    b.HasKey("Id", "DoadoraId", "ProprietarioId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DoadoraId");
 
@@ -76,13 +76,13 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("Data");
+
                     b.Property<int>("GaranhaoId");
 
                     b.Property<int>("ProprietarioId");
 
-                    b.Property<DateTime>("Data");
-
-                    b.HasKey("Id", "GaranhaoId", "ProprietarioId");
+                    b.HasKey("Id");
 
                     b.HasIndex("GaranhaoId");
 
@@ -283,7 +283,7 @@ namespace WebProjVet.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
-                        .WithMany()
+                        .WithMany("DoadoraProprietarios")
                         .HasForeignKey("ProprietarioId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -296,7 +296,7 @@ namespace WebProjVet.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
-                        .WithMany()
+                        .WithMany("GaranhaoProprietarios")
                         .HasForeignKey("ProprietarioId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
