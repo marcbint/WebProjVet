@@ -137,6 +137,12 @@
     <Compile Remove="Migrations\20181227034707_Projeto_MVP.Designer.cs" />
     <Compile Remove="Migrations\20181227052831_Projeto_MVP.cs" />
     <Compile Remove="Migrations\20181227052831_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20181227190612_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20181227190612_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20181227202742_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20181227202742_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20181228203132_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20181228203132_Projeto_MVP.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -151,13 +157,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Animal\Create.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Animal\Delete.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Animal\DeleteProprietario.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Animal\Edit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Animal\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Doadora\Edit-bkp.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Tratamento\Edit - Cópia %282%29.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Tratamento\Edit - Cópia.cshtml">
+    <Content Update="Views\Proprietario\Create - Cópia.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

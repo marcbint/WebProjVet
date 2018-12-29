@@ -42,32 +42,32 @@
                                 <input type="hidden" asp-for="Id" id="idTratamento">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label asp-for="DoadoraId" class="control-label"></label>
-                                <select asp-for="DoadoraId" class="form-control"
-                                        asp-items="@(new SelectList(ViewBag.DoadoraId, "Id", "Nome"))">
-                                    <option selected="selected" value="">Selecione</option>
-                                </select>
-                                <span asp-validation-for="DoadoraId" class="text-danger"></span>
-                            </div>
-                            <div class="col-lg-4">
-                                <label asp-for="GaranhaoId" class="control-label"></label>
-                                <select asp-for="GaranhaoId" class="form-control"
-                                        asp-items="@(new SelectList(ViewBag.GaranhaoId, "Id", "Nome"))">
-                                    <option selected="selected" value="">Selecione</option>
-                                </select>
-                                <span asp-validation-for="GaranhaoId" class="text-danger"></span>
-                            </div>
-                            <div class="col-lg-4">
-                                <label asp-for="ReceptoraId" class="control-label"></label>
-                                <select asp-for="ReceptoraId" class="form-control"
-                                        asp-items="@(new SelectList(ViewBag.ReceptoraId, "Id", "Codigo"))">
-                                    <option selected="selected" value="">Selecione</option>
-                                </select>
-                                <span asp-validation-for="ReceptoraId" class="text-danger"></span>
-                            </div>
-                        </div>
+                        @*<div class="row">
+            <div class="col-lg-4">
+                <label asp-for="DoadoraId" class="control-label"></label>
+                <select asp-for="DoadoraId" class="form-control"
+                        asp-items="@(new SelectList(ViewBag.DoadoraId, "Id", "Nome"))">
+                    <option selected="selected" value="">Selecione</option>
+                </select>
+                <span asp-validation-for="DoadoraId" class="text-danger"></span>
+            </div>
+            <div class="col-lg-4">
+                <label asp-for="GaranhaoId" class="control-label"></label>
+                <select asp-for="GaranhaoId" class="form-control"
+                        asp-items="@(new SelectList(ViewBag.GaranhaoId, "Id", "Nome"))">
+                    <option selected="selected" value="">Selecione</option>
+                </select>
+                <span asp-validation-for="GaranhaoId" class="text-danger"></span>
+            </div>
+            <div class="col-lg-4">
+                <label asp-for="ReceptoraId" class="control-label"></label>
+                <select asp-for="ReceptoraId" class="form-control"
+                        asp-items="@(new SelectList(ViewBag.ReceptoraId, "Id", "Codigo"))">
+                    <option selected="selected" value="">Selecione</option>
+                </select>
+                <span asp-validation-for="ReceptoraId" class="text-danger"></span>
+            </div>
+        </div>*@
                         <div class="row" style="padding-top:20px">
                             <div class="col-lg-4">
                                 <label asp-for="DataInicio" class="control-label"></label>

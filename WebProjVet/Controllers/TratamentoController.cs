@@ -45,7 +45,13 @@ namespace WebProjVet.Controllers
         {
             //var tratamento = _tratamentoRepository.Listar();
 
-            var tratamento = _context.Tratamentos.Include(p => p.Receptora).Include(c => c.Doadora).Include(d => d.Garanhao).Include(e => e.TratamentoServicos).ToList();
+            var tratamento = _context.Tratamentos
+                /*.Include(p => p.Receptora)
+                .Include(c => c.Doadora)
+                .Include(d => d.Garanhao)*/
+                .Include(e => e.TratamentoServicos)
+                .Include(a => a.TratamentoAnimais)
+                .ToList();
 
             if (tratamento.Any())
                 return View(tratamento);
@@ -62,7 +68,8 @@ namespace WebProjVet.Controllers
             ViewBag.ReceptoraId = _context.Receptoras.ToList();
             ViewBag.DoadoraId = _context.Doadoras.ToList();
             ViewBag.GaranhaoId = _context.Garanhoes.ToList();
-            ViewBag.ServicoId = _context.Servicos.ToList();
+            ViewBag.ServicoId = _context.Servicos.Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
+            ViewBag.Diaria = _context.Servicos.Where(s => s.ServicoTipo == ServicoTipo.DIÁRIA).ToList();
             
 
             return View();
@@ -122,15 +129,40 @@ namespace WebProjVet.Controllers
                 ViewBag.ReceptoraId = _context.Receptoras.ToList();
                 ViewBag.DoadoraId = _context.Doadoras.ToList();
                 ViewBag.GaranhaoId = _context.Garanhoes.ToList();
-                ViewBag.ServicoId = _context.Servicos.ToList();
+                ViewBag.ServicoId = _context.Servicos.Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
+                ViewBag.Diaria = _context.Servicos.Where(s => s.ServicoTipo == ServicoTipo.DIÁRIA).ToList();
+                ViewBag.AnimaisId = _context.Animais.ToList();
+
+
+
+                var animais = from m in _context.Garanhoes
+                                  select new
+                                  {
+                                      Id = m.Id,
+                                      Nome = m.Nome,
+                                  };
+                var animais2 = from m in _context.Doadoras
+                               select new
+                               {
+                                   Id = m.Id,
+                                   Nome = m.Nome,
+                               };
+                animais = animais.Concat(animais2);
+                var resultAnimais = animais.OrderBy(m => m.Nome).ToList();
+
+                ViewBag.Animais = resultAnimais;
+
 
                 //Tratamento tratamento = _tratamentoRepository.ObterPorId(id);
 
                 var tratamento = _context.Tratamentos
                     .Include(e => e.TratamentoServicos)
-                    .Include(p => p.Receptora)
+                    .Include(a => a.TratamentoAnimais)
+                    /*.Include(p => p.Receptora)
                     .Include(c => c.Doadora)
-                    .Include(d => d.Garanhao).ToList().First(p => p.Id == id);
+                    .Include(d => d.Garanhao)*/
+                    .ToList()
+                    .First(p => p.Id == id);
 
 
                 _tratamento = tratamento;
@@ -210,7 +242,13 @@ namespace WebProjVet.Controllers
         [Route("GetAllTratamentos")]
         public IActionResult GetAllTratamentos()
         {
-            var tratamentos = _context.Tratamentos.Include(p => p.Receptora).Include(c => c.Doadora).Include(d => d.Garanhao).Include(e => e.TratamentoServicos).ToList();
+            var tratamentos = _context.Tratamentos
+                /*.Include(p => p.Receptora)
+                .Include(c => c.Doadora)
+                .Include(d => d.Garanhao)*/
+                .Include(e => e.TratamentoServicos)
+                .Include(a => a.TratamentoAnimais)
+                .ToList();
 
 
             return new JsonResult(tratamentos);

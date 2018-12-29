@@ -25,24 +25,31 @@
                                 <span asp-validation-for="Codigo" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="row" style="padding-top:20px">
+                        <div class="row" style="padding-top:10px">
                             <div class="col-lg-4">
                                 <label asp-for="Nome" class="control-label"></label>
                                 <input asp-for="Nome" class="form-control text-uppercase" />
                                 <span asp-validation-for="Nome" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="row" style="padding-top:20px">
+                        <div class="row" style="padding-top:10px">
                             <div class="col-lg-4">
                                 <label asp-for="Valor" class="control-label"></label>
                                 <input asp-for="Valor" class="form-control text-uppercase text-right" />
                                 <span asp-validation-for="Valor" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="row" style="padding-top:20px">
+                        <div class="row" style="padding-top:10px">
                             <div class="col-lg-4">
                                 <label asp-for="ServicoTipo" class="control-label"></label>
-                                <select asp-for="ServicoTipo" asp-items="Html.GetEnumSelectList<ServicoTipo>()" class="form-control">                                   
+                                <select asp-for="ServicoTipo" asp-items="Html.GetEnumSelectList<ServicoTipo>()" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-4">
+                                <label asp-for="Situacao" class="control-label"></label>
+                                <select asp-for="Situacao" asp-items="Html.GetEnumSelectList<Situacao>()" class="form-control">
+                                    <option selected="selected" value="">SELECIONE</option>
                                 </select>
                             </div>
                         </div>

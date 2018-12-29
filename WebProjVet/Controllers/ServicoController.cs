@@ -81,6 +81,13 @@ namespace WebProjVet.Controllers
         }
 
 
+        [Route("api/[controller]/getvalor/{id}")]
+        public IActionResult GetValor(int id)
+        {
+            return new JsonResult(_servicoRepository.ObterServicoPorId(id));
+        }
+
+
         public IActionResult Details(int id)
         {
             if (id == 0)

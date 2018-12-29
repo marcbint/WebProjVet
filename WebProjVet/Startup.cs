@@ -68,6 +68,7 @@ namespace WebProjVet
             //Mapeamento entre a interface e classe concreta
             services.AddScoped<IServicoRepository, ServicoRepository>();
             services.AddScoped<IProprietarioRepository, ProprietarioRepository>();
+            services.AddScoped<IAnimalRepository, AnimalRepository>();
             services.AddScoped<IAnimalDoadoraRepository, AnimalDoadoraRepository>();
             services.AddScoped<IAnimalGaranhaoRepository, AnimalGaranhaoRepository>();
             services.AddScoped<IAnimalReceptoraRepository, AnimalReceptoraRepository>();

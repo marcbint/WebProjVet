@@ -1,4 +1,4 @@
-﻿@model WebProjVet.Models.Doadora
+﻿@model WebProjVet.Models.Animais
 
 @{
     ViewData["Title"] = "Create";
@@ -7,7 +7,7 @@
 
 
 
-<h3 class="text-center">DOADORA</h3>
+<h3 class="text-center">ANIMAL</h3>
 
 
 <form asp-action="Create">
@@ -18,10 +18,18 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-lg-12">
-                                <input type="hidden" asp-for="Id" id="idDoadora">
+                                <input type="hidden" asp-for="Id" id="idAnimal">
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-lg-4">
+                                <label asp-for="AnimalTipo" class="control-label"></label>
+                                <select asp-for="AnimalTipo" asp-items="Html.GetEnumSelectList<AnimalTipo>()" class="form-control">
+                                    <option selected="selected" value="">SELECIONE</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:10px">
                             <div class="col-lg-4">
                                 <label asp-for="Nome" class="control-label"></label>
                                 <input asp-for="Nome" class="form-control text-uppercase" />
@@ -35,10 +43,18 @@
                                 <span asp-validation-for="Abqm" class="text-danger"></span>
                             </div>
                         </div>
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-4">
+                                <label asp-for="Situacao" class="control-label"></label>
+                                <select asp-for="Situacao" asp-items="Html.GetEnumSelectList<Situacao>()" class="form-control">
+                                    <option selected="selected" value="">SELECIONE</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-lg-12">
                                 <!--<textarea asp-for="DoadoraProprietarioJson" style="display:none" id="listaTabelaJson"></textarea>-->
-                                <textarea asp-for="DoadoraProprietariosJson" style="display:none" id="listaTabelaJson"></textarea>
+                                <textarea asp-for="AnimaisProprietariosJson" style="display:none" id="listaTabelaJson"></textarea>
                             </div>
                         </div>
                     </div>
@@ -55,7 +71,6 @@
                 <div class="panel panel-default panel-table">
                     <div class="panel-heading">
                         <div class="row">
-
                             <div class="col-lg-6">
                                 <label class="control-label">PROPRIETÁRIOS</label>
                                 <!--<select id="sltSelect" asp-for="ProprietarioId" asp-items="@(new SelectList(ViewBag.ProprietarioId, "Id", "Nome" ))" class="form-control">-->

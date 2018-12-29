@@ -23,5 +23,8 @@ namespace WebProjVet.Models
         [Required(ErrorMessage = "{0} deve ser informado!")]
         public string Documento { get; set; }
 
+        [Display(Name = "SITUAÇÃO")]
+        [EnumDataType(typeof(Situacao))]
+        public Situacao Situacao { get; set; }
     }
 }

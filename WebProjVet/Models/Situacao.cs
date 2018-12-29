@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebProjVet.Models
 {
-    public enum StatusEnum
+    public enum Situacao
     {
         [Description("ATIVO")] ATIVO = 1,
         [Description("INATIVO")] INATIVO = 2

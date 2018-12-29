@@ -19,8 +19,8 @@ namespace WebProjVet.Models
         [Required(ErrorMessage = "{0} deve ser informado.")]
         public string Senha { get; set; }
 
-        [EnumDataType(typeof(StatusEnum))]
-        public StatusEnum StatusEnum { get; set; }
+        [EnumDataType(typeof(Situacao))]
+        public Situacao StatusEnum { get; set; }
         
     }
 }

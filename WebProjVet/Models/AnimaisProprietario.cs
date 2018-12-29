@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace WebProjVet.Models
 {
-    public class DoadoraProprietario
+    public class AnimaisProprietario
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         //[Key]
         public int Id { get; set; }
 
-        public int DoadoraId { get; set; }
+        public int AnimaisId { get; set; }
 
-        [ForeignKey("DoadoraId")]
-        public virtual Doadora Doadora { get; set; }
+        [ForeignKey("AnimaisId")]
+        public virtual Animais Animais { get; set; }
 
         public int ProprietarioId { get; set; }
 

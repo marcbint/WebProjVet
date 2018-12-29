@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace WebProjVet.Models
+{
+    public class AnimaisServicos
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        public int AnimaisId { get; set; }
+
+        [ForeignKey("AnimaisId")]
+        public virtual Animais Animais { get; set; }
+
+        public int ServicoId { get; set; }
+
+        [ForeignKey("ServicoId")]
+        public virtual Servico Servico { get; set; }
+
+        [DataType(DataType.Currency)]
+        public decimal Valor { get; set; }
+
+        public DateTime Data { get; set; }
+
+        [DataType(DataType.Currency)]
+        public decimal ValorOriginal { get; set; }
+
+        [NotMapped]
+        public string AnimaisServicosJson { get; set; }
+
+        
+
+
+
+    }
+
+}

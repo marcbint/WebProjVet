@@ -1,0 +1,130 @@
+﻿@model WebProjVet.Models.AnimaisProprietario
+
+@{
+    ViewData["Title"] = "DeleteProprietario";
+}
+
+
+<h3 class="text-center">PROPRIETÁRIO DO ANIMAL</h3>
+
+<h3>Realmente deseja remover esse registro?</h3>
+
+<form asp-action="DeleteProprietario">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" id="idRegistro">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="ProprietarioId" id="idProprietario">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="AnimaisId" id="idAnimais">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label asp-for="Proprietario.PessoaTipo" class="control-label"></label>
+                                <select disabled id="idTipo" asp-for="Proprietario.PessoaTipo" asp-items="Html.GetEnumSelectList<PessoaTipo>()" class="form-control">
+                                    <option selected="selected" value="">SELECIONE</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <label asp-for="Proprietario.Documento" class="control-label"></label>
+                                <input asp-for="Proprietario.Documento" id="inscricaoEstadual" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="Proprietario.Documento" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-5">
+                                <label asp-for="Proprietario.Nome" class="control-label"></label>
+                                <input asp-for="Proprietario.Nome" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="Proprietario.Nome" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div id="juridica" class="row" style="padding-top:10px">
+                            <div class="col-lg-5">
+                                <label asp-for="Proprietario.RazaoSocial" class="control-label"></label>
+                                <input asp-for="Proprietario.RazaoSocial" id="razaoSocial" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="Proprietario.RazaoSocial" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-3">
+                                <label asp-for="Proprietario.InscricaoEstadual" class="control-label"></label>
+                                <input asp-for="Proprietario.InscricaoEstadual" id="inscricaoEstadual" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="Proprietario.InscricaoEstadual" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-4">
+                                <label asp-for="Proprietario.Email" class="control-label"></label>
+                                <input asp-for="Proprietario.Email" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="Proprietario.Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-3">
+                                <label asp-for="Proprietario.Telefone" class="control-label"></label>
+                                <input asp-for="Proprietario.Telefone" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="Proprietario.Telefone" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <input type="submit" value="REMOVER" class="btn btn-danger btn-lg btn-block" />
+            </div>
+        </div>
+        <div class="row" style="padding-top:10px">
+            <div class="col-md-12">
+                @*https://docs.microsoft.com/pt-br/aspnet/core/mvc/views/tag-helpers/built-in/anchor-tag-helper?view=aspnetcore-2.2*@
+                <a asp-action="Edit" asp-controller="Animal" asp-route-id="@Model.AnimaisId" class="btn btn-info btn-lg btn-block">VOLTAR</a>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('#idTipo').change(function () {
+                var tipo = $("#idTipo option:selected").text();
+
+                if (tipo == 'FÍSICA') {
+                    $('#juridica').hide();
+
+                } else if (tipo == 'JURÍDICA') {
+                    $('#juridica').show();
+
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var Tipo = document.getElementById("idTipo");
+
+            if (Tipo.options[Tipo.selectedIndex].text == 'FÍSICA') {
+                $('#juridica').hide();
+            } else if (Tipo.options[Tipo.selectedIndex].text == 'JURÍDICA') {
+                $('#juridica').show();
+            }
+
+        });
+    </script>
+
+}

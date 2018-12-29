@@ -6,7 +6,7 @@ namespace WebProjVet.AcessoDados
 {
     public class WebProjVetContext : DbContext
     {
-
+        public DbSet<Animais> Animais { get; set; }
         public DbSet<Servico> Servicos { get; set; }
         public DbSet<Proprietario> Proprietarios { get; set; }
         public DbSet<Doadora> Doadoras { get; set; }
@@ -17,6 +17,9 @@ namespace WebProjVet.AcessoDados
         public DbSet<DoadoraProprietario> DoadoraProprietarios { get; set; }
         public DbSet<GaranhaoProprietario> GaranhaoProprietarios { get; set; }
         public DbSet<ProprietarioEndereco> ProprietarioEnderecos { get; set; }
+        public DbSet<AnimaisProprietario> AnimaisProprietarios { get; set; }
+        public DbSet<TratamentoAnimal> TratamentoAnimais { get; set; }
+        public DbSet<AnimaisServicos> AnimaisServicos { get; set; }
 
         public WebProjVetContext(DbContextOptions<WebProjVetContext> options) : base(options)
         {
@@ -54,6 +57,18 @@ namespace WebProjVet.AcessoDados
                 .HasForeignKey(ts => ts.TratamentoId);
             modelBuilder.Entity<TratamentoServico>()
                 .HasOne(ts => ts.Servico);
+
+
+            modelBuilder.Entity<TratamentoAnimal>().ToTable("TratamentoAnimal");
+            modelBuilder.Entity<TratamentoAnimal>().HasKey(ta => ta.Id);
+            modelBuilder.Entity<TratamentoAnimal>()
+                .HasOne(ta => ta.Tratamento)
+                .WithMany(t => t.TratamentoAnimais)
+                .HasForeignKey(ta => ta.TratamentoId);
+            modelBuilder.Entity<TratamentoAnimal>()
+                .HasOne(ta => ta.Animais)
+                .WithMany(a => a.TratamentoAnimais)
+            .HasForeignKey(ta => ta.AnimaisId);
 
 
 
@@ -109,13 +124,32 @@ namespace WebProjVet.AcessoDados
                 .HasOne(gp => gp.Proprietario)
                 .WithMany(p => p.GaranhaoProprietarios)
                 .HasForeignKey(gp => gp.ProprietarioId);
-           
 
 
+            modelBuilder.Entity<Animais>().HasKey(p => p.Id);
+            //Relacionamento Many to Many entre garanhão e proprietários
+            modelBuilder.Entity<AnimaisProprietario>().ToTable("AnimalProprietario");
+            modelBuilder.Entity<AnimaisProprietario>().HasKey(gp => gp.Id);
+            modelBuilder.Entity<AnimaisProprietario>()
+                 .HasOne(gp => gp.Animais)
+                .WithMany(g => g.AnimaisProprietarios)
+                .HasForeignKey(gp => gp.AnimaisId);
+            modelBuilder.Entity<AnimaisProprietario>()
+                .HasOne(gp => gp.Proprietario)
+                .WithMany(p => p.AnimaisProprietarios)
+                .HasForeignKey(gp => gp.ProprietarioId);
 
-
-
-
+            //Relacionamento Many to Many entre garanhão e proprietários
+            modelBuilder.Entity<AnimaisServicos>().ToTable("AnimalServicos");
+            modelBuilder.Entity<AnimaisServicos>().HasKey(sas => sas.Id);
+            modelBuilder.Entity<AnimaisServicos>()
+                 .HasOne(sas => sas.Animais)
+                .WithMany(a => a.AnimaisServicos)
+                .HasForeignKey(sas => sas.AnimaisId);
+            modelBuilder.Entity<AnimaisServicos>()
+                .HasOne(sas => sas.Servico)
+                .WithMany(s => s.AnimaisServicos)
+                .HasForeignKey(sas => sas.ServicoId);
 
 
 

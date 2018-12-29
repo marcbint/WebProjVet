@@ -9,7 +9,7 @@ using WebProjVet.AcessoDados;
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    [Migration("20181227053040_Projeto_MVP")]
+    [Migration("20181228234344_Projeto_MVP")]
     partial class Projeto_MVP
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,6 +18,71 @@ namespace WebProjVet.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("WebProjVet.Models.Animais", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Abqm")
+                        .HasMaxLength(20);
+
+                    b.Property<int>("AnimalTipo");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<int>("Situacao");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Animais");
+                });
+
+            modelBuilder.Entity("WebProjVet.Models.AnimaisProprietario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AnimaisId");
+
+                    b.Property<DateTime>("Data");
+
+                    b.Property<int>("ProprietarioId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimaisId");
+
+                    b.HasIndex("ProprietarioId");
+
+                    b.ToTable("AnimalProprietario");
+                });
+
+            modelBuilder.Entity("WebProjVet.Models.AnimaisServicos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AnimaisId");
+
+                    b.Property<DateTime>("Data");
+
+                    b.Property<int>("ServicoId");
+
+                    b.Property<decimal>("Valor");
+
+                    b.Property<decimal>("ValorOriginal");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimaisId");
+
+                    b.HasIndex("ServicoId");
+
+                    b.ToTable("AnimalServicos");
+                });
 
             modelBuilder.Entity("WebProjVet.Models.Doadora", b =>
                 {
@@ -118,6 +183,8 @@ namespace WebProjVet.Migrations
                     b.Property<string>("RazaoSocial")
                         .HasMaxLength(100);
 
+                    b.Property<int>("Situacao");
+
                     b.Property<string>("Telefone")
                         .IsRequired()
                         .HasMaxLength(20);
@@ -190,8 +257,10 @@ namespace WebProjVet.Migrations
 
                     b.Property<int>("ServicoTipo");
 
+                    b.Property<int>("Situacao");
+
                     b.Property<decimal>("Valor")
-                        .HasColumnType("decimal");
+                        .HasColumnType("decimal(16,2)");
 
                     b.HasKey("Id");
 
@@ -204,27 +273,38 @@ namespace WebProjVet.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(20);
 
+                    b.Property<string>("Codigo")
+                        .HasMaxLength(50);
+
                     b.Property<DateTime?>("DataFim");
 
                     b.Property<DateTime>("DataInicio");
-
-                    b.Property<int>("DoadoraId");
-
-                    b.Property<int>("GaranhaoId");
-
-                    b.Property<int>("ReceptoraId");
 
                     b.Property<int>("TratamentoSituacao");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DoadoraId");
-
-                    b.HasIndex("GaranhaoId");
-
-                    b.HasIndex("ReceptoraId");
-
                     b.ToTable("Tratamentos");
+                });
+
+            modelBuilder.Entity("WebProjVet.Models.TratamentoAnimal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AnimaisId");
+
+                    b.Property<DateTime>("Data");
+
+                    b.Property<int>("TratamentoId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimaisId");
+
+                    b.HasIndex("TratamentoId");
+
+                    b.ToTable("TratamentoAnimal");
                 });
 
             modelBuilder.Entity("WebProjVet.Models.TratamentoDiaria", b =>
@@ -277,6 +357,32 @@ namespace WebProjVet.Migrations
                     b.ToTable("TratamentoServico");
                 });
 
+            modelBuilder.Entity("WebProjVet.Models.AnimaisProprietario", b =>
+                {
+                    b.HasOne("WebProjVet.Models.Animais", "Animais")
+                        .WithMany("AnimaisProprietarios")
+                        .HasForeignKey("AnimaisId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
+                        .WithMany("AnimaisProprietarios")
+                        .HasForeignKey("ProprietarioId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WebProjVet.Models.AnimaisServicos", b =>
+                {
+                    b.HasOne("WebProjVet.Models.Animais", "Animais")
+                        .WithMany("AnimaisServicos")
+                        .HasForeignKey("AnimaisId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebProjVet.Models.Servico", "Servico")
+                        .WithMany("AnimaisServicos")
+                        .HasForeignKey("ServicoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("WebProjVet.Models.DoadoraProprietario", b =>
                 {
                     b.HasOne("WebProjVet.Models.Doadora", "Doadora")
@@ -311,21 +417,16 @@ namespace WebProjVet.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WebProjVet.Models.Tratamento", b =>
+            modelBuilder.Entity("WebProjVet.Models.TratamentoAnimal", b =>
                 {
-                    b.HasOne("WebProjVet.Models.Doadora", "Doadora")
-                        .WithMany()
-                        .HasForeignKey("DoadoraId")
+                    b.HasOne("WebProjVet.Models.Animais", "Animais")
+                        .WithMany("TratamentoAnimais")
+                        .HasForeignKey("AnimaisId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("WebProjVet.Models.Garanhao", "Garanhao")
-                        .WithMany()
-                        .HasForeignKey("GaranhaoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("WebProjVet.Models.Receptora", "Receptora")
-                        .WithMany()
-                        .HasForeignKey("ReceptoraId")
+                    b.HasOne("WebProjVet.Models.Tratamento", "Tratamento")
+                        .WithMany("TratamentoAnimais")
+                        .HasForeignKey("TratamentoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

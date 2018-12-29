@@ -43,32 +43,33 @@
                                 <input type="hidden" asp-for="Id" id="idTratamento">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label asp-for="DoadoraId" class="control-label"></label>
-                                <select asp-for="DoadoraId" class="form-control"
-                                        asp-items="@(new SelectList(ViewBag.DoadoraId, "Id", "Nome"))">
-                                    <option selected="selected" value="">Selecione</option>
-                                </select>
-                                <span asp-validation-for="DoadoraId" class="text-danger"></span>
-                            </div>
-                            <div class="col-lg-4">
-                                <label asp-for="GaranhaoId" class="control-label"></label>
-                                <select asp-for="GaranhaoId" class="form-control"
-                                        asp-items="@(new SelectList(ViewBag.GaranhaoId, "Id", "Nome"))">
-                                    <option selected="selected" value="">Selecione</option>
-                                </select>
-                                <span asp-validation-for="GaranhaoId" class="text-danger"></span>
-                            </div>
-                            <div class="col-lg-4">
-                                <label asp-for="ReceptoraId" class="control-label"></label>
-                                <select asp-for="ReceptoraId" class="form-control"
-                                        asp-items="@(new SelectList(ViewBag.ReceptoraId, "Id", "Codigo"))">
-                                    <option selected="selected" value="">Selecione</option>
-                                </select>
-                                <span asp-validation-for="ReceptoraId" class="text-danger"></span>
-                            </div>
-                        </div>
+                        @*
+        <div class="row">
+            <div class="col-lg-4">
+                <label asp-for="DoadoraId" class="control-label"></label>
+                <select asp-for="DoadoraId" class="form-control"
+                        asp-items="@(new SelectList(ViewBag.DoadoraId, "Id", "Nome"))">
+                    <option selected="selected" value="">Selecione</option>
+                </select>
+                <span asp-validation-for="DoadoraId" class="text-danger"></span>
+            </div>
+            <div class="col-lg-4">
+                <label asp-for="GaranhaoId" class="control-label"></label>
+                <select asp-for="GaranhaoId" class="form-control"
+                        asp-items="@(new SelectList(ViewBag.GaranhaoId, "Id", "Nome"))">
+                    <option selected="selected" value="">Selecione</option>
+                </select>
+                <span asp-validation-for="GaranhaoId" class="text-danger"></span>
+            </div>
+            <div class="col-lg-4">
+                <label asp-for="ReceptoraId" class="control-label"></label>
+                <select asp-for="ReceptoraId" class="form-control"
+                        asp-items="@(new SelectList(ViewBag.ReceptoraId, "Id", "Codigo"))">
+                    <option selected="selected" value="">Selecione</option>
+                </select>
+                <span asp-validation-for="ReceptoraId" class="text-danger"></span>
+            </div>
+        </div>*@
                         <div class="row" style="padding-top:20px">
                             <div class="col-lg-4">
                                 <label asp-for="DataInicio" class="control-label"></label>
@@ -94,23 +95,42 @@
                                         DIÁRIA
                                     </button>
                                 </p>
-                                <div class="collapse" id="collapseExample">
+                                <div class="collapse panel-default panel-table" id="collapseExample">
                                     <div class="col-lg-12">
                                         <input type="hidden" id="idDiaria">
                                     </div>
-                                    <div class="col-lg-4 col-lg-offset-1">
-                                        <label class="control-label">DATA INÍCIO</label>
-                                        <input type="datetime-local" id="txtData" class="form-control" />
+                                    <div class="col-lg-2">
+                                        <label class="control-label">ANIMAIS</label>
+                                        <select id="sltDiaria" class="form-control" onchange="getValorDiaria()"
+                                                asp-items="@(new SelectList(ViewBag.Animais, "Id", "Nome")) ">
+                                            <option selected="selected" value="">SELECIONE</option>
+                                        </select>
+                                        <!--https://demos.telerik.com/aspnet-core/dropdownlist/api-->
+                                        <!--http://www.binaryintellect.net/articles/6d0b21c8-2bbc-42c0-9403-4cd1880c123f.aspx-->
                                     </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label">DATA FIM</label>
-                                        <input type="datetime-local" id="txtData" class="form-control" />
+                                    <div class="col-lg-2">
+                                        <label class="control-label">DIÁRIAS</label>
+                                        <select id="sltDiaria" class="form-control" onchange="getValorDiaria()"
+                                                asp-items="@(new SelectList(ViewBag.Diaria, "Id", "Nome")) ">
+                                            <option selected="selected" value="">SELECIONE</option>
+                                        </select>
+                                        <!--https://demos.telerik.com/aspnet-core/dropdownlist/api-->
+                                        <!--http://www.binaryintellect.net/articles/6d0b21c8-2bbc-42c0-9403-4cd1880c123f.aspx-->
                                     </div>
-                                    <div class="col-lg-2 card card-body">
+                                    <div class="col-lg-1 card card-body">
                                         <label class="control-label">VALOR</label>
-                                        <input id="txtValorEstadia" class="form-control text-right" />
+                                        <input id="txtValorDiaria" class="form-control text-right" />
                                     </div>
-                                    <div>
+
+                                    <div class="col-lg-3 col-lg-offset-1">
+                                        <label class="control-label">DATA INÍCIO</label>
+                                        <input type="datetime-local" id="txtDataInicio" class="form-control" />
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="control-label">DATA FIM</label>
+                                        <input type="datetime-local" id="txtDataFim" class="form-control" />
+                                    </div>
+                                    <div class="col-lg-2">
                                         <br />
                                         <input type="button" value="SALVAR" class="btn btn-primary" onclick="AdicionarDiaria()" />
                                     </div>
@@ -131,6 +151,67 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    @*Animais*@
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="control-label">ANIMAIS</label>
+                                <select id="sltSelectAnimais" asp-items="@(new SelectList(ViewBag.AnimaisId, "Id", "Nome" ))" class="form-control">
+                                    <option selected="selected" value="">SELECIONE</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2">
+                                <br />
+                                <input id="btnAddProprietario" type="button" value="ADICIONAR PROPRIETÁRIO" class="btn btn-primary" />
+                            </div>
+                            <div class="col-lg-12">
+                                <span id="resultAddProprietario" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table id="itensDataTable" class="table table-striped table-bordered table-list">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>TIPO</th>
+                                    <th>NOME</th>
+                                    <th><em class="fa fa-cog"></em></th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaTabela">
+                                <!--Lista dos serviços cadastrados -->
+                                <!--https://stackoverflow.com/questions/14165632/asp-net-mvc-4-for-loop-posts-model-collection-properties-but-foreach-does-not-->
+
+                                @foreach (var item in Model.TratamentoAnimais)
+                                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Animais.AnimalTipo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Animais.Nome)
+                                    </td>
+                                    <td align="center">
+                                        <a asp-action="DeleteAnimais" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
