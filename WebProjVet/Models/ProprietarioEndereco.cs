@@ -21,6 +21,10 @@ namespace WebProjVet.Models
         [Required(ErrorMessage = "{0} deve ser informado!")]
         public string Endereco { get; set; }
 
+        [Display(Name = "BAIRRO"), MaxLength(600)]
+        [Required(ErrorMessage = "{0} deve ser informado!")]
+        public string Bairro { get; set; }
+
         [Display(Name = "COMPLEMENTO"), MaxLength(30)]
         public string Complemento { get; set; }
 

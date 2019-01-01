@@ -197,6 +197,10 @@ namespace WebProjVet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasMaxLength(600);
+
                     b.Property<string>("Cidade")
                         .IsRequired()
                         .HasMaxLength(100);

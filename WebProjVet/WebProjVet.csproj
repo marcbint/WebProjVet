@@ -143,9 +143,12 @@
     <Compile Remove="Migrations\20181227202742_Projeto_MVP.Designer.cs" />
     <Compile Remove="Migrations\20181228203132_Projeto_MVP.cs" />
     <Compile Remove="Migrations\20181228203132_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20181228234344_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20181228234344_Projeto_MVP.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="bootstrap" Version="4.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4">
@@ -164,6 +167,9 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Animal\DeleteProprietario.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Animal\EditLancamentoServico.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Animal\Edit.cshtml">

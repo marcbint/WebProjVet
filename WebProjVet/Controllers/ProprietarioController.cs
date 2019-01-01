@@ -51,6 +51,7 @@ namespace WebProjVet.Controllers
                 var idTemp = proprietario.Id;
 
                 //Realiza a inclusão se existirem itens
+                /*
                 if (proprietario.TabelaItensEnderecoJson != null)
                 {
                     //Processo de inclusão de itens
@@ -76,14 +77,16 @@ namespace WebProjVet.Controllers
 
                         }
                     }
-                }
+                }*/
 
             }
             catch (Exception ex)
             {
                 return BadRequest($"Erro:n{ex.Message}");
             }
-            return RedirectToAction("Index");
+
+            return RedirectToRoute(new { Controller = "Proprietario", Action = "Edit", id = proprietario.Id });
+            //return RedirectToAction("Index");
         }
 
 

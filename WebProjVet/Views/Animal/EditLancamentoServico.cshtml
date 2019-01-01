@@ -1,0 +1,170 @@
+﻿@model WebProjVet.Models.AnimaisServicos
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<form asp-action="EditLancamentoServico">
+    @Html.AntiForgeryToken()
+    <div class="container" style="padding-top:50px">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <h3 class="text-center">SERVIÇO REALIZADO</h3>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" id="idAnimaisServicos">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="ServicoId" id="idServicos">
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:20px">
+                            <div class="col-lg-6">
+                                <label class="control-label">SERVIÇOS CADASTRADOS</label>
+                                <select id="sltServico" asp-for="ServicoId" class="form-control" onchange="getValorServico()"
+                                        asp-items="@(new SelectList(ViewBag.ServicoId, "Id", "Nome")) ">
+                                    <option selected="selected" value="">SELECIONE</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <label asp-for="Valor" class="control-label"></label>
+                                <input id="txtValor" asp-for="Valor" class="form-control" />
+                                <input style="display:none" id="txtValorOriginal" asp-for="ValorOriginal" class="form-control text-right" />
+                            </div>
+                            <div class="col-lg-3">
+                                <label asp-for="Data" class="control-label"></label>
+                                <input type="date" asp-for="Data" class="form-control" />
+                                <span asp-validation-for="Data" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <input type="submit" value="REGISTRAR" class="btn btn-success btn-lg btn-block" />
+            </div>
+        </div>
+        <div class="row" style="padding-top:10px">
+            <div class="col-md-12">
+                <a asp-action="Index" class="btn btn-info btn-lg btn-block">VOLTAR</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        //Exemplo de execução através do evento onchange do select
+        //<select id="sltServico" class="form-control" onchange="getValorServico()"
+        function getValorServico() {
+
+            var idServico = '1';
+            var dpl = document.getElementById("sltServico");
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/Servico/getvalor/' + dpl.value,
+                success: function (result) {
+                    var servicoValor = result.valor;
+
+                    //$('#resultGetValor').html(servicoValor);
+                    $('#txtValor').val(servicoValor.toFixed(2).replace('.', ','));
+                    //$('#txtValor').val(servicoValor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }).replace('R$', ''));
+
+                    //toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+                    $('#txtValorOriginal').val(servicoValor);
+                }
+
+            });
+
+            //alert(dpl.value);
+
+
+        }
+    </script>
+
+    <script>
+        $('#btnAddServico').click(function () {
+
+            $('#resultAddServico').empty();
+
+            var animaisId = $('#idAnimais').val();
+            var CodigoServico = document.getElementById("sltServico");
+
+            var obj = {};
+            obj.AnimaisId = $("#idAnimais").val();
+            obj.ServicoId = $("#sltServico").val();
+            obj.Valor = $("#txtValor").val().replace(",", ".");
+            obj.Data = $("#txtData").val();
+            obj.ValorOriginal = $("#txtValorOriginal").val().replace(",", ".");
+
+            if (CodigoServico.options[CodigoServico.selectedIndex].text != 'SELECIONE')
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/Animal/AddServico/' + animaisId,
+                    data: JSON.stringify(obj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        $('#resultAddServico').empty();
+
+                        if (result == 'NOVO')
+
+                            location.reload();
+
+                        else {
+                            $('#resultAddServico')
+                                .html('Ocorreu um erro! Tente novamente.');
+
+                        };
+
+                    }
+
+                });
+
+            else {
+                $('#resultAddServico')
+                    .html('Selecione um Serviço!');
+            };
+
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script>
+        //https://www.blogson.com.br/como-formatar-campos-de-cpf-cep-telefone-e-moeda-com-jquery-jmask/
+        //https://igorescobar.github.io/jQuery-Mask-Plugin/
+        $(document).ready(function () {
+            $("#txtValor").keypress(function () {
+
+                $(this).mask("000.000.000.000.000,00", { reverse: true });
+            });
+
+
+
+        });
+    </script>
+
+
+
+}

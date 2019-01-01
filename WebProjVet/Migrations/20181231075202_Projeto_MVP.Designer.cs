@@ -9,7 +9,7 @@ using WebProjVet.AcessoDados;
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    [Migration("20181228234344_Projeto_MVP")]
+    [Migration("20181231075202_Projeto_MVP")]
     partial class Projeto_MVP
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -198,6 +198,10 @@ namespace WebProjVet.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasMaxLength(600);
 
                     b.Property<string>("Cidade")
                         .IsRequired()

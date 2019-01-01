@@ -4,16 +4,16 @@
     ViewData["Title"] = "DeleteEndereco";
 }
 
-<h3 class="text-center">ENDEREÇO</h3>
 
-<h3>Realmente deseja remover este registro?</h3>
 
 <form asp-action="DeleteEndereco">
-    <div class="container">
+    <div class="container" style="padding-top:50px">
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default panel-table">
                     <div class="panel-heading">
+                        <h3 class="text-center">ENDEREÇO</h3>
+                        <h3 class="text-danger">Realmente deseja remover este registro?</h3>
                         <div class="row">
                             <div class="col-lg-12">
                                 <input type="hidden" asp-for="Id" id="idPrimary">
@@ -24,17 +24,22 @@
                                 <input type="hidden" asp-for="ProprietarioId">
                             </div>
                         </div>
-                        <div class="row" style="padding-top:20px">
-                            <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-2">
                                 <label asp-for="EnderecoTipo" class="control-label"></label>
-                                <select disabled asp-for="EnderecoTipo" asp-items="Html.GetEnumSelectList<EnderecoTipo>()" class="form-control"></select>
+                                <select disabled id="sltTipoEndereco" asp-for="EnderecoTipo" asp-items="Html.GetEnumSelectList<EnderecoTipo>()" class="form-control">
+                                    <option selected="selected" value="">SELECIONE</option>
+                                </select>
                             </div>
-                        </div>
-                        <div class="row" style="padding-top:10px">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label asp-for="Endereco" class="control-label"></label>
                                 <input asp-for="Endereco" class="form-control" readonly="readonly"/>
                                 <span asp-validation-for="Endereco" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-4">
+                                <label asp-for="Bairro" class="control-label"></label>
+                                <input asp-for="Bairro" class="form-control" readonly="readonly"/>
+                                <span asp-validation-for="Bairro" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row" style="padding-top:10px">
@@ -43,16 +48,12 @@
                                 <input asp-for="Complemento" class="form-control" readonly="readonly"/>
                                 <span asp-validation-for="Complemento" class="text-danger"></span>
                             </div>
-                        </div>
-                        <div class="row" style="padding-top:10px">
                             <div class="col-lg-4">
                                 <label asp-for="Cidade" class="control-label"></label>
                                 <input asp-for="Cidade" class="form-control" readonly="readonly"/>
                                 <span asp-validation-for="Cidade" class="text-danger"></span>
                             </div>
-                        </div>
-                        <div class="row" style="padding-top:10px">
-                            <div class="col-lg-4">
+                            <div class="col-lg-1">
                                 <label asp-for="Uf" class="control-label"></label>
                                 <input asp-for="Uf" class="form-control" readonly="readonly"/>
                                 <span asp-validation-for="Uf" class="text-danger"></span>

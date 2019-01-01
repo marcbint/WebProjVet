@@ -18,7 +18,7 @@
         </div>
         <input id="myInput" class="pull-right form-inline" type="text" placeholder="Buscar...">
         <p>
-            <a asp-action="Create" class="btn btn-primary pull-left">INCLUIR</a>
+            <a asp-action="Create" class="btn btn-primary pull-left">ADICIONAR NOVO</a>
         </p>
         <br><br>
         <div class="row">
@@ -50,7 +50,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Abqm)
                             </td>
-                            <td><p data-placement="top" data-toggle="tooltip" title="EDITAR"><a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></p></td>
+                            <td><p data-placement="top" data-toggle="tooltip" title="Clique aqui para lançar serviços, associar proprietários e atualizar dados cadastrais do animal."><a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></p></td>
                             <td><p data-placement="top" data-toggle="tooltip" title="EXCLUIR"><a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a></p></td>
                         </tr>
                         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
@@ -58,8 +59,8 @@ namespace WebProjVet.Controllers
         
         public IActionResult Create()
         {
-            ViewBag.ProprietarioId = _context.Proprietarios.ToList();
-            ViewBag.ServicoId = _context.Servicos.Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
+            ViewBag.ProprietarioId = _context.Proprietarios.OrderBy(x => x.Nome).ToList();
+            ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
 
             return View();
         }
@@ -97,17 +98,38 @@ namespace WebProjVet.Controllers
             }
             
             
-            return RedirectToAction("Index");    
-            
+            //return RedirectToAction("Index");
+            return RedirectToRoute(new { Controller = "Animal", Action = "Edit", id = animais.Id });
+
         }
 
+        public IActionResult EditLancamentoServico(int id)
+        {
+            if(id > 0)
+            {
+                ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
+
+                AnimaisServicos servicoLancado = _context.AnimaisServicos
+                    .Include(p => p.Servico)
+                    .ToList()
+                    .FirstOrDefault(p => p.Id == id);                              
+
+                return View(servicoLancado);
+                    
+            }
+            return View();
+        }
 
         public IActionResult Edit(int id)
         {
             if (id > 0)
             {
-                ViewBag.ProprietarioId = _context.Proprietarios.ToList();
-                ViewBag.ServicoId = _context.Servicos.Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
+                //Somar o valor de serviços lançados no animal
+                ViewBag.Total =  Math.Round(_context.AnimaisServicos
+                    .Where(x => x.AnimaisId == id)
+                    .Sum(x => x.Valor),2);
+                ViewBag.ProprietarioId = _context.Proprietarios.OrderBy(x => x.Nome).ToList();
+                ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
 
                 var animais = _context.Animais
                     .Where(p => p.Id.Equals(id))
@@ -168,8 +190,12 @@ namespace WebProjVet.Controllers
         {
             if (id > 0)
             {
-                ViewBag.ProprietarioId = _context.Proprietarios.ToList();
-                ViewBag.ServicoId = _context.Servicos.Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
+                //Somar o valor de serviços lançados no animal
+                ViewBag.Total = _context.AnimaisServicos
+                    .Where(x => x.AnimaisId == id)
+                    .Sum(x => x.Valor);
+                ViewBag.ProprietarioId = _context.Proprietarios.OrderBy(x => x.Nome).ToList();
+                ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
 
                 var animais = _context.Animais
                     .Where(p => p.Id.Equals(id))
@@ -304,9 +330,13 @@ namespace WebProjVet.Controllers
                     string requestBody = reader.ReadToEnd();
                     if (requestBody.Length > 0)
                     {
-                        var obj = JsonConvert.DeserializeObject<AnimaisServicos>(requestBody);
+                        //var obj = JsonConvert.DeserializeObject<AnimaisServicos>(requestBody);
 
-                        AnimaisServicos ObjAnimaisServicos = JsonConvert.DeserializeObject<AnimaisServicos>(requestBody);                      
+                        AnimaisServicos ObjAnimaisServicos = JsonConvert.DeserializeObject<AnimaisServicos>(requestBody);
+
+                        //string valor = ObjAnimaisServicos.Valor.ToString().Replace(",", ".");
+                        //https://pt.stackoverflow.com/questions/243124/como-limitar-casas-decimais-usando-c
+                        ObjAnimaisServicos.Valor = Convert.ToDecimal(ObjAnimaisServicos.Valor, new CultureInfo("pt-BR"));                        
 
                         _context.AnimaisServicos.Add(ObjAnimaisServicos);
                         _context.SaveChanges();

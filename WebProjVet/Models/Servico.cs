@@ -11,9 +11,11 @@ namespace WebProjVet.Models
 
         [Display(Name = "CÓDIGO"), MaxLength(10)]
         [Required(ErrorMessage = "{0} deve ser informado!")]
+        [StringLength(10)]
         public string Codigo { get; set; }
 
         [Display(Name = "NOME"), MaxLength(100)]
+        [StringLength(100)]
         [Required(ErrorMessage = "{0} deve ser informado!")]
         public string Nome { get; set; }
 

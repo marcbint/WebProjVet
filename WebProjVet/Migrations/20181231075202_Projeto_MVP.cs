@@ -208,6 +208,7 @@ namespace WebProjVet.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     EnderecoTipo = table.Column<int>(nullable: false),
                     Endereco = table.Column<string>(maxLength: 100, nullable: false),
+                    Bairro = table.Column<string>(maxLength: 600, nullable: false),
                     Complemento = table.Column<string>(maxLength: 30, nullable: true),
                     Cidade = table.Column<string>(maxLength: 100, nullable: false),
                     Uf = table.Column<string>(maxLength: 2, nullable: false),
