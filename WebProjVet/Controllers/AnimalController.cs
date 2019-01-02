@@ -120,6 +120,15 @@ namespace WebProjVet.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult EditLancamentoServico(AnimaisServicos animaisServicos)
+        {
+            _context.AnimaisServicos.Update(animaisServicos);
+            _context.SaveChanges();
+            return RedirectToRoute(new { Controller = "Animal", Action = "Edit", id = animaisServicos.AnimaisId });
+        }
+
+
         public IActionResult Edit(int id)
         {
             if (id > 0)

@@ -22,7 +22,8 @@ namespace WebProjVet.Models
         [ForeignKey("ServicoId")]
         public virtual Servico Servico { get; set; }
 
-        //[DataType(DataType.Currency)]
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         //[DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         //[RegularExpression(@"[0-9]{1,4}(\.[0-9]{1,2})?")]
         public decimal Valor { get; set; }

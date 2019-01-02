@@ -24,19 +24,13 @@ namespace WebProjVet.Models
         //public string Descricao { get; set; }
 
         [Display(Name = "VALOR")]
-        //https://stackoverflow.com/questions/19811180/best-data-annotation-for-a-decimal18-2
-        //[RegularExpression(@"^\d+\.\d{0,2}$")]
-        //[Range(0, 9999999999999999.99)]
-        //[DisplayFormat(DataFormatString = "{0:#.####}")]
-        //[DisplayFormat(DataFormatString = "{###.###.##0,00}")]
-        [Column(TypeName = "decimal(16,2)")]
-        //[DataType(DataType.Currency)]
-        //[Column(TypeName = "decimal")]
-        [Required(ErrorMessage = "Você precisa entrar com o {0}")]
-        //[DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = true)]
-        //[DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
-        //[DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:###.##0,00}")]
+        //https://stackoverflow.com/questions/19811180/best-data-annotation-for-a-decimal18-2       
+        [RegularExpression(@"^\d+.?\d{0,2}$", ErrorMessage = "Invalid Target Price; Maximum Two Decimal Points.")]
+        [DataType(DataType.Currency)]
+        [Range(0, 9999999999999999.99, ErrorMessage = "Invalid Target Price; Max 18 digits")]
+        [Column(TypeName = "decimal(18,2)")]
+        [Required(ErrorMessage = "O campo {0} precisa ser informado.")]
+        //[StringLength(5)]
         public decimal Valor { get; set; }
 
         [Display(Name = "TIPO")]

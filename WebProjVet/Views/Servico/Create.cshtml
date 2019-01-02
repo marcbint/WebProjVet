@@ -37,7 +37,7 @@
                         <div class="row" style="padding-top:10px">
                             <div class="col-lg-4">
                                 <label asp-for="Valor" class="control-label"></label>
-                                <input asp-for="Valor" class="form-control text-uppercase text-right" />
+                                <input id="txtValor" asp-for="Valor" class="form-control text-uppercase text-right" />
                                 <span asp-validation-for="Valor" class="text-danger"></span>
                             </div>
                         </div>
@@ -81,4 +81,19 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script>
+        //https://www.blogson.com.br/como-formatar-campos-de-cpf-cep-telefone-e-moeda-com-jquery-jmask/
+        //https://igorescobar.github.io/jQuery-Mask-Plugin/
+        $(document).ready(function () {
+            $("#txtValor").keypress(function () {
+
+                $(this).mask("000000000000000,00", { reverse: true });
+            });
+
+
+
+        });
+    </script>
 }

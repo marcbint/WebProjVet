@@ -15,10 +15,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <input type="hidden" asp-for="Id" id="idAnimaisServicos">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="AnimaisId" id="idAnimais">
                                 <input type="hidden" asp-for="ServicoId" id="idServicos">
                             </div>
                         </div>
@@ -32,12 +29,13 @@
                             </div>
                             <div class="col-lg-3">
                                 <label asp-for="Valor" class="control-label"></label>
-                                <input id="txtValor" asp-for="Valor" class="form-control" />
+                                <input id="txtValor" asp-for="Valor" class="form-control" value="@Model?.Valor.ToString("0")"/>
+                                <span asp-validation-for="Valor" class="text-danger"></span>
                                 <input style="display:none" id="txtValorOriginal" asp-for="ValorOriginal" class="form-control text-right" />
                             </div>
                             <div class="col-lg-3">
                                 <label asp-for="Data" class="control-label"></label>
-                                <input type="date" asp-for="Data" class="form-control" />
+                                <input type="date" asp-for="Data" class="form-control"  />
                                 <span asp-validation-for="Data" class="text-danger"></span>
                             </div>
                         </div>
@@ -55,7 +53,7 @@
         </div>
         <div class="row" style="padding-top:10px">
             <div class="col-md-12">
-                <a asp-action="Index" class="btn btn-info btn-lg btn-block">VOLTAR</a>
+                <a asp-action="Edit" asp-controller="Animal" asp-route-id="@Model.AnimaisId" class="btn btn-info btn-lg btn-block">VOLTAR</a>
             </div>
         </div>
     </div>
