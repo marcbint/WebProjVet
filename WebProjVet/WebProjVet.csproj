@@ -145,6 +145,58 @@
     <Compile Remove="Migrations\20181228203132_Projeto_MVP.Designer.cs" />
     <Compile Remove="Migrations\20181228234344_Projeto_MVP.cs" />
     <Compile Remove="Migrations\20181228234344_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20181231075202_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20181231075202_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190102052655_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190102052655_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190102094426_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190102094426_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190102120539_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190102120539_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190102141547_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190102141547_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190102184856_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190102184856_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190102195604_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190102195604_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190102223521_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190102223521_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190102223952_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190102223952_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190103022506_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190103022506_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190103174914_Projeto_.cs" />
+    <Compile Remove="Migrations\20190103174914_Projeto_.Designer.cs" />
+    <Compile Remove="Migrations\20190103175244_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190103175244_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190104044144_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190104044144_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190104051219_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190104051219_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190104232429_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190104232429_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190105041048_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190105041048_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190105042812_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190105042812_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190106200319_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190106200319_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190106200628_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190106200628_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190107130953_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190107130953_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190108041630_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190108041630_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190108224052_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190108224052_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190109190311_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190109190311_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190109190915_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190109190915_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190109194937_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190109194937_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190109201039_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190109201039_Projeto_MVP.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -169,6 +221,9 @@
     <Content Update="Views\Animal\DeleteProprietario.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Animal\DeleteProprietario-BKP.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Animal\EditLancamentoServico.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -184,6 +239,10 @@
     <Content Update="Views\Proprietario\Create - Cópia.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Faturamento\" />
   </ItemGroup>
 
 </Project>

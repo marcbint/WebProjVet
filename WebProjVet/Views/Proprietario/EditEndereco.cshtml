@@ -1,10 +1,7 @@
 ﻿@model WebProjVet.Models.ProprietarioEndereco
-
 @{
     ViewData["Title"] = "EditEndereco";
 }
-
-
 
 <form asp-action="EditEndereco">
     <div class="container" style="padding-top:50px">
@@ -16,6 +13,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <input type="hidden" asp-for="Id" id="idPrimary">
+                                <input type="hidden" asp-for="EnderecoTipo" id="sltTipoEnderecoHide">
                             </div>
                         </div>
                         <div class="row">
@@ -30,19 +28,25 @@
                                     <option selected="selected" value="">SELECIONE</option>
                                 </select>
                             </div>
+                            <div class="col-lg-4">
+                                <label asp-for="Nome" class="control-label"></label>
+                                <input asp-for="Nome" class="form-control" />
+                                <span asp-validation-for="Nome" class="text-danger"></span>
+                            </div>
                             <div class="col-lg-6">
                                 <label asp-for="Endereco" class="control-label"></label>
                                 <input asp-for="Endereco" class="form-control" />
                                 <span asp-validation-for="Endereco" class="text-danger"></span>
                             </div>
+
+                        </div>
+                        <div class="row" style="padding-top:10px">
                             <div class="col-lg-4">
                                 <label asp-for="Bairro" class="control-label"></label>
                                 <input asp-for="Bairro" class="form-control" />
                                 <span asp-validation-for="Bairro" class="text-danger"></span>
                             </div>
-                        </div>
-                        <div class="row" style="padding-top:10px">
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <label asp-for="Complemento" class="control-label"></label>
                                 <input asp-for="Complemento" class="form-control" />
                                 <span asp-validation-for="Complemento" class="text-danger"></span>
@@ -58,66 +62,69 @@
                                 <span asp-validation-for="Uf" class="text-danger"></span>
                             </div>
                         </div>
-
-
-
-
-
-
-
-
-
-
-
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-3">
+                                <label asp-for="Documento" class="control-label"></label>
+                                <input asp-for="Documento" class="form-control" />
+                                <span asp-validation-for="Documento" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-3">
+                                <label asp-for="InscricaoEstadual" class="control-label"></label>
+                                <input asp-for="InscricaoEstadual" class="form-control" />
+                                <span asp-validation-for="InscricaoEstadual" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-2">
+                                <label asp-for="CodigoRural" class="control-label"></label>
+                                <input asp-for="CodigoRural" class="form-control" />
+                                <span asp-validation-for="CodigoRural" class="text-danger"></span>
+                            </div>
+                        </div>
 
                         @*
-        <div class="row" style="padding-top:20px">
-            <div class="col-lg-4">
-                <label asp-for="EnderecoTipo" class="control-label"></label>
-                <select asp-for="EnderecoTipo" asp-items="Html.GetEnumSelectList<EnderecoTipo>()" class="form-control"></select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4">
-                <label asp-for="Endereco" class="control-label"></label>
-                <input asp-for="Endereco" class="form-control" />
-                <span asp-validation-for="Endereco" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="row" style="padding-top:20px">
-            <div class="col-lg-4">
-                <label asp-for="Complemento" class="control-label"></label>
-                <input asp-for="Complemento" class="form-control" />
-                <span asp-validation-for="Complemento" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="row" style="padding-top:20px">
-            <div class="col-lg-4">
-                <label asp-for="Cidade" class="control-label"></label>
-                <input asp-for="Cidade" class="form-control" />
-                <span asp-validation-for="Cidade" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="row" style="padding-top:20px">
-            <div class="col-lg-4">
-                <label asp-for="Uf" class="control-label"></label>
-                <input asp-for="Uf" class="form-control" />
-                <span asp-validation-for="Uf" class="text-danger"></span>
-            </div>
-        </div>*@
-
+                            <div class="row" style="padding-top:20px">
+                                <div class="col-lg-4">
+                                    <label asp-for="EnderecoTipo" class="control-label"></label>
+                                    <select asp-for="EnderecoTipo" asp-items="Html.GetEnumSelectList<EnderecoTipo>()" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label asp-for="Endereco" class="control-label"></label>
+                                    <input asp-for="Endereco" class="form-control" />
+                                    <span asp-validation-for="Endereco" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top:20px">
+                                <div class="col-lg-4">
+                                    <label asp-for="Complemento" class="control-label"></label>
+                                    <input asp-for="Complemento" class="form-control" />
+                                    <span asp-validation-for="Complemento" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top:20px">
+                                <div class="col-lg-4">
+                                    <label asp-for="Cidade" class="control-label"></label>
+                                    <input asp-for="Cidade" class="form-control" />
+                                    <span asp-validation-for="Cidade" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top:20px">
+                                <div class="col-lg-4">
+                                    <label asp-for="Uf" class="control-label"></label>
+                                    <input asp-for="Uf" class="form-control" />
+                                    <span asp-validation-for="Uf" class="text-danger"></span>
+                                </div>
+                            </div>*@
 
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <input type="submit" value="REGISTRAR" class="btn btn-primary btn-lg btn-block" />
+                <input type="submit" value="REGISTRAR" class="btn btn-success btn-lg btn-block" />
             </div>
         </div>
         <div class="row" style="padding-top:20px">
@@ -126,9 +133,24 @@
             </div>
         </div>
     </div>
-
 </form>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+    <script>
+        //https://stackoverflow.com/questions/15163570/how-can-i-change-all-input-values-to-uppercase-using-jquery
+        $(document).on('blur', "input[type=text]", function () {
+            $(this).val(function (_, val) {
+                return val.toUpperCase();
+            });
+        });
+    </script>
 }

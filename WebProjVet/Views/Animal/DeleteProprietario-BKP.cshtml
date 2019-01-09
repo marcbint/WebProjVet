@@ -1,17 +1,18 @@
 ﻿@model WebProjVet.Models.AnimaisProprietario
+
 @{
     ViewData["Title"] = "DeleteProprietario";
 }
 
-<form asp-action="DeleteProprietario">
+
+<form asp-action="DeleteProprietario" >
     <div class="container" style="padding-top:50px">
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default panel-table">
                     <div class="panel-heading">
                         <h3 class="text-center">PROPRIETÁRIO DO ANIMAL</h3>
-                        <h3 id="h3Desassociar" class="text-danger">Realmente deseja desassociar este proprietário do animal?</h3>
-                        <h3 id="h3Desassociado" hidden="hidden" class="text-danger">Proprietário já desassociado do animal.</h3>
+                        <h3 class="text-danger">Realmente deseja remover esse registro?</h3>
                         <div class="row">
                             <div class="col-lg-12">
                                 <input type="hidden" asp-for="Id" id="idRegistro">
@@ -56,6 +57,7 @@
                                 <input asp-for="Proprietario.InscricaoEstadual" id="inscricaoEstadual" class="form-control" readonly="readonly" />
                                 <span asp-validation-for="Proprietario.InscricaoEstadual" class="text-danger"></span>
                             </div>
+
                         </div>
                         <div class="row" style="padding-top:10px">
                             <div class="col-lg-4">
@@ -68,30 +70,17 @@
                                 <input asp-for="Proprietario.Telefone" class="form-control" readonly="readonly" />
                                 <span asp-validation-for="Proprietario.Telefone" class="text-danger"></span>
                             </div>
-                            <div class="col-lg-3">
-                                <label asp-for="DataDesassociacao" class="control-label"></label>
-                                <input id="dtDesassociacao" asp-for="DataDesassociacao" type="date" class="form-control"
-                                       data-toggle="tooltip" data-placement="top"
-                                       title="Os serviços realizados no animal não serão cobrados a este proprietário a partir da data informada." required />
-                                <span asp-validation-for="DataDesassociacao" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row" style="padding-top:10px">
-                            <div class="col-lg-12">
-                                <label asp-for="Motivo" class="control-label">MOTIVO</label>
-                                <textarea id="txtMotivo" asp-for="Motivo" class="form-control" rows="5"></textarea>
-                                <span id="spanMotivo" class="text-danger"></span>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <input id="btnDesassociar" type="submit" value="DESASSOCIAR" class="btn btn-danger btn-lg btn-block" />
+                <input type="submit" value="REMOVER" class="btn btn-danger btn-lg btn-block" />
             </div>
         </div>
         <div class="row" style="padding-top:10px">
@@ -102,12 +91,11 @@
         </div>
     </div>
 
+
 </form>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
-
     <script>
         $(document).ready(function () {
             $('#idTipo').change(function () {
@@ -121,19 +109,9 @@
 
                 }
             });
-
-            var dataDesassociacao = $("#dtDesassociacao").val();
-
-            if (dataDesassociacao != "") {
-                $('#dtDesassociacao').prop('readonly', true);
-                $('#btnDesassociar').attr('disabled', true);
-                $("#h3Desassociado").removeAttr("hidden");
-                $("#h3Desassociar").attr("hidden", true);
-                $("#txtMotivo").prop('readonly', true);
-            }
-
         });
     </script>
+
     <script>
         $(document).ready(function () {
             var Tipo = document.getElementById("idTipo");
@@ -146,12 +124,5 @@
 
         });
     </script>
-
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
-
 
 }

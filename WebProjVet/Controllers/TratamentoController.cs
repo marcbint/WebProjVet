@@ -213,7 +213,7 @@ namespace WebProjVet.Controllers
         public decimal GetValorOriginal(int id)
         {
             var valor = _context.Servicos.First(p => p.Id.Equals(id)).Valor;
-            return valor;
+            return Convert.ToDecimal(valor);
         }
 
 

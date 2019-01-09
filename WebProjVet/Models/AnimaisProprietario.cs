@@ -23,9 +23,21 @@ namespace WebProjVet.Models
         [ForeignKey("ProprietarioId")]
         public virtual Proprietario Proprietario { get; set; }
 
-        public DateTime Data { get; set; }
+        [Display(Name = "DATA AQUISIÇÃO")]
+        [DataType(DataType.Date)]
+        public DateTime DataAquisicao { get; set; }
 
-        
+        [Display(Name = "DATA DESASSOCIAÇÃO")]
+        [DataType(DataType.Date)]
+        public DateTime? DataDesassociacao { get; set; }
+
+        [Display(Name = "DATA INCLUSAO")]
+        [DataType(DataType.Date)]
+        public DateTime DataInclusao { get; set; }
+
+        [Display(Name = "MOTIVO")]
+        [MaxLength(300), StringLength(300)]
+        public string Motivo { get; set; }
 
     }
 }

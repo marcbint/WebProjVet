@@ -1,10 +1,7 @@
 ﻿@model WebProjVet.Models.Proprietario
-
 @{
     ViewData["Title"] = "Edit";
 }
-
-
 
 <form asp-action="Edit">
     <div class="container" style="padding-top:50px">
@@ -27,7 +24,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <label asp-for="Documento" class="control-label"></label>
-                                <input asp-for="Documento" id="inscricaoEstadual" class="form-control" />
+                                <input id="cpfcnpj" asp-for="Documento" type="text" class="form-control" />
                                 <span asp-validation-for="Documento" class="text-danger"></span>
                             </div>
                             <div class="col-lg-6">
@@ -75,7 +72,7 @@
         </div>
     </div>
 
-
+    @*Localidades/Endereços*@
     @*https://getbootstrap.com/docs/4.0/components/collapse/*@
     <div class="container">
         <div class="row">
@@ -88,9 +85,9 @@
                                     <div class="card-header" id="headingOne">
                                         <button class="btn btn-warning col-lg-12" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
                                                 data-placement="top" title="Clique em ENDEREÇOS para visualizar e realizar o processo de inclusão de endereços.">
-                                            ENDEREÇOS
+                                            LOCALIDADES
                                         </button>
-                                        <small class="form-text text-muted">Clique em ENDEREÇOS para visualizar registros e realizar o processo de inclusão de endereços.</small>
+                                        <small class="form-text text-muted">Clique em LOCALIDADES para visualizar registros e realizar o processo de inclusão de informações para cada localidade.</small>
                                     </div>
                                 </div>
                                 <div class="row" style="padding-top:20px">
@@ -111,36 +108,63 @@
                                                                     <select id="sltTipoEndereco" asp-for="EnderecoTipo" asp-items="Html.GetEnumSelectList<EnderecoTipo>()" class="form-control">
                                                                         <option selected="selected" value="">SELECIONE</option>
                                                                     </select>
+                                                                    <span id="spaTipoEndereco" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <label class="control-label">NOME LOCALIDADE</label>
+                                                                    <input id="txtLocalNome" class="form-control" />
+                                                                    <span id="spaLocalNome" class="text-danger"></span>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <label class="control-label">ENDEREÇO</label>
                                                                     <input type="text" id="txtEndereco" class="form-control" />
-                                                                </div>
-                                                                <div class="col-lg-4">
-                                                                    <label class="control-label">BAIRRO</label>
-                                                                    <input type="text" id="txtBairro" class="form-control" />
+                                                                    <span id="spaEndereco" class="text-danger"></span>
                                                                 </div>
                                                             </div>
                                                             <div class="row" style="padding-top:10px">
                                                                 <div class="col-lg-4">
+                                                                    <label class="control-label">BAIRRO</label>
+                                                                    <input type="text" id="txtBairro" class="form-control" />
+                                                                    <span id="spaBairro" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="col-lg-3">
                                                                     <label class="control-label">COMPLEMENTO</label>
                                                                     <input type="text" id="txtComplemento" class="form-control" />
                                                                 </div>
                                                                 <div class="col-lg-4">
                                                                     <label class="control-label">CIDADE</label>
                                                                     <input type="text" id="txtCidade" class="form-control" />
+                                                                    <span id="spaCidade" class="text-danger"></span>
                                                                 </div>
                                                                 <div class="col-lg-1">
                                                                     <label class="control-label">UF</label>
                                                                     <input type="text" id="txtUf" class="form-control" />
+                                                                    <span id="spaUf" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="padding-top:10px">
+                                                                <div id="divCpfCnpj" class="col-lg-3">
+                                                                    <label class="control-label">CPF/CNPJ</label>
+                                                                    <input type="text" id="txtLocalCpfCnpj" class="cpfOuCnpj form-control" />
+                                                                    <span id="spaLocalCpfCnpj" class="text-danger"></span>
+                                                                </div>
+                                                                <div id="divInscEstadual" class="col-lg-3">
+                                                                    <label class="control-label">INSCRIÇÃO ESTADUAL</label>
+                                                                    <input id="txtLocalInscEstadual" class="form-control" />
+                                                                    <span id="spaLocalInscEstadual" class="text-danger"></span>
+                                                                </div>
+                                                                <div id="divCodigoRural" class="col-lg-2">
+                                                                    <label class="control-label">CÓDIGO RURAL</label>
+                                                                    <input id="txtLocalCodigoRural" class="form-control" />
+                                                                    <span id="spaLocalCodigoRural" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="col-lg-3 pull-right form-inline">
+                                                                    <br />
+                                                                    <input id="btnAddEndereco" type="button" value="ADICIONAR ENDEREÇO" class="btn btn-primary btn-block"
+                                                                           data-toggle="tooltip" data-placement="top" title="Clique em ADICIONAR para registrar o novo endereço." />
                                                                 </div>
                                                                 <div class="col-lg-12">
                                                                     <span id="resultAddTabelaEndereco" class="text-danger"></span>
-                                                                </div>
-                                                                <div class="col-lg-12">
-                                                                    <br />
-                                                                    <small class="form-text text-muted">Clique em ADICIONAR para registrar o novo endereço.</small>
-                                                                    <input id="btnAddEndereco" type="button" value="ADICIONAR" class="btn btn-primary btn-block" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -210,9 +234,6 @@
 
 
 
-
-
-
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -226,57 +247,152 @@
         </div>
     </div>
 
-
 </form>
-
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 
     <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
+        function validaAddEndereco() {
+
+            var tipo = $("#sltTipoEndereco :selected").text();
+            var endereco = $("#txtEndereco").val();
+            var bairro = $("#txtBairro").val();
+            var cidade = $("#txtCidade").val();
+            var uf = $("#txtUf").val();
+
+            var nome = $("#txtLocalNome").val();
+            var cpfcnpj = $("#txtLocalCpfCnpj").val();
+            var codigoRural = $("#txtLocalCodigoRural").val();
+
+            if (tipo == "SELECIONE") {
+                $("#spaTipoEndereco").html("Selecione um Tipo!");
+                return false;
+            } else if (nome == "") {
+                $("#spaLocalNome").html("Informe um Nome!");
+                return false;
+            } else if (endereco == "") {
+                $("#spaEndereco").html("Informe um Endereço!");
+                return false;
+            } else if (bairro == "") {
+                $("#spaBairro").html("Informe um Bairro!");
+                return false;
+            } else if (cidade == "") {
+                $("#spaCidade").html("Informe uma Cidade!");
+                return false;
+            } else if (uf == "") {
+                $("#spaUf").html("Informe uma UF!");
+                return false;
+
+            } else if (tipo == "COMERCIAL" && cpfcnpj == "") {
+                $("#spaLocalCpfCnpj").html("Informe um CPF/CNPJ!");
+                return false;
+
+            } else if (tipo == "RURAL" && cpfcnpj == "") {
+                $("#spaLocalCpfCnpj").html("Informe um CPF/CNPJ!");
+                return false;
+
+            } else if (tipo == "RURAL" && codigoRural == "") {
+                $("#spaLocalCodigoRural").html("Informe um Código Rural!");
+                return false;
+
+            } else if (tipo == "RURAL" && cpfcnpj == "") {
+                $("#spaLocalCpfCnpj").html("Informe um CPF/CNPJ!");
+                return false;
+
+            } else {
+                return true;
+            }
+
+        }
     </script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
     <script>
+        //https://www.blogson.com.br/como-formatar-campos-de-cpf-cep-telefone-e-moeda-com-jquery-jmask/
         $(document).ready(function () {
-            $('#idTipo').change(function () {
-                var tipo = $("#idTipo option:selected").text();
 
-                if (tipo == 'FÍSICA') {
-                    $('#juridica').hide();
+            var tipo = $("#idTipo :selected").text();
 
-                } else if (tipo == 'JURÍDICA') {
-                    $('#juridica').show();
-
-                }
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            var Tipo = document.getElementById("idTipo");
-
-            if (Tipo.options[Tipo.selectedIndex].text == 'FÍSICA') {
+            if (tipo == 'FÍSICA') {
                 $('#juridica').hide();
-            } else if (Tipo.options[Tipo.selectedIndex].text == 'JURÍDICA') {
+
+            } else if (tipo == 'JURÍDICA') {
                 $('#juridica').show();
+
             }
 
         });
     </script>
 
     <script>
+        $("#cpfcnpj").keypress(function () {
+
+            var tipo = $("#idTipo option:selected").text();
+
+            if (tipo == 'FÍSICA') {
+                $(this).mask('000.000.000-00');
+
+            } else if (tipo == 'JURÍDICA') {
+                $(this).mask('00.000.000/0000-00');
+            }
+
+
+        });
+    </script>
+
+    <script>
+        //Força a máscara no momento da saída do campo
+        $("#cpfcnpj").blur(function () {
+
+            var tipo = $("#idTipo :selected").text();
+
+            if (tipo == 'FÍSICA') {
+                $(this).mask('000.000.000-00');
+
+            } else if (tipo == 'JURÍDICA') {
+                $(this).mask('00.000.000/0000-00');
+            }
+
+
+        });
+    </script>
+
+    <script>
+        $('#idTipo').change(function () {
+            var tipo = $("#idTipo :selected").text();
+
+            if (tipo == 'FÍSICA') {
+                $('#juridica').hide();
+
+            } else if (tipo == 'JURÍDICA') {
+                $('#juridica').show();
+
+            }
+        });
+    </script>
+
+    <script>
         $('#btnAddEndereco').click(function () {
+
+            $('#spaTipoEndereco').empty();
+            $('#spaEndereco').empty();
+            $('#spaBairro').empty();
+            $('#spaCidade').empty();
+            $('#spaUf').empty();
+
+            $('#spaLocalNome').empty();
+            $('#spaLocalCpfCnpj').empty();
+            $('#spaLocalCodigoRural').empty();
 
             $('#resultAddTabelaEndereco').empty();
 
+            var validacao = validaAddEndereco();
+
             var idRegistro = $('#idRegistro').val();
-            var proprietarioId = $('#sltSelect').val();
-            var CodigoTipoEndereco = document.getElementById("sltTipoEndereco");
+
 
             var obj = {};
             obj.EnderecoTipo = $("#sltTipoEndereco").val();
@@ -287,20 +403,13 @@
             obj.UF = $("#txtUf").val();
             obj.ProprietarioId = $("#idRegistro").val();
 
-            //Id do datatable
-            var tabela = $("#itensTabelaEndereco");
-
-            var proprietario =
-                "<tr>" +
-                "<td>" + CodigoTipoEndereco.options[CodigoTipoEndereco.selectedIndex].text + "</td>" +
-                "<td>" + "" + "</td>" +
-                "<td>" + CodigoTipoEndereco.options[CodigoTipoEndereco.selectedIndex].text + "</td>" +
-                "<td>" + "apagar" + "</td>"
-            "</tr>";
+            obj.CodigoRural = $("#txtLocalCodigoRural").val();
+            obj.Documento = $("#txtLocalCpfCnpj").val();
+            obj.InscricaoEstadual = $("#txtLocalInscEstadual").val();
+            obj.Nome = $("#txtLocalNome").val();
 
 
-            if (CodigoTipoEndereco.options[CodigoTipoEndereco.selectedIndex].text != 'SELECIONE')
-
+            if (validacao == true) {
 
                 $.ajax({
                     type: 'POST',
@@ -324,13 +433,74 @@
 
                 });
 
-            else {
-                $('#resultAddTabelaEndereco')
-                    .html('Selecione um Tipo de Endereço!');
-            };
+            }
 
         });
 
+    </script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+
+    <script>
+        var options = {
+            onKeyPress: function (cpf, ev, el, op) {
+                var masks = ['000.000.000-000', '00.000.000/0000-00'];
+                $('.cpfOuCnpj').mask((cpf.length > 14) ? masks[1] : masks[0], op);
+            }
+        }
+
+        $('.cpfOuCnpj').length > 11 ? $('.cpfOuCnpj').mask('00.000.000/0000-00', options) : $('.cpfOuCnpj').mask('000.000.000-00#', options);
+    </script>
+
+    <script>
+        $('#sltTipoEndereco').change(function () {
+            var tipo = $("#sltTipoEndereco :selected").text();
+
+            if (tipo == 'RURAL') {
+                $('#divCodigoRural').show();
+                $('#txtLocalCodigoRural').val('');
+
+                $('#divCpfCnpj').show();
+                $('#txtLocalCpfCnpj').val('');
+
+                $('#divInscEstadual').show();
+                $('#txtLocalInscEstadual').val('');
+
+            } else if (tipo == 'COMERCIAL') {
+                $('#divCodigoRural').hide();
+                $('#txtLocalCodigoRural').val('');
+
+                $('#divCpfCnpj').show();
+                $('#txtLocalCpfCnpj').val('');
+
+                $('#divInscEstadual').show();
+                $('#txtLocalInscEstadual').val('');
+
+            } else if (tipo == 'RESIDENCIAL') {
+                $('#divCodigoRural').hide();
+                $('#txtLocalCodigoRural').val('');
+
+                $('#divCpfCnpj').hide();
+                $('#txtLocalCpfCnpj').val('');
+
+                $('#divInscEstadual').hide();
+                $('#txtLocalInscEstadual').val('');
+            }
+        });
+    </script>
+
+    <script>
+        //https://stackoverflow.com/questions/15163570/how-can-i-change-all-input-values-to-uppercase-using-jquery
+        $(document).on('blur', "input[type=text]", function () {
+            $(this).val(function (_, val) {
+                return val.toUpperCase();
+            });
+        });
     </script>
 
 }

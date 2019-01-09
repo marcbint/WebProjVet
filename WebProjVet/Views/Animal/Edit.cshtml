@@ -3,25 +3,6 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-
-
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-
-<link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
-
-<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
-
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css" />
-
-
-
-
 
 <form asp-action="Edit">
     @Html.AntiForgeryToken()
@@ -34,54 +15,55 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <input type="hidden" asp-for="Id" id="idAnimais">
+                                <input type="hidden" id="servicoUnidade" />
                             </div>
                         </div>
                         <div class="row" style="padding-top:20px">
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <label asp-for="AnimalTipo" class="control-label"></label>
-                                <select asp-for="AnimalTipo" asp-items="Html.GetEnumSelectList<AnimalTipo>()" class="form-control">
+                                <select id="animalTipo" asp-for="AnimalTipo" asp-items="Html.GetEnumSelectList<AnimalTipo>()" class="form-control">
                                     <option selected="selected" value="">SELECIONE</option>
                                 </select>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-6">
                                 <label asp-for="Nome" class="control-label"></label>
                                 <input asp-for="Nome" class="form-control" />
                                 <span asp-validation-for="Nome" class="text-danger"></span>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <label asp-for="Abqm" class="control-label"></label>
                                 <input asp-for="Abqm" class="form-control" />
                                 <span asp-validation-for="Abqm" class="text-danger"></span>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <label asp-for="Situacao" class="control-label"></label>
                                 <select asp-for="Situacao" asp-items="Html.GetEnumSelectList<Situacao>()" class="form-control">
                                     <option selected="selected" value="">SELECIONE</option>
                                 </select>
                             </div>
                         </div>
-                        @*<div class="row" style="padding-top:10px">
-                                <div class="col-lg-4">
-                                    <label asp-for="Nome" class="control-label"></label>
-                                    <input asp-for="Nome" class="form-control" />
-                                    <span asp-validation-for="Nome" class="text-danger"></span>
-                                </div>
+                        <div class="row" style="padding-top:20px">
+                            <div class="col-lg-2">
+                                <label asp-for="DataNascimento" class="control-label"></label>
+                                <input type="date" asp-for="DataNascimento" class="form-control" />
+                                <span id="spaNascimento" class="text-danger"></span>
                             </div>
-                            <div class="row" style="padding-top:10px">
-                                <div class="col-lg-4">
-                                    <label asp-for="Abqm" class="control-label"></label>
-                                    <input asp-for="Abqm" class="form-control" />
-                                    <span asp-validation-for="Abqm" class="text-danger"></span>
-                                </div>
+                            <div class="col-lg-3">
+                                <label asp-for="Mae" class="control-label"></label>
+                                <input asp-for="Mae" class="form-control" />
+                                <span id="spaMae" class="text-danger"></span>
                             </div>
-                            <div class="row" style="padding-top:10px">
-                                <div class="col-lg-4">
-                                    <label asp-for="Situacao" class="control-label"></label>
-                                    <select asp-for="Situacao" asp-items="Html.GetEnumSelectList<Situacao>()" class="form-control">
-                                        <option selected="selected" value="">SELECIONE</option>
-                                    </select>
-                                </div>
-                            </div>*@
+                            <div class="col-lg-3">
+                                <label asp-for="Pai" class="control-label"></label>
+                                <input asp-for="Pai" class="form-control" />
+                                <span id="spaPai" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-3">
+                                <label asp-for="Pelagem" class="control-label"></label>
+                                <input asp-for="Pelagem" class="form-control" />
+                                <span id="spaPelagem" class="text-danger"></span>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-lg-12">
                                 <!--<textarea asp-for="DoadoraProprietarioJson" style="display:none" id="listaTabelaJson"></textarea>-->
@@ -109,7 +91,7 @@
                                             PROPRIETÁRIOS
                                         </button>
                                     </div>
-                                    <small class="form-text text-muted">Clique em PROPRIETÁRIOS para visualizar registros e realizar o processo de associação de proprietários.</small>
+                                    <small class="form-text text-muted">Clique em PROPRIETÁRIOS para visualizar registros e realizar o processo de associação/desassociação de proprietários responsáveis pelo pagamento dos serviços realizados.</small>
                                 </div>
                                 <div class="row" style="padding-top:20px">
                                     <div class="col-lg-12">
@@ -121,21 +103,22 @@
                                                             <div class="row">
                                                                 <div class="col-lg-6">
                                                                     <label class="control-label">PROPRIETÁRIOS CADASTRADOS</label>
-                                                                    <select id="sltSelect" asp-items="@(new SelectList(ViewBag.ProprietarioId, "Id", "Nome" ))" class="form-control">
+                                                                    <select id="sltSelectProprietario" asp-items="@(new SelectList(ViewBag.ProprietarioId, "Id", "Nome" ))" class="form-control">
                                                                         <option selected="selected" value="">SELECIONE</option>
                                                                     </select>
+                                                                    <span id="spanSltProprietario" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <label class="control-label">DATA AQUISIÇÃO</label>
+                                                                    <input type="date" id="dtDataAquisicao" class="form-control"
+                                                                           data-toggle="tooltip" data-placement="top" title="A data de aquisição informada será utilizada como parâmentro para início da cobrança ao proprietário dos serviços realizados no animal." />
+                                                                    <span id="spanDataAquisicao" class="text-danger"></span>
                                                                 </div>
                                                                 <div class="col-lg-2">
                                                                     <br />
                                                                     <input id="btnAddProprietario" type="button" value="ASSOCIAR PROPRIETÁRIO" class="btn btn-primary"
-                                                                           data-toggle="tooltip" title="Clique aqui para associar um proprietário já cadastrado ao animal." />
+                                                                           data-toggle="tooltip" data-placement="top" title="Clique aqui para associar um proprietário já cadastrado ao animal." />
                                                                 </div>
-                                                                @*
-        <div class="col-lg-2">
-            <br />
-            <input id="btnNewProprietario" type="button" value="CADASTRAR PROPRIETÁRIO" class="btn btn-success"
-                   data-toggle="tooltip" title="Clique aqui para cadastrar um novo proprietário e associá-lo ao animal."/>
-        </div>*@
                                                                 <div class="col-lg-12">
                                                                     <span id="resultAddProprietario" class="text-danger"></span>
                                                                 </div>
@@ -147,14 +130,15 @@
                                                                     <tr>
                                                                         <th>ID</th>
                                                                         <th>NOME</th>
+                                                                        <th>DATA AQUISIÇÃO</th>
+                                                                        <th>DATA DESASSOCIAÇÃO</th>
                                                                         <th><em class="fa fa-cog"></em></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody id="listaTbodyEndereco">
                                                                     <!--Lista dos serviços cadastrados -->
                                                                     <!--https://stackoverflow.com/questions/14165632/asp-net-mvc-4-for-loop-posts-model-collection-properties-but-foreach-does-not-->
-
-                                                                    @foreach (var item in Model.AnimaisProprietarios.OrderBy(x => x.Proprietario.Nome))
+                                                                    @foreach (var item in Model.AnimaisProprietarios.OrderByDescending(x => x.DataAquisicao).OrderBy(a => a.Proprietario.Nome))
                                                                     {
                                                                         <tr>
                                                                             <td>
@@ -163,7 +147,25 @@
                                                                             <td>
                                                                                 @Html.DisplayFor(modelItem => item.Proprietario.Nome)
                                                                             </td>
+                                                                            <td>
+                                                                                @{
+                                                                                    string parameterAquisicao = item.DataAquisicao.ToString("dd/MM/yyyy");
+                                                                                }
+                                                                                @Html.DisplayFor(modelItem => parameterAquisicao)
+                                                                            </td>
+                                                                            <td>
+                                                                                @{
+                                                                                    string parameterDtDesassociacao = item.DataDesassociacao.ToString().PadLeft(6, '0');
+                                                                                    if (parameterDtDesassociacao == "000000")
+                                                                                    {
+                                                                                        parameterDtDesassociacao = null;
+                                                                                    }
+
+                                                                                }
+                                                                                @Html.DisplayFor(modelItem => parameterDtDesassociacao)
+                                                                            </td>
                                                                             <td align="center">
+                                                                                @*<a asp-action="EditProprietario" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>*@
                                                                                 <a asp-action="DeleteProprietario" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
                                                                             </td>
                                                                         </tr>
@@ -184,6 +186,181 @@
             </div>
         </div>
     </div>
+
+
+
+    @*Entradas*@
+    @*https://getbootstrap.com/docs/4.0/components/collapse/*@
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div id="accordion">
+                                <div class="card">
+                                    <div class="card-header" id="headingEntradas">
+                                        <button class="btn btn-warning col-lg-6 btn-block" type="button" data-toggle="collapse" data-target="#collapseEntradas" aria-expanded="false" aria-controls="collapseEntradas">
+                                            ENTRADAS/DIÁRIAS
+                                        </button>
+                                    </div>
+                                    <small class="form-text text-muted">Clique em ENTRADAS/DIÁRIAS para visualizar registros e realizar o processo de entrada de Animais para realização da cobrança de diárias para os proprietários associados.</small>
+                                </div>
+                                <div class="row" style="padding-top:20px">
+                                    <div class="col-lg-12">
+                                        <div class="collapse" id="collapseEntradas" data-parent="#accordion">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-default panel-table">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="form-row align-items-center">
+                                                                    <div class="col-lg-2">
+                                                                        <label class="control-label">DATA ENTRADA</label>
+                                                                        <input type="date" id="dtDataEntrada" class="form-control"
+                                                                               data-toggle="tooltip" data-placement="top" title="A data de entrada informada será utilizada como parâmentro para início da cobrança ao proprietário das diárias do animal." />
+                                                                        <span id="spanDataEntrada" class="text-danger"></span>
+                                                                    </div>
+                                                                    <div class="col-lg-2">
+                                                                        <label class="control-label">DATA SAÍDA</label>
+                                                                        <input type="date" id="dtDataSaida" class="form-control" />
+                                                                        <span id="spanDataSaida" class="text-danger"></span>
+                                                                    </div>
+                                                                    <div class="col-lg-2">
+                                                                        <label class="control-label" for="sltCobraDiaria">COBRAR DIÁRIA</label>
+                                                                        <!-- asp-for="EnumSimNao" asp-items="@(new SelectList(ViewBag.SimNao, "Value", "Text"))" -->
+                                                                        <select id="sltCobraDiaria"
+                                                                                asp-for="EnumSimNao" asp-items="Html.GetEnumSelectList<EnumSimNao>()"
+                                                                                class="form-control">
+                                                                            <option selected="selected" disabled value="">SELECIONE</option>
+                                                                        </select>
+                                                                        <span id="spanCobraDiaria" class="text-danger"></span>
+                                                                    </div>
+                                                                    <div id="divDiaria" hidden="hidden" class="col-lg-4">
+                                                                        <label class="control-label">DIÁRIAS</label>
+                                                                        <select id="sltDiaria" class="form-control" onchange="getValorDiaria()"
+                                                                                asp-items="@(new SelectList(ViewBag.Diaria, "Id", "Nome")) ">
+                                                                            <option selected="selected" value="">SELECIONE</option>
+                                                                        </select>
+                                                                        <span id="spanDiaria" class="text-danger"></span>
+                                                                        <!--https://demos.telerik.com/aspnet-core/dropdownlist/api-->
+                                                                        <!--http://www.binaryintellect.net/articles/6d0b21c8-2bbc-42c0-9403-4cd1880c123f.aspx-->
+                                                                    </div>
+                                                                    <div id="divDiariaValor" hidden="hidden" class="col-lg-2">
+                                                                        <label class="control-label">VALOR</label>
+                                                                        <input id="txtValorDiaria" class="form-control text-right" />
+                                                                        <span id="spanValorDiaria" class="text-danger"></span>
+                                                                        <input style="display:none" id="txtValorDiariaOriginal" class="form-control text-right" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="padding-top:10px">
+                                                                <div class="col-lg-3">
+                                                                    <label class="control-label">ANEMIA</label>
+                                                                    <select id="sltAnemia" asp-for="EnumSimNao" asp-items="Html.GetEnumSelectList<EnumSimNao>()" class="form-control">
+                                                                        <option selected="selected" disabled value="">SELECIONE</option>
+                                                                    </select>
+                                                                    <span id="spanAnemia" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="control-label">MORMO</label>
+                                                                    <select id="sltMormo" asp-for="EnumSimNao" asp-items="Html.GetEnumSelectList<EnumSimNao>()" class="form-control">
+                                                                        <option selected="selected" disabled value="">SELECIONE</option>
+                                                                    </select>
+                                                                    <span id="spanMormo" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="control-label">TIPO CASCO</label>
+                                                                    <!-- asp-items="@(new SelectList(ViewBag.TipoCasco, "Value", "Text"))" -->
+                                                                    <select id="sltTipoCasco" asp-for="AnimalTipoCasco" asp-items="Html.GetEnumSelectList<AnimalTipoCasco>()" class="form-control">
+                                                                        <option selected="selected" disabled value="">SELECIONE</option>
+                                                                    </select>
+                                                                    <span id="spanTipoCasco" class="text-danger"></span>
+                                                                </div>
+                                                                <div" class="col-lg-2">
+                                                                    <label class="control-label">GTA</label>
+                                                                    <input id="txtGta" class="form-control text-right" />
+                                                                    <span id="spanGta" class="text-danger"></span>
+                                                                </div">
+                                                            </div>
+                                                            <div class="row" style="padding-top:10px">
+                                                                <div class="col-lg-12">
+                                                                    <label class="control-label">OBSERVAÇÕES CLÍNICAS</label>
+                                                                    <textarea id="txtObservacoesClinicas" class="form-control" rows="5"></textarea>
+                                                                    <span id="spanObservacoesClinicas" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-lg-3 pull-right">
+                                                                <br />
+                                                                <input id="btnAddEntrada" type="button" value="ADICIONAR ENTRADA" class="btn btn-primary"
+                                                                       data-toggle="tooltip" data-placement="top" title="Clique aqui para adicionar informações de entrada do animal." />
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <span id="resultAddDiaria" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <table class="table table-striped table-bordered table-list">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>ID</th>
+                                                                        <th>DATA ENTRADA</th>
+                                                                        <th>DATA SAÍDA</th>
+                                                                        <th><em class="fa fa-cog"></em></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="listaTbodyEntrada">
+                                                                    <!--Lista dos serviços cadastrados -->
+                                                                    <!--https://stackoverflow.com/questions/14165632/asp-net-mvc-4-for-loop-posts-model-collection-properties-but-foreach-does-not-->
+                                                                    @foreach (var item in Model.AnimaisEntradas.OrderByDescending(x => x.DataEntrada))
+                                                                    {
+                                                                        <tr>
+                                                                            <td>
+                                                                                @Html.DisplayFor(modelItem => item.Id)
+                                                                            </td>
+                                                                            <td>
+                                                                                @{
+                                                                                    string parameterValue = item.DataEntrada.ToString("dd/MM/yyyy");
+                                                                                }
+                                                                                @Html.DisplayFor(modelItem => parameterValue)
+                                                                            </td>
+                                                                            <td>
+                                                                                @{
+                                                                                    string parameterDtSaida = item.DataSaida.ToString().PadLeft(6, '0');
+                                                                                    if (parameterDtSaida == "000000")
+                                                                                    {
+                                                                                        parameterDtSaida = null;
+                                                                                    }
+                                                                                }
+                                                                                @Html.DisplayFor(modelItem => parameterDtSaida)
+                                                                            </td>
+                                                                            <td align="center">
+                                                                                <a asp-action="EditEntrada" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                                                <a asp-action="DeleteEntrada" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 
     @*Serviços*@
@@ -211,30 +388,78 @@
                                                     <div class="panel panel-default panel-table">
                                                         <div class="panel-heading">
                                                             <div class="row">
-
-                                                                <div class="col-lg-6">
+                                                                <div class="col-lg-4">
                                                                     <label class="control-label">SERVIÇOS CADASTRADOS</label>
                                                                     <!--<select id="sltServico" class="form-control"-->
                                                                     <select id="sltServico" class="form-control" onchange="getValorServico()"
-                                                                            asp-items="@(new SelectList(ViewBag.ServicoId, "Id", "Nome", "Valor")) ">
+                                                                            asp-items="@(new SelectList(ViewBag.ServicoId, "Id", "Nome")) ">
                                                                         <option selected="selected" value="">SELECIONE</option>
                                                                     </select>
+                                                                    <span id="spanServico" class="text-danger"></span>
                                                                     <!--https://demos.telerik.com/aspnet-core/dropdownlist/api-->
                                                                     <!--http://www.binaryintellect.net/articles/6d0b21c8-2bbc-42c0-9403-4cd1880c123f.aspx-->
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <label class="control-label">QUANTIDADE</label>
+                                                                    <input id="txtQuantidade" class="form-control text-right" />
+                                                                    <span id="spanQuantidade" class="text-danger"></span>
                                                                 </div>
                                                                 <div class="col-lg-2">
                                                                     <label class="control-label">VALOR</label>
                                                                     <input id="txtValor" class="form-control text-right" />
                                                                     <input style="display:none" id="txtValorOriginal" class="form-control text-right" />
+                                                                    <span id="spanValor" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <label class="control-label">VALOR TOTAL</label>
+                                                                    <input id="txtValorTotal" class="form-control text-right" readonly="readonly"/>                                                                    
+                                                                    <span id="spanValorTotal" class="text-danger"></span>
                                                                 </div>
                                                                 <div class="col-lg-2">
                                                                     <label class="control-label">DATA REALIZAÇÃO</label>
                                                                     <input type="date" id="txtData" class="form-control" />
+                                                                    <span id="spanData" class="text-danger"></span>
                                                                 </div>
-                                                                <div class="col-lg-2">
+                                                            </div>
+                                                            <div class="row" style="padding-top:10px">
+                                                                <div id="divDoadora" class="col-lg-4">
+                                                                    <label class="control-label">DOADORA</label>
+                                                                    <select id="sltDoadora" class="form-control"
+                                                                            asp-items="@(new SelectList(ViewBag.DoadoraId, "Id", "Nome"))">
+                                                                        <option selected="selected" value="" >NÃO INFORMADO</option>
+                                                                    </select>
+                                                                    <span class="text-danger"></span>
+                                                                </div>
+                                                                <div id="divGaranhao" class="col-lg-4">
+                                                                    <label class="control-label">GARANHÃO</label>
+                                                                    <select id="sltGaranhao" class="form-control"
+                                                                            asp-items="@(new SelectList(ViewBag.GaranhaoId, "Id", "Nome"))">
+                                                                        <option selected="selected" value="">NÃO INFORMADO</option>
+                                                                    </select>
+                                                                    <span class="text-danger"></span>
+                                                                </div>
+                                                                <div id="divReceptora" class="col-lg-4">
+                                                                    <label class="control-label">RECEPTORA</label>
+                                                                    <select id="sltReceptora" class="form-control"
+                                                                            asp-items="@(new SelectList(ViewBag.ReceptoraId, "Id", "Nome"))">
+                                                                        <option selected="selected" value="">NÃO INFORMADO</option>
+                                                                    </select>
+                                                                    <span class="text-danger"></span>
+                                                                </div>
+                                                                <div id="divSemen" class="col-lg-4">
+                                                                    <label class="control-label">SÉMEN</label>
+                                                                    <select id="sltSemen" class="form-control"
+                                                                            asp-items="@(new SelectList(ViewBag.SemenId, "Id", "Nome"))">
+                                                                        <option selected="selected" value="">NÃO INFORMADO</option>
+                                                                    </select>
+                                                                    <span class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="padding-top:10px">
+                                                                <div class="col-lg-2 pull-right">
                                                                     <br />
-                                                                    <input id="btnAddServico" type="button" value="LANÇAR SERVIÇO" class="btn btn-primary" 
-                                                                           data-toggle="tooltip" title="Clique aqui para lançar o serviço realizado no animal"/>
+                                                                    <input id="btnAddServico" type="button" value="LANÇAR SERVIÇO" class="btn btn-primary"
+                                                                           data-toggle="tooltip" data-placement="top" title="Clique aqui para lançar o serviço realizado no animal" />
                                                                 </div>
                                                                 <div class="col-lg-12">
                                                                     <span id="resultAddServico" class="text-danger"></span>
@@ -242,13 +467,15 @@
                                                             </div>
                                                         </div>
                                                         <div class="panel-body">
-                                                            <table class="table table-striped table-bordered table-list">
+                                                            <table id="tabelaServico" class="table table-striped table-bordered table-list">
                                                                 <thead>
                                                                     <tr>
                                                                         <th>ID</th>
                                                                         <th>NOME</th>
                                                                         <th>VALOR</th>
+                                                                        <th>SITUAÇÃO</th>
                                                                         <th>DATA REALIZAÇÃO</th>
+                                                                        <th>DATA CANCELAMENTO</th>
                                                                         <th><em class="fa fa-cog"></em></th>
                                                                     </tr>
                                                                 </thead>
@@ -257,34 +484,46 @@
                                                                     <!--https://stackoverflow.com/questions/14165632/asp-net-mvc-4-for-loop-posts-model-collection-properties-but-foreach-does-not-->
                                                                     <!--Lista dos serviços cadastrados -->
                                                                     <!--https://stackoverflow.com/questions/14165632/asp-net-mvc-4-for-loop-posts-model-collection-properties-but-foreach-does-not-->
-                                                                    @foreach (var item in Model.AnimaisServicos.OrderByDescending(x => x.Data.ToString("dd/MM/yyyy")).ThenByDescending(m => m.Id))
+                                                                    @foreach (var item in Model.AnimaisServicos.OrderByDescending(x => x.Data).ThenByDescending(m => m.Id))
                                                                     {
-                                                                    <tr>
-                                                                        <td>
-                                                                            @Html.DisplayFor(modelItem => item.Id)
-                                                                        </td>
-                                                                        <td>
-                                                                            @Html.DisplayFor(modelItem => item.Servico.Nome)
-                                                                        </td>
-                                                                        <td>
-                                                                            @Html.DisplayFor(modelItem => item.Valor)
-                                                                        </td>                                                                   
-                                                                        <td>
-                                                                            @{
-                                                                                string parameterValue = item.Data.ToString("dd/MM/yyyy");
-                                                                            }
-                                                                            @Html.DisplayFor(modelItem => parameterValue)
-                                                                        </td>
+                                                                        <tr>
+                                                                            <td>
+                                                                                @Html.DisplayFor(modelItem => item.Id)
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.DisplayFor(modelItem => item.Servico.Nome)
+                                                                            </td>
+                                                                            <td class="itemValor">
+                                                                                @Html.DisplayFor(modelItem => item.Valor)
+                                                                            </td>
+                                                                            <td class="itemValor">
+                                                                                @Html.DisplayFor(modelItem => item.ServicoSituacao)
+                                                                            </td>
+                                                                            <td>
+                                                                                @{
+                                                                                    string parameterValue = item.Data.ToString("dd/MM/yyyy");
+                                                                                }
+                                                                                @Html.DisplayFor(modelItem => parameterValue)
+                                                                            </td>
+                                                                            <td>
+                                                                                @{
+                                                                                    string parameterDtCancelado = item.DataCancelamento.ToString().PadLeft(6, '0');
+                                                                                    if (parameterDtCancelado == "000000")
+                                                                                    {
+                                                                                        parameterDtCancelado = null;
+                                                                                    }
+
+                                                                                }
+                                                                                @Html.DisplayFor(modelItem => parameterDtCancelado)
+                                                                            </td>
                                                                             <td align="center" style="display:inline-block">
                                                                                 <a asp-action="EditLancamentoServico" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><em class="glyphicon glyphicon-pencil"></em> </a>
-                                                                                <a asp-action="DeleteLancamentoServico" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
-
                                                                             </td>
                                                                         </tr>
                                                                     }
                                                                 </tbody>
                                                             </table>
-                                                            <div style="float:left; font-size:22px">Total: R$</div>
+                                                            <div style="float:left; font-size:22px">Total Realizado: R$</div>
                                                             <div id="divTotal" style="float:left; font-size:22px; margin-left:5px">@ViewBag.Total</div>
                                                         </div>
                                                     </div>
@@ -302,153 +541,7 @@
     </div>
 
 
-
-
-    @*Proprietários*@
-    @*
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default panel-table">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label class="control-label">PROPRIETÁRIOS</label>
-                                    <select id="sltSelect" asp-items="@(new SelectList(ViewBag.ProprietarioId, "Id", "Nome" ))" class="form-control">
-                                        <option selected="selected" value="">SELECIONE</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-2">
-                                    <br />
-                                    <input id="btnAddProprietario" type="button" value="ADICIONAR PROPRIETÁRIO" class="btn btn-primary" />
-                                </div>
-                                <div class="col-lg-12">
-                                    <span id="resultAddProprietario" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <table id="itensDataTable" class="table table-striped table-bordered table-list">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>NOME</th>
-                                        <th><em class="fa fa-cog"></em></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="listaTabela">
-                                    <!--Lista dos serviços cadastrados -->
-                                    <!--https://stackoverflow.com/questions/14165632/asp-net-mvc-4-for-loop-posts-model-collection-properties-but-foreach-does-not-->
-
-                                    @foreach (var item in Model.AnimaisProprietarios)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Id)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Proprietario.Nome)
-                                            </td>
-                                            <td align="center">
-                                                <a asp-action="DeleteProprietario" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-
-    @*Serviços*@
-    @*
-        <div class="container">
-            <div class="row">
-
-                <div class="col-md-12">
-                    <div class="panel panel-default panel-table">
-                        <div class="panel-heading">
-                            <div class="row">
-
-                                <div class="col-lg-6">
-                                    <label class="control-label">SERVIÇOS</label>
-                                    <!--<select id="sltServico" class="form-control"-->
-                                    <select id="sltServico" class="form-control" onchange="getValorServico()"
-                                            asp-items="@(new SelectList(ViewBag.ServicoId, "Id", "Nome", "Valor")) ">
-                                        <option selected="selected" value="">SELECIONE</option>
-                                    </select>
-                                    <!--https://demos.telerik.com/aspnet-core/dropdownlist/api-->
-                                    <!--http://www.binaryintellect.net/articles/6d0b21c8-2bbc-42c0-9403-4cd1880c123f.aspx-->
-                                </div>
-                                <div class="col-lg-2">
-                                    <label class="control-label">VALOR</label>
-                                    <input id="txtValor" class="form-control text-right" />
-                                    <input style="display:none" id="txtValorOriginal" class="form-control text-right" />
-                                </div>
-                                <div class="col-lg-2">
-                                    <label class="control-label">DATA</label>
-                                    <input type="date" id="txtData" class="form-control" />
-                                </div>
-                                <div class="col-lg-12">
-                                    <span id="resultAddServico" class="text-danger"></span>
-                                </div>
-                                <div class="col-lg-2">
-                                    <br />
-                                    <input id="btnAddServico" type="button" value="ADICIONAR SERVIÇO" class="btn btn-primary" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <table class="table table-striped table-bordered table-list">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>NOME</th>
-                                        <th>VALOR</th>
-                                        <th>DATA</th>
-                                        <th><em class="fa fa-cog"></em></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="listaServicos">
-                                    <!--Lista dos serviços cadastrados -->
-                                    <!--https://stackoverflow.com/questions/14165632/asp-net-mvc-4-for-loop-posts-model-collection-properties-but-foreach-does-not-->
-                                    @foreach (var item in Model.AnimaisServicos)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Id)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Servico.Nome)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Valor)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Data)
-                                            </td>
-                                            <td align="center" style="display:inline-block">
-                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><em class="glyphicon glyphicon-pencil"></em> </a>
-                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
-
-                                            </td>
-                                        </tr>
-                                    }
-
-                                </tbody>
-                            </table>
-                            <div style="float:left; font-size:22px">Total: R$</div>
-                            <div id="divTotal" style="float:left; font-size:22px; margin-left:5px">@ViewBag.Total</div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>*@
-
+    @*Botões*@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -464,45 +557,29 @@
 </form>
 
 
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    @*<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>*@
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-
-
-
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 
     <script>
         $('#btnAddProprietario').click(function () {
 
+            $('#spanSltProprietario').empty();
+            $('#spanDataAquisicao').empty();
             $('#resultAddProprietario').empty();
 
+            var validacao = validaAddProprietario();
+
             var animaisId = $('#idAnimais').val();
-            var CodigoProprietario = document.getElementById("sltSelect");
 
             var obj = {};
             obj.AnimaisId = $("#idAnimais").val();
-            obj.ProprietarioId = $("#sltSelect").val();
-
-            //Id do datatable
-            var tabela = $("#itensDataTable");
-
-            var proprietario =
-                "<tr>" +
-                "<td>" + "" + "</td>" +
-                "<td>" + CodigoProprietario.options[CodigoProprietario.selectedIndex].text + "</td>" +
-                "<td>" + "apagar" + "</td>"
-            "</tr>";
+            obj.ProprietarioId = $("#sltSelectProprietario").val();
+            obj.DataAquisicao = $("#dtDataAquisicao").val();
 
 
-            if (CodigoProprietario.options[CodigoProprietario.selectedIndex].text != 'SELECIONE')
-
+            if (validacao == true) {
 
                 $.ajax({
                     type: 'POST',
@@ -520,17 +597,14 @@
                         else {
                             $('#resultAddProprietario')
                                 .html('O Proprietário selecionado já está associado ao Animal! Selecione outro Proprietário!');
-                            //alert(result)
+
                         };
 
                     }
 
                 });
 
-            else {
-                $('#resultAddProprietario')
-                    .html('Selecione um Proprietário!');
-            };
+            }
 
         });
     </script>
@@ -549,39 +623,226 @@
                 url: '/api/Servico/getvalor/' + dpl.value,
                 success: function (result) {
                     var servicoValor = result.valor;
+                    var servicoUnidade = result.servicoUnidade;
+                    var txtQuantidade = $("#txtQuantidade");
+
+                    if (servicoUnidade != "2") {
+                        //alert("passou pelo tipo unitário")
+                        txtQuantidade.prop('readOnly', true);
+                        txtQuantidade.val('1');
+                    } else {
+                        txtQuantidade.removeAttr('readOnly');
+                        txtQuantidade.val('');
+                    }
+                    //alert(result.servicoUnidade)
+                    //alert(servicoUnidade)
 
                     //$('#resultGetValor').html(servicoValor);
-                    $('#txtValor').val(servicoValor.toFixed(2).replace('.', ','));
+                    $("#servicoUnidade").val(servicoUnidade)
+                    $('#txtValor').val(servicoValor);
+                    //$('#txtValor').val(servicoValor.toFixed(2).replace('.', ','));
                     //$('#txtValor').val(servicoValor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }).replace('R$', ''));
 
                     //toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+                    //$('#txtValorOriginal').val(servicoValor);
+                    var teste = servicoValor;
+                    //alert(teste);
                     $('#txtValorOriginal').val(servicoValor);
+                    
+                    getValorTotal();
+                }
+                
+            });
+        }
+
+        function getValorDiaria() {
+
+            var idServico = '1';
+            var dpl = $("#sltDiaria :selected").val();
+
+            alert(dpl)
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/Servico/getvalordiaria/' + dpl,
+                success: function (result) {
+                    var servicoValor = result.valor;
+
+                    //$('#resultGetValor').html(servicoValor);
+                    $('#txtValorDiaria').val(servicoValor);
+                    //$('#txtValor').val(servicoValor.toFixed(2).replace('.', ','));
+                    //$('#txtValor').val(servicoValor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }).replace('R$', ''));
+
+                    //toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+                    //$('#txtValorOriginal').val(servicoValor);
+                    var teste = servicoValor;
+                    //alert(teste);
+                    $('#txtValorDiariaOriginal').val(teste);
                 }
 
             });
 
             //alert(dpl.value);
+        }
+
+        function getValorTotal() {
+            var quantidade = $("#txtQuantidade").val();
+            var valor = $("#txtValor").val();
+            var valorTotal = $("#txtValorTotal");
+            var resultado;
+
+            if (quantidade.trim() != "" && valor.trim() != "") {
+
+                resultado = (quantidade * valor).toFixed(2);               
+
+                valorTotal.val(resultado).change();
+
+                return resultado;
+
+            } else {
+                valorTotal.val('0.00');
+
+                return resultado.val('0.00');
+            }        
+        }
+
+    </script>
+
+    <script>
+        //Validação no processo de inclusão de serviço
+        function validaAddServico() {
+            var quantidade = $("#txtQuantidade").val();
+            var valor = $("#txtValor").val();
+            var servico = $("#sltServico :selected").text();
+            var data = $("#txtData").val();
+
+            if (servico == "SELECIONE") {
+                $("#spanServico").html("Selecione um Serviço!");
+                return false;
+            } else if (quantidade.trim() == "") {
+                $("#spanQuantidade").html("Informe um Valor!");
+                return false;
+            } else if (valor.trim() == "") {
+                $("#spanValor").html("Informe um Valor!");
+                return false;
+            } else if (data.trim() == "") {
+                $("#spanData").html("Informe uma Data!");
+                return false;
+            } else {
+                return true;
+            }
 
 
         }
+
+        //Validação no processo de inclusão de proprietário
+        function validaAddProprietario() {
+
+            var proprietario = $("#sltSelectProprietario :selected").text();
+            var dataAquisicao = $("#dtDataAquisicao").val();
+
+            if (proprietario == "SELECIONE") {
+                $("#spanSltProprietario").html("Selecione um Proprietário!");
+                return false;
+            } else if (dataAquisicao == "") {
+                $("#spanDataAquisicao").html("Informe uma Data!");
+                return false;
+            } else {
+                return true;
+            }
+
+        }
+
+        //Validação no processo de inclusão de entrada
+        function validaAddEntrada() {
+
+            var dataEntrada = $("#dtDataEntrada").val();
+            var cobraDiaria = $("#sltCobraDiaria :selected").text();
+            var diaria = $("#sltDiaria :selected").text();
+            var valorDiaria = $("#txtValorDiaria").val();
+            var anemia = $("#sltAnemia :selected").text();
+            var mormo = $("#sltMormo :selected").text();
+            var tipoCasco = $("#sltTipoCasco :selected").text();
+            var observacoesClinicas = $("#txtObservacoesClinicas").val();
+
+
+            if (dataEntrada.trim() == "") {
+                $("#spanDataEntrada").html("Informe uma data!");
+                return false;
+            }
+            else if (cobraDiaria == "SELECIONE") {
+                $("#spanCobraDiaria").html("Selecione uma opção!");
+                return false;
+            }
+            else if (cobraDiaria == "SIM" && diaria == "SELECIONE") {
+                $("#spanDiaria").html("Selecione uma Diária!");
+                return false;
+            }
+            else if (diaria != "SELECIONE" && valorDiaria.trim() == "") {
+                $("#spanValorDiaria").html("Informe um Valor!");
+                return false;
+            }
+            else if (anemia == "SELECIONE") {
+                $("#spanAnemia").html("Selecione uma opção!");
+                return false;
+            }
+            else if (mormo == "SELECIONE") {
+                $("#spanMormo").html("Selecione uma opção!");
+                return false;
+            }
+            else if (tipoCasco == "SELECIONE") {
+                $("#spanTipoCasco").html("Selecione uma opção!");
+                return false;
+            }
+            else if (observacoesClinicas.trim() == "") {
+                $("#spanObservacoesClinicas").html("Informe uma Observação Clínica!");
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
     </script>
 
     <script>
         $('#btnAddServico').click(function () {
 
+            $("#spanValor").empty();
+            $("#spanData").empty();
+            $("#spanServico").empty();
+            $("#spanQuantidade").empty();
+
             $('#resultAddServico').empty();
 
+            //Realiza o processo de validação dos campos
+            var validacao = validaAddServico();
+            //validacao = false;
+
             var animaisId = $('#idAnimais').val();
-            var CodigoServico = document.getElementById("sltServico");
 
-            var obj = {};
-            obj.AnimaisId = $("#idAnimais").val();
-            obj.ServicoId = $("#sltServico").val();
-            obj.Valor = $("#txtValor").val().replace(",", ".");
-            obj.Data = $("#txtData").val();
-            obj.ValorOriginal = $("#txtValorOriginal").val().replace(",", ".");
+            if (validacao == true) {
 
-            if (CodigoServico.options[CodigoServico.selectedIndex].text != 'SELECIONE')
+                //Chamar a função de calculo de valor total
+                var valorTotal = getValorTotal();
+
+                var obj = {};
+                obj.AnimaisId = $("#idAnimais").val();
+                obj.ServicoId = $("#sltServico").val();
+                //obj.Valor = $("#txtValor").val().replace(",", ".");
+                obj.Valor = $("#txtValor").val();
+                obj.Data = $("#txtData").val();
+                //obj.ValorOriginal = $("#txtValorOriginal").val().replace(",", ".");
+                obj.ValorOriginal = $("#txtValorOriginal").val();
+                obj.ServicoSituacao = 2;
+                obj.ValorTotal = valorTotal;
+                obj.Quantidade = $("#txtQuantidade").val();
+
+                obj.DoadoraId = $("#sltDoadora").val();
+                obj.GaranhaoId = $("#sltGaranhao").val();
+                obj.ReceptoraId = $("#sltReceptora").val();
+                obj.SemenId = $("#sltSemen").val();
+
 
                 $.ajax({
                     type: 'POST',
@@ -605,11 +866,74 @@
                     }
 
                 });
+            }
 
-            else {
-                $('#resultAddServico')
-                    .html('Selecione um Serviço!');
-            };
+
+        });
+    </script>
+
+    <script>
+        $('#btnAddEntrada').click(function () {
+
+            $("#spanDataEntrada").empty();
+            $("#spanCobraDiaria").empty();
+            $("#spanSltDiaria").empty();
+            $('#spanValorDiaria').empty();
+
+            $('#spanAnemia').empty();
+            $('#spanMormo').empty();
+            $('#spanTipoCasco').empty();
+            $('#spanObservacoesClinicas').empty();
+
+
+            //Realiza o processo de validação dos campos
+            var validacao = validaAddEntrada();
+
+            var animaisId = $('#idAnimais').val();
+            var CodigoServico = document.getElementById("sltServico");
+
+            var obj = {};
+            obj.AnimaisId = $("#idAnimais").val();
+            obj.ServicoId = $("#sltDiaria").val();
+            obj.Valor = $("#txtValorDiaria").val();
+            obj.ValorOriginal = $("#txtValorDiariaOriginal").val();
+            obj.DataEntrada = $("#dtDataEntrada").val();
+            obj.DataSaida = $("#dtDataSaida").val();
+            obj.DiariaSituacao = 1;
+
+            obj.CobraDiaria = $("#sltCobraDiaria").val();
+            obj.Gta = $("#txtGta").val();
+            obj.Anemia = $("#sltAnemia").val();
+            obj.Mormo = $("#sltMormo").val();
+            obj.AnimalTipoCasco = $("#sltTipoCasco").val();
+            obj.ObservacoesClinicas = $("#txtObservacoesClinicas").val();
+
+            if (validacao == true) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/Animal/AddEntrada/' + animaisId,
+                    data: JSON.stringify(obj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        $('#resultAddDiaria').empty();
+
+                        if (result == 'NOVO')
+
+                            location.reload();
+
+                        else {
+                            $('#resultAddDiaria')
+                                .html('Ocorreu um erro! Tente novamente.');
+
+                        };
+
+                    }
+
+                });
+            }
+
 
         });
     </script>
@@ -621,14 +945,102 @@
         $(document).ready(function () {
             $("#txtValor").keypress(function () {
 
-                $(this).mask("000.000.000.000.000,00", { reverse: true });
+                $(this).mask("000000000000000.00", { reverse: true });
+            });
+
+        });
+
+
+    </script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+    <script>
+        var animalTipo = $("#animalTipo").val();
+
+        var divDoadora = $("#divDoadora");
+        var divGaranhao = $("#divGaranhao");
+        var divReceptora = $("#divReceptora");
+        var divSemen = $("#divSemen");
+
+        //alert(animalTipo)
+
+        if (animalTipo == "1") {
+            divDoadora.prop('hidden', true);
+        }
+
+        if (animalTipo == "2") {
+            divGaranhao.prop('hidden', true);
+        }
+
+        if (animalTipo == "3") {
+            divReceptora.prop('hidden', true);
+        }
+
+        if (animalTipo == "4") {
+            divSemen.prop('hidden', true);
+        }
+
+        
+
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#sltCobraDiaria").change(function () {
+                var cobraDiaria = $("#sltCobraDiaria :selected").text();
+                var divDiaria = $("#divDiaria");
+                var divDiariaValor = $("#divDiariaValor");
+
+
+                var teste = $("#sltCobraDiaria :selected").val();
+                $(this).children("option:selected").val();
+                alert(cobraDiaria)
+                alert(teste)
+
+                if (cobraDiaria == "SIM") {
+
+                    divDiaria.show();
+                    divDiariaValor.show();
+
+                } else {
+
+                    divDiaria.hide();
+                    divDiariaValor.hide();
+                };
+
+            });
+
+
+            $("#txtValor").keyup(function () {
+                //alert("keyup valor")
+                getValorTotal();
             });
             
 
+            $("#txtQuantidade").keyup(function () {
+                //alert("keyup quantidade")
+                getValorTotal();
+            });
+          
 
         });
+
+
     </script>
 
-
+    <script>
+        //https://stackoverflow.com/questions/15163570/how-can-i-change-all-input-values-to-uppercase-using-jquery
+        $(document).on('blur', "input[type=text]", function () {
+            $(this).val(function (_, val) {
+                return val.toUpperCase();
+            });
+        });
+    </script>
 
 }

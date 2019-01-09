@@ -13,6 +13,7 @@ namespace WebProjVet.Models
 
         [Display(Name = "TIPO")]
         [EnumDataType(typeof(PessoaTipo))]
+        [Required(ErrorMessage ="Selecione uma opção!")]
         public PessoaTipo PessoaTipo { get; set; }
 
         [Display(Name = "NOME"), MaxLength(100)]
@@ -25,6 +26,7 @@ namespace WebProjVet.Models
 
         [Display(Name = "SITUAÇÃO")]
         [EnumDataType(typeof(Situacao))]
+        [Required(ErrorMessage ="Selecione uma opção!")]
         public Situacao Situacao { get; set; }
     }
 }

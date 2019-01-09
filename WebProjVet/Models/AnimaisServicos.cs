@@ -22,16 +22,68 @@ namespace WebProjVet.Models
         [ForeignKey("ServicoId")]
         public virtual Servico Servico { get; set; }
 
-        [DataType(DataType.Currency)]
-        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
+        [Display(Name ="VALOR")]
+        //[DataType(DataType.Currency)]
+        //[DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         //[DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         //[RegularExpression(@"[0-9]{1,4}(\.[0-9]{1,2})?")]
-        public decimal Valor { get; set; }
+        public string Valor { get; set; }
 
+        [Display(Name ="DATA REALIZAÇÃO")]
+        [DataType(DataType.Date)]
         public DateTime Data { get; set; }
 
         [DataType(DataType.Currency)]
-        public decimal ValorOriginal { get; set; }
+        public string ValorOriginal { get; set; }
+
+        [Display(Name ="MOTIVO")]
+        [MaxLength(100)]
+        public string Motivo { get; set; }
+
+        [Display(Name ="DATA CANCELAMENTO")]
+        [DataType(DataType.Date)]
+        public DateTime? DataCancelamento { get; set; }
+
+        [Display(Name = "SITUAÇÃO")]
+        [EnumDataType(typeof(ServicoSituacao))]
+        public ServicoSituacao ServicoSituacao { get; set; }
+
+        [Required(ErrorMessage ="{0} deve ser informado!")]
+        public int Quantidade { get; set; }
+
+        [DataType(DataType.Currency)]
+        [Required(ErrorMessage ="{0} deve ser informado!")]
+        public string ValorTotal { get; set; }
+
+
+        public string DoadoraId { get; set; }
+
+        //[ForeignKey("DoadoraId")]
+        //public virtual Animais Doadora { get; set; }
+
+        
+        public string GaranhaoId { get; set; }
+
+        //[ForeignKey("GaranhaoId")]
+        [NotMapped]
+        public virtual Animais Garanhao { get; set; }
+
+
+        public string ReceptoraId { get; set; }
+
+        //[ForeignKey("ReceptoraId")]
+        [NotMapped]
+        public virtual Animais Receptora { get; set; }
+
+
+        public string SemenId { get; set; }
+
+        //[ForeignKey("SemenId")]
+        [NotMapped]
+        public virtual Animais Semen { get; set; }
+
+
+        //public virtual ICollection<AnimalServicosVinculoAnimais> AnimalServicosVinculoAnimais { get; set; }
 
         [NotMapped]
         public string AnimaisServicosJson { get; set; }

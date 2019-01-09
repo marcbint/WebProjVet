@@ -5,69 +5,70 @@
 }
 
 
-
-<h3 class="text-center">SERVIÇO</h3>
-
-
 <form asp-action="Create">
-    <div class="container">
+    <div class="container" style="padding-top:50px">
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default panel-table">
                     <div class="panel-heading">
+                        <h3 class="text-center">SERVIÇO</h3>
                         <div class="row">
                             <div class="col-lg-12">
                                 <input type="hidden" asp-for="Id" id="idPrimary">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-2">
                                 <label asp-for="Codigo" class="control-label"></label>
-                                <input asp-for="Codigo" class="form-control text-uppercase" />
+                                <input asp-for="Codigo" class="form-control"
+                                       data-toggle="tooltip" data-placement="top"
+                                       title="Informe uma identificação única para o Serviço com até 10 letras ou números." />
                                 <span asp-validation-for="Codigo" class="text-danger"></span>
                             </div>
-                        </div>
-                        <div class="row" style="padding-top:10px">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label asp-for="Nome" class="control-label"></label>
-                                <input asp-for="Nome" class="form-control text-uppercase" />
+                                <input asp-for="Nome" class="form-control" />
                                 <span asp-validation-for="Nome" class="text-danger"></span>
                             </div>
-                        </div>
-                        <div class="row" style="padding-top:10px">
-                            <div class="col-lg-4">
-                                <label asp-for="Valor" class="control-label"></label>
-                                <input id="txtValor" asp-for="Valor" class="form-control text-uppercase text-right" />
-                                <span asp-validation-for="Valor" class="text-danger"></span>
+                            <div class="col-lg-2">
+                                <label asp-for="ServicoUnidade" class="control-label"></label>
+                                <select asp-for="ServicoUnidade" asp-items="Html.GetEnumSelectList<ServicoUnidade>()" class="form-control">
+                                    <option selected="selected" disabled value=null>SELECIONE</option>
+                                </select>
+                                <span asp-validation-for="ServicoUnidade" class="text-danger"></span>
                             </div>
+                            <div class="col-lg-2">
+                                <label asp-for="Valor" class="control-label"></label>
+                                <input id="txtValor" asp-for="Valor" class="form-control text-right" />
+                                <span asp-validation-for="Valor" class="text-danger"></span>
+                            </div>                          
                         </div>
                         <div class="row" style="padding-top:10px">
-                            <div class="col-lg-4">
+                            <div class="col-lg-2">
                                 <label asp-for="ServicoTipo" class="control-label"></label>
                                 <select asp-for="ServicoTipo" asp-items="Html.GetEnumSelectList<ServicoTipo>()" class="form-control">
-                                    <option selected="selected" value="1">OUTROS</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row" style="padding-top:10px">
-                            <div class="col-lg-4">
-                                <label asp-for="Situacao" class="control-label"></label>
-                                <select asp-for="Situacao" asp-items="Html.GetEnumSelectList<Situacao>()" class="form-control">
                                     <option selected="selected" value="">SELECIONE</option>
                                 </select>
+                                <span asp-validation-for="ServicoTipo" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-2">
+                                <label asp-for="Situacao" class="control-label"></label>
+                                <select asp-for="Situacao" asp-items="Html.GetEnumSelectList<Situacao>()" class="form-control">
+                                    <option selected="selected" value="" disabled>SELECIONE</option>
+                                </select>
+                                <span asp-validation-for="Situacao" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <input type="submit" value="GRAVAR" class="btn btn-primary btn-lg btn-block" />
+                <input type="submit" value="REGISTRAR" class="btn btn-success btn-lg btn-block" />
             </div>
         </div>
         <div class="row" style="padding-top:20px">
@@ -82,6 +83,9 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
     <script>
         //https://www.blogson.com.br/como-formatar-campos-de-cpf-cep-telefone-e-moeda-com-jquery-jmask/
@@ -89,11 +93,24 @@
         $(document).ready(function () {
             $("#txtValor").keypress(function () {
 
-                $(this).mask("000000000000000,00", { reverse: true });
+                $(this).mask("000000000.00", { reverse: true });
             });
-
-
-
         });
     </script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+    <script>
+        //https://stackoverflow.com/questions/15163570/how-can-i-change-all-input-values-to-uppercase-using-jquery
+        $(document).on('blur', "input[type=text]", function () {
+            $(this).val(function (_, val) {
+                return val.toUpperCase();
+            });
+        });
+    </script>
+
 }

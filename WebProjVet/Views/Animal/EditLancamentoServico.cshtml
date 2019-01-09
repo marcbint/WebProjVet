@@ -20,23 +20,41 @@
                             </div>
                         </div>
                         <div class="row" style="padding-top:20px">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="control-label">SERVIÇOS CADASTRADOS</label>
                                 <select id="sltServico" asp-for="ServicoId" class="form-control" onchange="getValorServico()"
                                         asp-items="@(new SelectList(ViewBag.ServicoId, "Id", "Nome")) ">
                                     <option selected="selected" value="">SELECIONE</option>
                                 </select>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <label asp-for="Valor" class="control-label"></label>
-                                <input id="txtValor" asp-for="Valor" class="form-control" value="@Model?.Valor.ToString("0")"/>
+                                <input id="txtValor" asp-for="Valor" class="form-control text-right" />
                                 <span asp-validation-for="Valor" class="text-danger"></span>
                                 <input style="display:none" id="txtValorOriginal" asp-for="ValorOriginal" class="form-control text-right" />
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <label asp-for="Data" class="control-label"></label>
-                                <input type="date" asp-for="Data" class="form-control"  />
+                                <input type="date" asp-for="Data" class="form-control" />
                                 <span asp-validation-for="Data" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-2">
+                                <label asp-for="ServicoSituacao" class="control-label"></label>
+                                <select id="servicoSituacao" asp-for="ServicoSituacao" asp-items="Html.GetEnumSelectList<ServicoSituacao>()" class="form-control">
+                                    <option selected="selected" value="">SELECIONE</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2">
+                                <label asp-for="DataCancelamento" class="control-label"></label>
+                                <input type="date" asp-for="DataCancelamento" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="DataCancelamento" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div id="divMotivo" class="row" style="padding-top:20px">
+                            <div class="col-lg-12">
+                                <label asp-for="Motivo" class="control-label"></label>
+                                <input id="txtMotivo" asp-for="Motivo" class="form-control" />
+                                <span asp-validation-for="Motivo" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -63,11 +81,8 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-
-
-
-
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
@@ -155,14 +170,47 @@
         $(document).ready(function () {
             $("#txtValor").keypress(function () {
 
-                $(this).mask("000.000.000.000.000,00", { reverse: true });
+                $(this).mask("000000000000000.00", { reverse: true });
             });
+
+
+            //Trata exibição das divs
+            if ($("#servicoSituacao :selected").val() == "1") {
+                //Desabilitar motivo
+                $("#divMotivo").show()
+            } else {
+                $("#divMotivo").hide()
+            }
+
+
 
 
 
         });
     </script>
 
+    <script>
+        $("#servicoSituacao").change(function () {
+            var situacao = $("#servicoSituacao :selected").val();
 
+            if (situacao == "1") {
+                //Desabilitar motivo
+                $("#divMotivo").show()
+
+            } else {
+                $("#divMotivo").hide()
+            }
+
+        });
+    </script>
+
+    <script>
+        //https://stackoverflow.com/questions/15163570/how-can-i-change-all-input-values-to-uppercase-using-jquery
+        $(document).on('blur', "input[type=text]", function () {
+            $(this).val(function (_, val) {
+                return val.toUpperCase();
+            });
+        });
+    </script>
 
 }

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebProjVet.AcessoDados;
@@ -87,7 +88,7 @@ namespace WebProjVet.Controllers
                             AnimaisProprietario objLista = new AnimaisProprietario();
                             objLista.AnimaisId = animaisId;
                             objLista.ProprietarioId = lista[i].ProprietarioId;                      
-                            objLista.Data = DateTime.Now;
+                            objLista.DataInclusao = DateTime.Now;
 
                             _context.AnimaisProprietarios.Add(objLista);
                             _context.SaveChanges();
@@ -103,47 +104,62 @@ namespace WebProjVet.Controllers
 
         }
 
-        public IActionResult EditLancamentoServico(int id)
-        {
-            if(id > 0)
-            {
-                ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
-
-                AnimaisServicos servicoLancado = _context.AnimaisServicos
-                    .Include(p => p.Servico)
-                    .ToList()
-                    .FirstOrDefault(p => p.Id == id);                              
-
-                return View(servicoLancado);
-                    
-            }
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult EditLancamentoServico(AnimaisServicos animaisServicos)
-        {
-            _context.AnimaisServicos.Update(animaisServicos);
-            _context.SaveChanges();
-            return RedirectToRoute(new { Controller = "Animal", Action = "Edit", id = animaisServicos.AnimaisId });
-        }
-
-
+       
         public IActionResult Edit(int id)
         {
             if (id > 0)
             {
-                //Somar o valor de serviços lançados no animal
-                ViewBag.Total =  Math.Round(_context.AnimaisServicos
-                    .Where(x => x.AnimaisId == id)
-                    .Sum(x => x.Valor),2);
+
+                #region Processo de somatória dos serviços realizados           
+                var lstItens = new List<double>();
+                List<AnimaisServicos> Lista = _context.AnimaisServicos
+                    .Where(x => x.AnimaisId == id 
+                    && x.ServicoSituacao != ServicoSituacao.CANCELADO)
+                    .ToList();
+
+                double valor;
+                double valorFinal;
+                foreach (var h in Lista)
+                {
+
+                    valor = Convert.ToDouble(h.Valor);
+                    lstItens.Add(valor);
+                }
+                valorFinal = lstItens.Sum() / 100;
+                ViewBag.Total = string.Format(new CultureInfo("pt-BR"), "{0:N}", valorFinal);
+                #endregion
+
                 ViewBag.ProprietarioId = _context.Proprietarios.OrderBy(x => x.Nome).ToList();
                 ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
+                ViewBag.Diaria = _context.Servicos.Where(s => s.ServicoTipo == ServicoTipo.DIÁRIA).ToList();
+                ViewBag.DoadoraId = _context.Animais
+                                    .Where(x => x.AnimalTipo == AnimalTipo.DOADORA 
+                                    && x.Situacao == Situacao.ATIVO)
+                                    .ToList();
+                ViewBag.GaranhaoId = _context.Animais
+                                    .Where(x => x.AnimalTipo == AnimalTipo.GARANHÃO
+                                    && x.Situacao == Situacao.ATIVO)
+                                    .ToList();
+                ViewBag.ReceptoraId = _context.Animais
+                                    .Where(x => x.AnimalTipo == AnimalTipo.RECEPTORA
+                                    && x.Situacao == Situacao.ATIVO)
+                                    .ToList();
+                ViewBag.SemenId = _context.Animais
+                                    .Where(x => x.AnimalTipo == AnimalTipo.SÉMEN
+                                    && x.Situacao == Situacao.ATIVO)
+                                    .ToList();
+
+                ViewBag.SimNao = new SelectList(Enum.GetValues(typeof(EnumSimNao)));
+
+                ViewBag.TipoCasco = new SelectList(Enum.GetValues(typeof(AnimalTipoCasco)));
+
+
 
                 var animais = _context.Animais
                     .Where(p => p.Id.Equals(id))
                     .Include(e => e.AnimaisProprietarios)
                     .Include(s => s.AnimaisServicos)
+                    .Include(t => t.AnimaisEntradas)
                     .ToList()
                     .FirstOrDefault(p => p.Id == id);                
 
@@ -163,6 +179,7 @@ namespace WebProjVet.Controllers
                 var animaisId = animais.Id;
 
                 //Realiza a inclusão se existirem itens
+                /*
                 if (animais.AnimaisProprietariosJson != null)
                 {
                     //Processo de inclusão de itens
@@ -177,7 +194,7 @@ namespace WebProjVet.Controllers
                                 AnimaisProprietario objLista = new AnimaisProprietario();
                                 objLista.AnimaisId = animaisId;
                                 objLista.ProprietarioId = lista[i].ProprietarioId;
-                                objLista.Data = DateTime.Now;
+                                objLista.DataInclusao = DateTime.Now;
 
                                 _context.AnimaisProprietarios.Add(objLista);
                                 
@@ -185,7 +202,7 @@ namespace WebProjVet.Controllers
 
                         }
                     }
-                }
+                }*/
 
                 _context.SaveChanges();
                 return RedirectToAction("Index");
@@ -202,7 +219,7 @@ namespace WebProjVet.Controllers
                 //Somar o valor de serviços lançados no animal
                 ViewBag.Total = _context.AnimaisServicos
                     .Where(x => x.AnimaisId == id)
-                    .Sum(x => x.Valor);
+                    .Sum(x => Convert.ToDecimal( x.Valor));
                 ViewBag.ProprietarioId = _context.Proprietarios.OrderBy(x => x.Nome).ToList();
                 ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
 
@@ -240,6 +257,46 @@ namespace WebProjVet.Controllers
             {
                 //ViewBag.ProprietarioId = _context.Proprietarios.ToList();
 
+
+                var animaisProprietario = _context.AnimaisProprietarios
+                    .Where(p => p.Id.Equals(id))
+                    .Include(e => e.Proprietario)
+                    .ToList()
+                    .FirstOrDefault(p => p.Id == id);
+
+
+
+                return View(animaisProprietario);
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteProprietario(AnimaisProprietario animaisProprietario)
+        {
+            
+            AnimaisProprietario registro = _context.AnimaisProprietarios
+                .Where(p => p.Id.Equals(animaisProprietario.Id))
+                .FirstOrDefault(p => p.Id == animaisProprietario.Id);
+
+            registro.DataDesassociacao = animaisProprietario.DataDesassociacao;
+        
+            _context.AnimaisProprietarios.Update(registro);
+            _context.SaveChanges();
+
+            return RedirectToRoute(new { Controller = "Animal", Action = "Edit", id = animaisProprietario.AnimaisId });
+
+        }
+
+
+        public IActionResult DeleteProprietario_bkp(int id)
+        {
+            if (id > 0)
+            {
+                //ViewBag.ProprietarioId = _context.Proprietarios.ToList();
+
                 
                 var animaisProprietario = _context.AnimaisProprietarios
                     .Where(p => p.Id.Equals(id))
@@ -257,7 +314,7 @@ namespace WebProjVet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteProprietario(AnimaisProprietario animaisProprietario)
+        public IActionResult DeleteProprietario_bkp(AnimaisProprietario animaisProprietario)
         {
             AnimaisProprietario registro = _context.AnimaisProprietarios
                 .Where(p => p.Id.Equals(animaisProprietario.Id))
@@ -292,7 +349,7 @@ namespace WebProjVet.Controllers
                     {
                         var obj = JsonConvert.DeserializeObject<AnimaisProprietario>(requestBody);
                         AnimaisProprietario ObjAnimaisProprietarios = JsonConvert.DeserializeObject<AnimaisProprietario>(requestBody);
-                        ObjAnimaisProprietarios.Data = DateTime.Now;
+                        ObjAnimaisProprietarios.DataInclusao = DateTime.Now;
 
                         //Verifica se o Proprietário já esta adicionado à Doadora
                         int count = _context.DoadoraProprietarios
@@ -343,9 +400,11 @@ namespace WebProjVet.Controllers
 
                         AnimaisServicos ObjAnimaisServicos = JsonConvert.DeserializeObject<AnimaisServicos>(requestBody);
 
+                        //string teste = ObjAnimaisServicos.ValorOriginal
+                        
                         //string valor = ObjAnimaisServicos.Valor.ToString().Replace(",", ".");
                         //https://pt.stackoverflow.com/questions/243124/como-limitar-casas-decimais-usando-c
-                        ObjAnimaisServicos.Valor = Convert.ToDecimal(ObjAnimaisServicos.Valor, new CultureInfo("pt-BR"));                        
+                        //ObjAnimaisServicos.Valor = Convert.ToDecimal(ObjAnimaisServicos.Valor, new CultureInfo("pt-BR"));                        
 
                         _context.AnimaisServicos.Add(ObjAnimaisServicos);
                         _context.SaveChanges();
@@ -360,6 +419,84 @@ namespace WebProjVet.Controllers
             return new JsonResult(retorno);
         }
 
+
+        [Route("api/[controller]/AddEntrada/{idAnimais}")]
+        public IActionResult AddEntrada(int idAnimais)
+        {
+            //https://www.talkingdotnet.com/handle-ajax-requests-in-asp-net-core-razor-pages/
+            //http://binaryintellect.net/articles/16ecfe49-98df-4305-b53f-2438d836f0d0.aspx
+
+            string retorno = null;
+
+            {
+
+                MemoryStream stream = new MemoryStream();
+                Request.Body.CopyTo(stream);
+                stream.Position = 0;
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    string requestBody = reader.ReadToEnd();
+                    if (requestBody.Length > 0)
+                    {
+                        //var obj = JsonConvert.DeserializeObject<AnimaisServicos>(requestBody);
+
+                        AnimaisEntrada ObjAnimaisEntrada = JsonConvert.DeserializeObject<AnimaisEntrada>(requestBody);
+
+                        //string teste = ObjAnimaisServicos.ValorOriginal
+
+                        //string valor = ObjAnimaisServicos.Valor.ToString().Replace(",", ".");
+                        //https://pt.stackoverflow.com/questions/243124/como-limitar-casas-decimais-usando-c
+                        //ObjAnimaisServicos.Valor = Convert.ToDecimal(ObjAnimaisServicos.Valor, new CultureInfo("pt-BR"));                        
+
+                        _context.AnimaisEntradas.Add(ObjAnimaisEntrada);
+                        _context.SaveChanges();
+                        retorno = "NOVO";
+                        return new JsonResult(retorno);
+
+                    }
+                }
+
+            }
+
+            return new JsonResult(retorno);
+        }
+
+
+        public IActionResult EditLancamentoServico(int id)
+        {
+            if (id > 0)
+            {
+                ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
+
+                AnimaisServicos servicoLancado = _context.AnimaisServicos
+                    .Include(p => p.Servico)
+                    .ToList()
+                    .FirstOrDefault(p => p.Id == id);
+
+                return View(servicoLancado);
+
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult EditLancamentoServico(AnimaisServicos animaisServicos)
+        {
+            if (animaisServicos.ServicoSituacao == ServicoSituacao.CANCELADO)
+            {
+                animaisServicos.DataCancelamento = DateTime.Now;
+            }
+            else
+            {
+                animaisServicos.Motivo = null;
+                animaisServicos.DataCancelamento = null;
+            }
+
+            _context.AnimaisServicos.Update(animaisServicos);
+            _context.SaveChanges();
+
+            return RedirectToRoute(new { Controller = "Animal", Action = "Edit", id = animaisServicos.AnimaisId });
+        }
 
 
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebProjVet.Models;
-using WebProjVet.Models.ViewModels;
 
 namespace WebProjVet.AcessoDados
 {
@@ -20,6 +19,7 @@ namespace WebProjVet.AcessoDados
         public DbSet<AnimaisProprietario> AnimaisProprietarios { get; set; }
         public DbSet<TratamentoAnimal> TratamentoAnimais { get; set; }
         public DbSet<AnimaisServicos> AnimaisServicos { get; set; }
+        public DbSet<AnimaisEntrada> AnimaisEntradas { get; set; }
 
         public WebProjVetContext(DbContextOptions<WebProjVetContext> options) : base(options)
         {
@@ -36,7 +36,17 @@ namespace WebProjVet.AcessoDados
 
             //Relacionamento Many to Many
             //https://www.learnentityframeworkcore.com/configuration/many-to-many-relationship-configuration
+            //https://stackoverflow.com/questions/37400828/how-to-implement-the-field-decimal5-2-in-entityframeworkcore-1-0-rc2
+            //http://www.entityframeworktutorial.net/code-first/configure-property-mappings-using-fluent-api.aspx
             modelBuilder.Entity<Servico>().HasKey(p => p.Id);
+            //modelBuilder.Entity<Servico>().Property(p => p.Valor)
+                //.HasColumnType("decimal(16,2)")
+                //.IsRequired(true);
+
+
+
+
+
             modelBuilder.Entity<Tratamento>().HasKey(p => p.Id);
             modelBuilder.Entity<TratamentoServico>().ToTable("TratamentoServico");
             modelBuilder.Entity<TratamentoServico>().HasKey(ts => new { ts.Id, ts.TratamentoId, ts.ServicoId });
@@ -151,6 +161,28 @@ namespace WebProjVet.AcessoDados
                 .WithMany(s => s.AnimaisServicos)
                 .HasForeignKey(sas => sas.ServicoId);
 
+            //Relacionamento para informar animais associados no lançamento do serviço.
+            /*modelBuilder.Entity<AnimaisServicos>()
+                 .HasOne(sas => sas.Doadora);
+            modelBuilder.Entity<AnimaisServicos>()
+                 .HasOne(sas => sas.Garanhao);
+            modelBuilder.Entity<AnimaisServicos>()
+                 .HasOne(sas => sas.Receptora);
+            modelBuilder.Entity<AnimaisServicos>()
+                 .HasOne(sas => sas.Semen);*/
+
+
+            //Relacionamento Many to Many entre Animais e serviços de diárias
+            modelBuilder.Entity<AnimaisEntrada>().ToTable("AnimalEntradas");
+            modelBuilder.Entity<AnimaisEntrada>().HasKey(ad => ad.Id);
+            modelBuilder.Entity<AnimaisEntrada>()
+                 .HasOne(ad => ad.Animais)
+                .WithMany(a => a.AnimaisEntradas)
+                .HasForeignKey(ad => ad.AnimaisId);
+            modelBuilder.Entity<AnimaisEntrada>()
+                .HasOne(ad => ad.Servico)
+                .WithMany(s => s.AnimaisEntradas)
+                .HasForeignKey(ad => ad.ServicoId);
 
 
             base.OnModelCreating(modelBuilder);

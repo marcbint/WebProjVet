@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
+using System.Globalization;
 using WebProjVet.AcessoDados.Interfaces;
 using WebProjVet.Models;
 
@@ -56,7 +58,7 @@ namespace WebProjVet.Controllers
             {
                 try
                 {
-                    var servico = _servicoRepository.ObterServicoPorId(id);
+                    Servico servico = _servicoRepository.ObterServicoPorId(id);
 
                     return View(servico);
                 }
@@ -73,6 +75,18 @@ namespace WebProjVet.Controllers
         {
             if (ModelState.IsValid)
             {
+                /*
+
+                string texto = servico.Valor.ToString();
+                int varNum = texto.Length;
+
+                string resultado = texto.Insert((varNum - 2), ".");
+
+                string teste = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", servico.Valor);
+
+                double novo = double.Parse(resultado);*/
+
+                //servico.Valor = (servico.Valor / 100);
                 _servicoRepository.Editar(servico);
                 
                 return RedirectToAction("Index");
@@ -83,6 +97,15 @@ namespace WebProjVet.Controllers
 
         [Route("api/[controller]/getvalor/{id}")]
         public IActionResult GetValor(int id)
+        {
+            Servico servico = _servicoRepository.ObterServicoPorId(id);
+
+            return new JsonResult(servico);
+            //return JsonConvert.SerializeObject(servico);
+        }
+
+        [Route("api/[controller]/getvalordiaria/{id}")]
+        public IActionResult GetValorDiaria(int id)
         {
             return new JsonResult(_servicoRepository.ObterServicoPorId(id));
         }

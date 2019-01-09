@@ -17,7 +17,11 @@ namespace WebProjVet.Migrations
                     Nome = table.Column<string>(maxLength: 100, nullable: false),
                     Abqm = table.Column<string>(maxLength: 20, nullable: true),
                     AnimalTipo = table.Column<int>(nullable: false),
-                    Situacao = table.Column<int>(nullable: false)
+                    Situacao = table.Column<int>(nullable: false),
+                    DataNascimento = table.Column<string>(maxLength: 10, nullable: false),
+                    Mae = table.Column<string>(maxLength: 100, nullable: false),
+                    Pai = table.Column<string>(maxLength: 100, nullable: false),
+                    Pelagem = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,9 +98,10 @@ namespace WebProjVet.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Codigo = table.Column<string>(maxLength: 10, nullable: false),
                     Nome = table.Column<string>(maxLength: 100, nullable: false),
-                    Valor = table.Column<decimal>(type: "decimal(16,2)", nullable: false),
+                    Valor = table.Column<string>(nullable: false),
                     ServicoTipo = table.Column<int>(nullable: false),
-                    Situacao = table.Column<int>(nullable: false)
+                    Situacao = table.Column<int>(nullable: false),
+                    ServicoUnidade = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,7 +132,10 @@ namespace WebProjVet.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     AnimaisId = table.Column<int>(nullable: false),
                     ProprietarioId = table.Column<int>(nullable: false),
-                    Data = table.Column<DateTime>(nullable: false)
+                    DataAquisicao = table.Column<DateTime>(nullable: false),
+                    DataDesassociacao = table.Column<DateTime>(nullable: true),
+                    DataInclusao = table.Column<DateTime>(nullable: false),
+                    Motivo = table.Column<string>(maxLength: 300, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -212,7 +220,11 @@ namespace WebProjVet.Migrations
                     Complemento = table.Column<string>(maxLength: 30, nullable: true),
                     Cidade = table.Column<string>(maxLength: 100, nullable: false),
                     Uf = table.Column<string>(maxLength: 2, nullable: false),
-                    ProprietarioId = table.Column<int>(nullable: false)
+                    ProprietarioId = table.Column<int>(nullable: false),
+                    Nome = table.Column<string>(maxLength: 50, nullable: true),
+                    CodigoRural = table.Column<string>(maxLength: 20, nullable: true),
+                    Documento = table.Column<string>(maxLength: 20, nullable: true),
+                    InscricaoEstadual = table.Column<string>(maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -226,6 +238,45 @@ namespace WebProjVet.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AnimalEntradas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    AnimaisId = table.Column<int>(nullable: false),
+                    ServicoId = table.Column<int>(nullable: false),
+                    Valor = table.Column<string>(nullable: true),
+                    ValorOriginal = table.Column<string>(nullable: true),
+                    DataEntrada = table.Column<DateTime>(nullable: false),
+                    DataSaida = table.Column<DateTime>(nullable: true),
+                    DiariaSituacao = table.Column<int>(nullable: false),
+                    DataCancelamento = table.Column<DateTime>(nullable: true),
+                    Motivo = table.Column<string>(maxLength: 100, nullable: true),
+                    CobraDiaria = table.Column<int>(nullable: false),
+                    Gta = table.Column<string>(maxLength: 13, nullable: true),
+                    Anemia = table.Column<int>(nullable: false),
+                    Mormo = table.Column<int>(nullable: false),
+                    AnimalTipoCasco = table.Column<int>(nullable: false),
+                    ObservacoesClinicas = table.Column<string>(maxLength: 300, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnimalEntradas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AnimalEntradas_Animais_AnimaisId",
+                        column: x => x.AnimaisId,
+                        principalTable: "Animais",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AnimalEntradas_Servicos_ServicoId",
+                        column: x => x.ServicoId,
+                        principalTable: "Servicos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AnimalServicos",
                 columns: table => new
                 {
@@ -233,9 +284,18 @@ namespace WebProjVet.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     AnimaisId = table.Column<int>(nullable: false),
                     ServicoId = table.Column<int>(nullable: false),
-                    Valor = table.Column<decimal>(nullable: false),
+                    Valor = table.Column<string>(nullable: true),
                     Data = table.Column<DateTime>(nullable: false),
-                    ValorOriginal = table.Column<decimal>(nullable: false)
+                    ValorOriginal = table.Column<string>(nullable: true),
+                    Motivo = table.Column<string>(maxLength: 100, nullable: true),
+                    DataCancelamento = table.Column<DateTime>(nullable: true),
+                    ServicoSituacao = table.Column<int>(nullable: false),
+                    Quantidade = table.Column<int>(nullable: false),
+                    ValorTotal = table.Column<string>(nullable: false),
+                    DoadoraId = table.Column<string>(nullable: true),
+                    GaranhaoId = table.Column<string>(nullable: true),
+                    ReceptoraId = table.Column<string>(nullable: true),
+                    SemenId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -341,6 +401,16 @@ namespace WebProjVet.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AnimalEntradas_AnimaisId",
+                table: "AnimalEntradas",
+                column: "AnimaisId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnimalEntradas_ServicoId",
+                table: "AnimalEntradas",
+                column: "ServicoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AnimalProprietario_AnimaisId",
                 table: "AnimalProprietario",
                 column: "AnimaisId");
@@ -418,6 +488,9 @@ namespace WebProjVet.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AnimalEntradas");
+
             migrationBuilder.DropTable(
                 name: "AnimalProprietario");
 

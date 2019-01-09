@@ -1,9 +1,7 @@
 ﻿@model WebProjVet.Models.Animais
-
 @{
     ViewData["Title"] = "Create";
 }
-
 
 <form asp-action="Create" class="was-validated">
     <div class="container" style="padding-top:50px">
@@ -18,27 +16,51 @@
                             </div>
                         </div>
                         <div class="row" style="padding-top:20px">
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <label asp-for="AnimalTipo" class="control-label"></label>
                                 <select asp-for="AnimalTipo" asp-items="Html.GetEnumSelectList<AnimalTipo>()" class="form-control">
                                     <option selected="selected" value="">SELECIONE</option>
                                 </select>
+                                <span asp-validation-for="AnimalTipo" class="text-danger"></span>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-6">
                                 <label asp-for="Nome" class="control-label"></label>
-                                <input asp-for="Nome" class="form-control text-uppercase"/>                                
+                                <input asp-for="Nome" class="form-control" />
                                 <span asp-validation-for="Nome" class="text-danger"></span>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <label asp-for="Abqm" class="control-label"></label>
-                                <input asp-for="Abqm" class="form-control text-uppercase" />
+                                <input asp-for="Abqm" class="form-control" />
                                 <span asp-validation-for="Abqm" class="text-danger"></span>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <label asp-for="Situacao" class="control-label"></label>
                                 <select asp-for="Situacao" asp-items="Html.GetEnumSelectList<Situacao>()" class="form-control">
-                                    <option selected="selected" value="">SELECIONE</option>
+                                    <option selected="selected" value="" disabled>SELECIONE</option>
                                 </select>
+                                <span asp-validation-for="Situacao" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:20px">
+                            <div class="col-lg-2">
+                                <label asp-for="DataNascimento" class="control-label"></label>
+                                <input type="date" asp-for="DataNascimento" class="form-control" />
+                                <span id="spaNascimento" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-3">
+                                <label asp-for="Mae" class="control-label"></label>
+                                <input asp-for="Mae" class="form-control" />
+                                <span id="spaMae" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-3">
+                                <label asp-for="Pai" class="control-label"></label>
+                                <input asp-for="Pai" class="form-control" />
+                                <span id="spaPai" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-3">
+                                <label asp-for="Pelagem" class="control-label"></label>
+                                <input asp-for="Pelagem" class="form-control" />
+                                <span id="spaPelagem" class="text-danger"></span>
                             </div>
                         </div>
                         @*<div class="row" style="padding-top:10px">
@@ -71,10 +93,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
     @*
         <div class="container">
             <div class="row">
@@ -114,7 +134,6 @@
                 </div>
             </div>
         </div>*@
-
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -129,26 +148,24 @@
             </div>
         </div>
     </div>
-
 </form>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
-
     <script>
         //https://codepedia.info/remove-table-row-tr-in-jquery
         $("#itensTabela").on('click', '.btnDelete', function () {
             $(this).closest('tr').remove();
         });
     </script>
-
     <script>
         var Itens = new Object();
         Itens.Tabela = new Array();
@@ -184,15 +201,16 @@
         }
     </script>
 
+    <script>
+        //https://stackoverflow.com/questions/15163570/how-can-i-change-all-input-values-to-uppercase-using-jquery
+        $(document).on('blur', "input[type=text]", function () {
+            $(this).val(function (_, val) {
+                return val.toUpperCase();
+            });
+        });
+    </script>
+
 }
-
-
-
-
-
-
-
-
 
 
 

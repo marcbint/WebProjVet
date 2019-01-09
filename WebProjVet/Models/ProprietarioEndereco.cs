@@ -43,6 +43,24 @@ namespace WebProjVet.Models
         [ForeignKey("ProprietarioId")]
         public virtual Proprietario Proprietario { get; set; }
 
+        [Display(Name = "NOME LOCALIDADE"), MaxLength(50)]
+        [StringLength(50)]
+        public string Nome { get; set; }
+
+        [Display(Name = "CÓDIGO RURAL"), MaxLength(20)]
+        [StringLength(20)]
+        public string CodigoRural { get; set; }
+
+
+        [Display(Name = "CPF/CNPJ"), MaxLength(20)]
+        [StringLength(20)]
+        public string Documento { get; set; }
+
+        [Display(Name = "INSC. ESTADUAL"), MaxLength(20)]
+        [StringLength(20)]
+        public string InscricaoEstadual { get; set; }
+
+
         public ProprietarioEndereco()
         {
 

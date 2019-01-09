@@ -9,8 +9,8 @@ namespace WebProjVet.Models
     public enum AnimalTipo
     {
         [Description("DOADORA")] DOADORA = 1,
-        [Description("GARANHÃO")] GARANHÃO = 2,
-        [Description("SÊMEN")] SÊMEN = 3,
-        [Description("RECEPTORA")] RECEPTORA = 4
+        [Description("GARANHÃO")] GARANHÃO = 2,      
+        [Description("RECEPTORA")] RECEPTORA = 3,
+        [Description("SÉMEN")] SÉMEN = 4
     }
 }

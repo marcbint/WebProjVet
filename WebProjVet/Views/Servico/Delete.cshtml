@@ -4,36 +4,61 @@
     ViewData["Title"] = "Delete";
 }
 
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Servico</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Codigo)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Codigo)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Valor)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Valor)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
-</div>
+<form asp-action="Delete">
+    <div class="container" style="padding-top:50px">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <h3 class="text-center">SERVIÇO</h3>
+                        <h3 class="text-danger">Realmente deseja remover esse registro?</h3>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" id="idPrimary">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label asp-for="Codigo" class="control-label"></label>
+                                <input readonly="readonly" asp-for="Codigo" class="form-control" />
+                                <span asp-validation-for="Codigo" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-4">
+                                <label asp-for="Nome" class="control-label"></label>
+                                <input asp-for="Nome" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="Nome" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-2">
+                                <label asp-for="Valor" class="control-label"></label>
+                                <input asp-for="Valor" class="form-control text-uppercase" readonly="readonly" />
+                                <span asp-validation-for="Valor" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-2">
+                                <label asp-for="ServicoTipo" class="control-label"></label>
+                                <select disabled asp-for="ServicoTipo" asp-items="Html.GetEnumSelectList<ServicoTipo>()" class="form-control"></select>
+                            </div>
+                            <div class="col-lg-2">
+                                <label asp-for="Situacao" class="control-label"></label>
+                                <select disabled asp-for="Situacao" asp-items="Html.GetEnumSelectList<Situacao>()" class="form-control">
+                                    <option selected="selected" value="">SELECIONE</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <input type="submit" value="REMOVER" class="btn btn-danger btn-lg btn-block" />
+            </div>
+        </div>
+        <div class="row" style="padding-top:20px">
+            <div class="col-md-12">
+                <a asp-action="Index" class="btn btn-info btn-lg btn-block">VOLTAR</a>
+            </div>
+        </div>
+    </div>
+</form>
