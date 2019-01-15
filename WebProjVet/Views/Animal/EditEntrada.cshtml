@@ -1,0 +1,343 @@
+﻿@model WebProjVet.Models.AnimaisEntrada
+
+@{
+    ViewData["Title"] = "EditEntrada";
+}
+
+<form asp-action="EditEntrada">
+    @Html.AntiForgeryToken()
+    <div class="container" style="padding-top:50px">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <h3 class="text-center">ENTRADA</h3>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" id="idAnimaisEntrada">
+                                <input type="hidden" asp-for="AnimaisId" id="idAnimais">
+                                <input type="hidden" asp-for="ServicoId" id="idDiaria">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-row align-items-center">
+                                <div class="col-lg-2">
+                                    <label class="control-label">DATA ENTRADA</label>
+                                    <input type="date" id="dtDataEntrada" class="form-control" asp-for="DataEntrada"
+                                           data-toggle="tooltip" data-placement="top" title="A data de entrada informada será utilizada como parâmentro para início da cobrança ao proprietário das diárias do animal." />
+                                    <span id="spanDataEntrada" class="text-danger"></span>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="control-label">DATA SAÍDA</label>
+                                    <input type="date" id="dtDataSaida" class="form-control" asp-for="DataSaida"
+                                           data-toggle="tooltip" data-placement="top"
+                                           title="Campo disponível para edição somente quando selecionada opção FECHADA na lista de opções do campo SITUAÇÃO." />
+                                    <span id="spanDataSaida" class="text-danger"></span>
+                                </div>
+                                @*<div class="col-lg-2">
+            <label class="control-label" for="sltCobraDiaria">COBRAR DIÁRIA</label>
+            <select id="sltCobraDiaria"
+                    asp-for="CobraDiaria" asp-items="Html.GetEnumSelectList<EnumSimNao>()"
+                    class="form-control">
+                <option selected="selected" disabled value="">SELECIONE</option>
+            </select>
+            <span id="spanCobraDiaria" class="text-danger"></span>
+        </div>*@
+                                <div id="divDiaria" class="col-lg-4">
+                                    <label class="control-label">DIÁRIA</label>
+                                    <select id="sltDiaria" asp-for="ServicoId" class="form-control" onchange="getValorDiaria()"
+                                            asp-items="@(new SelectList(ViewBag.Diaria, "Id", "Nome")) ">
+                                        <option selected="selected" disabled value="">SELECIONE</option>
+                                    </select>
+                                    <span id="spanDiaria" class="text-danger"></span>
+                                    <!--https://demos.telerik.com/aspnet-core/dropdownlist/api-->
+                                    <!--http://www.binaryintellect.net/articles/6d0b21c8-2bbc-42c0-9403-4cd1880c123f.aspx-->
+                                </div>
+                                <div id="divDiariaValor" class="col-lg-2">
+                                    <label class="control-label">VALOR</label>
+                                    <input id="txtValorDiaria" class="form-control text-right" asp-for="Valor" />
+                                    <span id="spanValorDiaria" class="text-danger"></span>
+                                    <input style="display:none" id="txtValorDiariaOriginal" asp-for="ValorOriginal" class="form-control text-right" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-2">
+                                <label class="control-label">ANEMIA</label>
+                                <select id="sltAnemia" asp-for="Anemia" asp-items="Html.GetEnumSelectList<EnumSimNao>()" class="form-control">
+                                    <option selected="selected" disabled value="">SELECIONE</option>
+                                </select>
+                                <span id="spanAnemia" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-2">
+                                <label class="control-label">MORMO</label>
+                                <select id="sltMormo" asp-for="Mormo" asp-items="Html.GetEnumSelectList<EnumSimNao>()" class="form-control">
+                                    <option selected="selected" disabled value="">SELECIONE</option>
+                                </select>
+                                <span id="spanMormo" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="control-label">TIPO CASCO</label>
+                                <select id="sltTipoCasco" asp-for="AnimalTipoCasco" asp-items="Html.GetEnumSelectList<AnimalTipoCasco>()" class="form-control">
+                                    <option selected="selected" disabled value="">SELECIONE</option>
+                                </select>
+                                <span id="spanTipoCasco" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-2">
+                                <label class="control-label">GTA</label>
+                                <input type="text" id="txtGta" class="form-control text-right" asp-for="Gta" />
+                                <span id="spanGta" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="control-label">SITUAÇÃO</label>
+                                <select id="situacao" asp-for="DiariaSituacao" asp-items="Html.GetEnumSelectList<DiariaSituacao>()" class="form-control">
+                                    <option selected="selected" disabled value="">SELECIONE</option>
+                                </select>
+                                <span id="spanTipoCasco" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-12">
+                                <label class="control-label">OBSERVAÇÕES CLÍNICAS</label>
+                                <textarea id="txtObservacoesClinicas" class="form-control" rows="5" asp-for="Motivo"></textarea>
+                                <span id="spanObservacoesClinicas" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div id="divMotivo" class="row" style="padding-top:10px">
+                            <div class="col-lg-12">
+                                <label asp-for="Motivo" class="control-label"></label>
+                                <input id="txtMotivo" asp-for="Motivo" class="form-control" />
+                                <span asp-validation-for="Motivo" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <input type="submit" value="REGISTRAR" class="btn btn-success btn-lg btn-block" />
+            </div>
+        </div>
+        <div class="row" style="padding-top:10px">
+            <div class="col-md-12">
+                <a asp-action="Edit" asp-controller="Animal" asp-route-id="@Model.AnimaisId" class="btn btn-info btn-lg btn-block">VOLTAR</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        function getValorDiaria() {
+
+            var idServico = '1';
+            var dpl = $("#sltDiaria :selected").val();
+
+            //alert(dpl)
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/Servico/getvalordiaria/' + dpl,
+                success: function (result) {
+                    var servicoValor = result.valor;
+
+                    //$('#resultGetValor').html(servicoValor);
+                    $('#txtValorDiaria').val(servicoValor);
+                    //$('#txtValor').val(servicoValor.toFixed(2).replace('.', ','));
+                    //$('#txtValor').val(servicoValor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }).replace('R$', ''));
+
+                    //toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+                    //$('#txtValorOriginal').val(servicoValor);
+                    var teste = servicoValor;
+                    //alert(teste);
+                    $('#txtValorDiariaOriginal').val(teste);
+                }
+
+            });
+
+            //alert(dpl.value);
+        }
+
+
+        //Validação no processo de inclusão de entrada
+        function validaAddEntrada() {
+
+            var dataEntrada = $("#dtDataEntrada").val();
+            var cobraDiaria = $("#sltCobraDiaria :selected").text();
+            var diaria = $("#sltDiaria :selected").text();
+            var valorDiaria = $("#txtValorDiaria").val();
+            var anemia = $("#sltAnemia :selected").text();
+            var mormo = $("#sltMormo :selected").text();
+            var tipoCasco = $("#sltTipoCasco :selected").text();
+            var observacoesClinicas = $("#txtObservacoesClinicas").val();
+
+
+            if (dataEntrada.trim() == "") {
+                $("#spanDataEntrada").html("Informe uma data!");
+                return false;
+            }
+            /*else if (cobraDiaria == "SELECIONE") {
+                $("#spanCobraDiaria").html("Selecione uma opção!");
+                return false;
+            }
+            else if (cobraDiaria == "SIM" && diaria == "SELECIONE") {*/
+            else if (diaria == "SELECIONE") {
+                $("#spanDiaria").html("Selecione uma Diária!");
+                return false;
+            }
+            else if (diaria != "SELECIONE" && valorDiaria.trim() == "") {
+                $("#spanValorDiaria").html("Informe um Valor!");
+                return false;
+            }
+            else if (anemia == "SELECIONE") {
+                $("#spanAnemia").html("Selecione uma opção!");
+                return false;
+            }
+            else if (mormo == "SELECIONE") {
+                $("#spanMormo").html("Selecione uma opção!");
+                return false;
+            }
+            else if (tipoCasco == "SELECIONE") {
+                $("#spanTipoCasco").html("Selecione uma opção!");
+                return false;
+            }
+            else if (observacoesClinicas.trim() == "") {
+                $("#spanObservacoesClinicas").html("Informe uma Observação Clínica!");
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        function situacao() {
+            var situacao = $("#situacao :selected").val();
+
+            if (situacao == "1") {
+                //Desabilitar motivo
+                $("#divMotivo").hide();
+
+                $("#dtDataSaida").prop("readOnly", true);
+
+            } else if (situacao == "2") {
+
+                $("#divMotivo").show();
+
+                $("#dtDataSaida").prop("readOnly", true);
+            }
+            else {
+                $("#divMotivo").hide();
+
+                $("#dtDataSaida").removeAttr("readOnly");
+            }
+        };
+
+        function entradaFechada() {
+
+            var situacao = $("#situacao :selected").val();
+            var saida = $("#dtSaida").val()
+
+            alert(saida)
+
+            if (situacao == "3" && saida.trim() != "") {
+
+                alert("passou pelo if");
+            }
+
+        }
+
+
+
+        $(document).ready(function () {
+            /*$("#sltCobraDiaria").change(function () {
+                var cobraDiaria = $("#sltCobraDiaria :selected").text();
+                var divDiaria = $("#divDiaria");
+                var divDiariaValor = $("#divDiariaValor");
+
+
+                if (cobraDiaria == "SIM") {
+
+                    divDiaria.show();
+                    divDiariaValor.show();
+
+                } else {
+
+                    divDiaria.hide();
+                    divDiariaValor.hide();
+                };
+
+            });*/
+
+            situacao();
+
+            
+        });
+
+
+    </script>
+
+    <script>
+        /*var cobraDiaria = $("#sltCobraDiaria :selected").text();
+        var divDiaria = $("#divDiaria");
+        var divDiariaValor = $("#divDiariaValor");
+
+
+        if (cobraDiaria == "SIM") {
+
+            divDiaria.show();
+            divDiariaValor.show();
+
+        } else {
+
+            divDiaria.hide();
+            divDiariaValor.hide();
+        };*/
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#txtValorDiaria").keypress(function () {
+
+                $(this).mask("000000000000000.00", { reverse: true });
+            });
+
+        });
+    </script>
+
+    <script>
+        //https://stackoverflow.com/questions/15163570/how-can-i-change-all-input-values-to-uppercase-using-jquery
+        $(document).on('blur', "input[type=text]", function () {
+            $(this).val(function (_, val) {
+                return val.toUpperCase();
+            });
+        });
+
+        $(document).on('blur', "textarea", function () {
+            $(this).val(function (_, val) {
+                return val.toUpperCase();
+            });
+        });
+    </script>
+
+    <script>
+        $("#situacao").change(function () {
+
+            situacao();            
+
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+}
+

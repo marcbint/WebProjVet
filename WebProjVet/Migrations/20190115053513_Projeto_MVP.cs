@@ -18,10 +18,10 @@ namespace WebProjVet.Migrations
                     Abqm = table.Column<string>(maxLength: 20, nullable: true),
                     AnimalTipo = table.Column<int>(nullable: false),
                     Situacao = table.Column<int>(nullable: false),
-                    DataNascimento = table.Column<string>(maxLength: 10, nullable: false),
-                    Mae = table.Column<string>(maxLength: 100, nullable: false),
-                    Pai = table.Column<string>(maxLength: 100, nullable: false),
-                    Pelagem = table.Column<string>(maxLength: 50, nullable: false)
+                    DataNascimento = table.Column<string>(maxLength: 10, nullable: true),
+                    Mae = table.Column<string>(maxLength: 100, nullable: true),
+                    Pai = table.Column<string>(maxLength: 100, nullable: true),
+                    Pelagem = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -133,7 +133,7 @@ namespace WebProjVet.Migrations
                     AnimaisId = table.Column<int>(nullable: false),
                     ProprietarioId = table.Column<int>(nullable: false),
                     DataAquisicao = table.Column<DateTime>(nullable: false),
-                    DataDesassociacao = table.Column<DateTime>(nullable: true),
+                    DataDesassociacao = table.Column<DateTime>(nullable: false),
                     DataInclusao = table.Column<DateTime>(nullable: false),
                     Motivo = table.Column<string>(maxLength: 300, nullable: true)
                 },
@@ -175,6 +175,29 @@ namespace WebProjVet.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_DoadoraProprietario_Proprietarios_ProprietarioId",
+                        column: x => x.ProprietarioId,
+                        principalTable: "Proprietarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Faturamento",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ProprietarioId = table.Column<int>(nullable: false),
+                    Valor = table.Column<string>(nullable: true),
+                    Situacao = table.Column<int>(nullable: false),
+                    Data = table.Column<DateTime>(nullable: false),
+                    Referencia = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Faturamento", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Faturamento_Proprietarios_ProprietarioId",
                         column: x => x.ProprietarioId,
                         principalTable: "Proprietarios",
                         principalColumn: "Id",
@@ -252,7 +275,6 @@ namespace WebProjVet.Migrations
                     DiariaSituacao = table.Column<int>(nullable: false),
                     DataCancelamento = table.Column<DateTime>(nullable: true),
                     Motivo = table.Column<string>(maxLength: 100, nullable: true),
-                    CobraDiaria = table.Column<int>(nullable: false),
                     Gta = table.Column<string>(maxLength: 13, nullable: true),
                     Anemia = table.Column<int>(nullable: false),
                     Mormo = table.Column<int>(nullable: false),
@@ -295,7 +317,8 @@ namespace WebProjVet.Migrations
                     DoadoraId = table.Column<string>(nullable: true),
                     GaranhaoId = table.Column<string>(nullable: true),
                     ReceptoraId = table.Column<string>(nullable: true),
-                    SemenId = table.Column<string>(nullable: true)
+                    SemenId = table.Column<string>(nullable: true),
+                    Faturamento = table.Column<string>(maxLength: 1, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -400,6 +423,53 @@ namespace WebProjVet.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "FaturamentoServicos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ProprietarioId = table.Column<int>(nullable: false),
+                    AnimaisServicosId = table.Column<int>(nullable: false),
+                    AnimaisId = table.Column<int>(nullable: false),
+                    ServicoId = table.Column<int>(nullable: false),
+                    Valor = table.Column<string>(nullable: true),
+                    DataFaturamento = table.Column<DateTime>(nullable: false),
+                    Referencia = table.Column<DateTime>(nullable: false),
+                    DoadoraId = table.Column<string>(nullable: true),
+                    GaranhaoId = table.Column<string>(nullable: true),
+                    ReceptoraId = table.Column<string>(nullable: true),
+                    SemenId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FaturamentoServicos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FaturamentoServicos_Animais_AnimaisId",
+                        column: x => x.AnimaisId,
+                        principalTable: "Animais",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FaturamentoServicos_AnimalServicos_AnimaisServicosId",
+                        column: x => x.AnimaisServicosId,
+                        principalTable: "AnimalServicos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FaturamentoServicos_Proprietarios_ProprietarioId",
+                        column: x => x.ProprietarioId,
+                        principalTable: "Proprietarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FaturamentoServicos_Servicos_ServicoId",
+                        column: x => x.ServicoId,
+                        principalTable: "Servicos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AnimalEntradas_AnimaisId",
                 table: "AnimalEntradas",
@@ -439,6 +509,31 @@ namespace WebProjVet.Migrations
                 name: "IX_DoadoraProprietario_ProprietarioId",
                 table: "DoadoraProprietario",
                 column: "ProprietarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Faturamento_ProprietarioId",
+                table: "Faturamento",
+                column: "ProprietarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FaturamentoServicos_AnimaisId",
+                table: "FaturamentoServicos",
+                column: "AnimaisId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FaturamentoServicos_AnimaisServicosId",
+                table: "FaturamentoServicos",
+                column: "AnimaisServicosId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FaturamentoServicos_ProprietarioId",
+                table: "FaturamentoServicos",
+                column: "ProprietarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FaturamentoServicos_ServicoId",
+                table: "FaturamentoServicos",
+                column: "ServicoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GaranhaoProprietario_GaranhaoId",
@@ -495,10 +590,13 @@ namespace WebProjVet.Migrations
                 name: "AnimalProprietario");
 
             migrationBuilder.DropTable(
-                name: "AnimalServicos");
+                name: "DoadoraProprietario");
 
             migrationBuilder.DropTable(
-                name: "DoadoraProprietario");
+                name: "Faturamento");
+
+            migrationBuilder.DropTable(
+                name: "FaturamentoServicos");
 
             migrationBuilder.DropTable(
                 name: "GaranhaoProprietario");
@@ -522,19 +620,22 @@ namespace WebProjVet.Migrations
                 name: "Doadoras");
 
             migrationBuilder.DropTable(
+                name: "AnimalServicos");
+
+            migrationBuilder.DropTable(
                 name: "Garanhao");
 
             migrationBuilder.DropTable(
                 name: "Proprietarios");
 
             migrationBuilder.DropTable(
+                name: "Tratamentos");
+
+            migrationBuilder.DropTable(
                 name: "Animais");
 
             migrationBuilder.DropTable(
                 name: "Servicos");
-
-            migrationBuilder.DropTable(
-                name: "Tratamentos");
         }
     }
 }

@@ -69,6 +69,7 @@ namespace WebProjVet.Controllers
             }
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Servico servico)
@@ -132,7 +133,6 @@ namespace WebProjVet.Controllers
             }
 
         }
-
 
 
         public IActionResult Delete(int id)
@@ -203,6 +203,7 @@ namespace WebProjVet.Controllers
                 return BadRequest($"Erro: {ex.Message}");
             }
         }
+
 
         [HttpPost]
         public IActionResult Post([FromBody]Servico servico)

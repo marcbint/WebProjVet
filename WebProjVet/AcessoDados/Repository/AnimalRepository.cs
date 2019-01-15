@@ -61,5 +61,12 @@ namespace WebProjVet.AcessoDados.Servicos
             //return _webProjVetContext.Set<AnimalDoadora>().Include(p => p.Proprietarios).AsEnumerable();
             return _webProjVetContext.Set<Animais>();
         }
+
+
+        public void EditarLançamentoServico(Animais animal)
+        {
+            _webProjVetContext.Entry(animal).State = Microsoft.EntityFrameworkCore.EntityState.Unchanged;
+            _webProjVetContext.SaveChanges();
+        }
     }
 }

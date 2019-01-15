@@ -54,9 +54,9 @@ namespace WebProjVet.Models
         [MaxLength(100)]
         public string Motivo { get; set; }
 
-        [Display(Name = "COBRA DIÁRIA")]
-        [EnumDataType(typeof(EnumSimNao))]
-        public EnumSimNao CobraDiaria { get; set; }
+        //[Display(Name = "COBRA DIÁRIA")]
+        //[EnumDataType(typeof(EnumSimNao))]
+        //public EnumSimNao CobraDiaria { get; set; }
 
         [Display(Name = "GTA")]
         [MaxLength(13), StringLength(13)]
@@ -77,6 +77,9 @@ namespace WebProjVet.Models
         [Display(Name = "OBSERVAÇÕES CLÍNICAS")]
         [MaxLength(300),StringLength(300)]
         public string ObservacoesClinicas { get; set; }
+
+
+
 
     }
 }

@@ -65,22 +65,26 @@ namespace WebProjVet.Models
         public string GaranhaoId { get; set; }
 
         //[ForeignKey("GaranhaoId")]
-        [NotMapped]
-        public virtual Animais Garanhao { get; set; }
+        //[NotMapped]
+        //public virtual Animais Garanhao { get; set; }
 
 
         public string ReceptoraId { get; set; }
 
         //[ForeignKey("ReceptoraId")]
-        [NotMapped]
-        public virtual Animais Receptora { get; set; }
+        //[NotMapped]
+        //public virtual Animais Receptora { get; set; }
 
 
         public string SemenId { get; set; }
 
+
+        [MaxLength(1)]
+        public string Faturamento { get; set; }
+
         //[ForeignKey("SemenId")]
-        [NotMapped]
-        public virtual Animais Semen { get; set; }
+        //[NotMapped]
+        //public virtual Animais Semen { get; set; }
 
 
         //public virtual ICollection<AnimalServicosVinculoAnimais> AnimalServicosVinculoAnimais { get; set; }
@@ -89,7 +93,11 @@ namespace WebProjVet.Models
         public string AnimaisServicosJson { get; set; }
 
         
+        [NotMapped]
+        public virtual ICollection<AnimaisProprietario> AnimaisProprietarios { get; set; }
 
+        [NotMapped]
+        public virtual AnimaisProprietario AnimaisProprietariosTeste { get; set; }
 
 
     }

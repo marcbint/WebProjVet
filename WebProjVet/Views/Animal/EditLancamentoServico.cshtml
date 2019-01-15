@@ -17,15 +17,22 @@
                                 <input type="hidden" asp-for="Id" id="idAnimaisServicos">
                                 <input type="hidden" asp-for="AnimaisId" id="idAnimais">
                                 <input type="hidden" asp-for="ServicoId" id="idServicos">
+                                <input type="hidden" value="@ViewBag.TipoAnimal" id="idAnimalTipo">                               
                             </div>
                         </div>
                         <div class="row" style="padding-top:20px">
                             <div class="col-lg-4">
-                                <label class="control-label">SERVIÇOS CADASTRADOS</label>
-                                <select id="sltServico" asp-for="ServicoId" class="form-control" onchange="getValorServico()"
+                                <label class="control-label">SERVIÇO</label>
+                                <select disabled id="sltServico" asp-for="ServicoId" class="form-control" onchange="getValorServico()"
                                         asp-items="@(new SelectList(ViewBag.ServicoId, "Id", "Nome")) ">
                                     <option selected="selected" value="">SELECIONE</option>
                                 </select>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <label class="control-label">QUANTIDADE</label>
+                                <input id="txtQuantidade" class="form-control text-right" asp-for="Quantidade" />
+                                <span id="spanQuantidade" class="text-danger"></span>
                             </div>
                             <div class="col-lg-2">
                                 <label asp-for="Valor" class="control-label"></label>
@@ -34,10 +41,53 @@
                                 <input style="display:none" id="txtValorOriginal" asp-for="ValorOriginal" class="form-control text-right" />
                             </div>
                             <div class="col-lg-2">
+                                <label class="control-label">VALOR TOTAL</label>
+                                <input id="txtValorTotal" class="form-control text-right" asp-for="ValorTotal" readonly="readonly" />
+                                <span id="spanValorTotal" class="text-danger"></span>
+                            </div>
+
+                            
+                            <div class="col-lg-2">
                                 <label asp-for="Data" class="control-label"></label>
                                 <input type="date" asp-for="Data" class="form-control" />
                                 <span asp-validation-for="Data" class="text-danger"></span>
+                            </div>                            
+                        </div>
+                        <div class="row" style="padding-top:10px">
+                            <div id="divDoadora" class="col-lg-4">
+                                <label class="control-label">DOADORA</label>
+                                <select id="sltDoadora" class="form-control" asp-for="DoadoraId"
+                                        asp-items="@(new SelectList(ViewBag.DoadoraId, "Id", "Nome"))">
+                                    <option selected="selected" value="">NÃO INFORMADO</option>
+                                </select>
+                                <span class="text-danger"></span>
                             </div>
+                            <div id="divGaranhao" class="col-lg-4">
+                                <label class="control-label">GARANHÃO</label>
+                                <select id="sltGaranhao" class="form-control" asp-for="GaranhaoId"
+                                        asp-items="@(new SelectList(ViewBag.GaranhaoId, "Id", "Nome"))">
+                                    <option selected="selected" value="">NÃO INFORMADO</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+                            <div id="divReceptora" class="col-lg-4">
+                                <label class="control-label">RECEPTORA</label>
+                                <select id="sltReceptora" class="form-control" asp-for="ReceptoraId"
+                                        asp-items="@(new SelectList(ViewBag.ReceptoraId, "Id", "Nome"))">
+                                    <option selected="selected" value="">NÃO INFORMADO</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+                            <div id="divSemen" class="col-lg-4">
+                                <label class="control-label">SÉMEN</label>
+                                <select id="sltSemen" class="form-control" asp-for="SemenId"
+                                        asp-items="@(new SelectList(ViewBag.SemenId, "Id", "Nome"))">
+                                    <option selected="selected" value="">NÃO INFORMADO</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:10px">
                             <div class="col-lg-2">
                                 <label asp-for="ServicoSituacao" class="control-label"></label>
                                 <select id="servicoSituacao" asp-for="ServicoSituacao" asp-items="Html.GetEnumSelectList<ServicoSituacao>()" class="form-control">
@@ -174,7 +224,7 @@
             });
 
 
-            //Trata exibição das divs
+            //Trata exibição das divs para o processo de cancelamento
             if ($("#servicoSituacao :selected").val() == "1") {
                 //Desabilitar motivo
                 $("#divMotivo").show()
@@ -182,8 +232,32 @@
                 $("#divMotivo").hide()
             }
 
+            var animalTipo = $("#idAnimalTipo").val();
+            //alert("animal tipo" + animalTipo)
 
 
+            var divDoadora = $("#divDoadora");
+            var divGaranhao = $("#divGaranhao");
+            var divReceptora = $("#divReceptora");
+            var divSemen = $("#divSemen");
+
+            //alert(animalTipo)
+
+            if (animalTipo == "1") {
+                divDoadora.prop('hidden', true);
+            }
+
+            if (animalTipo == "2") {
+                divGaranhao.prop('hidden', true);
+            }
+
+            if (animalTipo == "3") {
+                divReceptora.prop('hidden', true);
+            }
+
+            if (animalTipo == "4") {
+                divSemen.prop('hidden', true);
+            }
 
 
         });

@@ -20,6 +20,8 @@ namespace WebProjVet.AcessoDados
         public DbSet<TratamentoAnimal> TratamentoAnimais { get; set; }
         public DbSet<AnimaisServicos> AnimaisServicos { get; set; }
         public DbSet<AnimaisEntrada> AnimaisEntradas { get; set; }
+        public DbSet<Faturamento> Faturamentos { get; set; }
+        public DbSet<FaturamentoServicos> FaturamentoServicos { get; set; }
 
         public WebProjVetContext(DbContextOptions<WebProjVetContext> options) : base(options)
         {
@@ -28,8 +30,7 @@ namespace WebProjVet.AcessoDados
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Proprietario>().HasKey(p => p.Id);
-            //modelBuilder.Entity<Doadora>().HasKey(p => p.Id);          
+            modelBuilder.Entity<FaturamentoServicos>().HasKey(p => p.Id);  
 
             modelBuilder.Entity<Receptora>().ToTable("Receptora");
             modelBuilder.Entity<Receptora>().HasKey(p => p.Id);
@@ -150,6 +151,17 @@ namespace WebProjVet.AcessoDados
                 .HasForeignKey(gp => gp.ProprietarioId);
 
             //Relacionamento Many to Many entre garanhão e proprietários
+            /*modelBuilder.Entity<AnimaisServicos>().ToTable("AnimalServicos");
+            modelBuilder.Entity<AnimaisServicos>().HasKey(sas => sas.Id);
+            modelBuilder.Entity<AnimaisServicos>()
+                 .HasOne(sas => sas.Animais)
+                .WithMany(a => a.AnimaisServicos)
+                .HasForeignKey(sas => sas.AnimaisId);
+            modelBuilder.Entity<AnimaisServicos>()
+                .HasOne(sas => sas.Servico)
+                .WithMany(s => s.AnimaisServicos)
+                .HasForeignKey(sas => sas.ServicoId);*/
+
             modelBuilder.Entity<AnimaisServicos>().ToTable("AnimalServicos");
             modelBuilder.Entity<AnimaisServicos>().HasKey(sas => sas.Id);
             modelBuilder.Entity<AnimaisServicos>()
@@ -182,7 +194,14 @@ namespace WebProjVet.AcessoDados
             modelBuilder.Entity<AnimaisEntrada>()
                 .HasOne(ad => ad.Servico)
                 .WithMany(s => s.AnimaisEntradas)
-                .HasForeignKey(ad => ad.ServicoId);
+                .HasForeignKey(ad => ad.ServicoId)
+                ;
+
+            modelBuilder.Entity<Faturamento>().ToTable("Faturamento");
+            modelBuilder.Entity<Faturamento>().HasKey(f => f.Id);
+           
+
+
 
 
             base.OnModelCreating(modelBuilder);

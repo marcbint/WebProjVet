@@ -131,7 +131,7 @@ namespace WebProjVet.Controllers
 
                 ViewBag.ProprietarioId = _context.Proprietarios.OrderBy(x => x.Nome).ToList();
                 ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
-                ViewBag.Diaria = _context.Servicos.Where(s => s.ServicoTipo == ServicoTipo.DIÁRIA).ToList();
+                ViewBag.Diaria = _context.Servicos.Where(s => s.ServicoTipo == ServicoTipo.DIÁRIA && s.Situacao == Situacao.ATIVO).ToList();
                 ViewBag.DoadoraId = _context.Animais
                                     .Where(x => x.AnimalTipo == AnimalTipo.DOADORA 
                                     && x.Situacao == Situacao.ATIVO)
@@ -253,18 +253,23 @@ namespace WebProjVet.Controllers
 
         public IActionResult DeleteProprietario(int id)
         {
+
+
+
             if (id > 0)
             {
                 //ViewBag.ProprietarioId = _context.Proprietarios.ToList();
+
+                //https://www.c-sharpcorner.com/article/how-to-use-join-operations-with-database-using-linq/
+                //http://www.macoratti.net/18/08/efcore_join1.htm
+                //http://www.macoratti.net/18/08/efcore_join2.htm
+                //http://www.macoratti.net/18/08/efcore_join3.htm
 
 
                 var animaisProprietario = _context.AnimaisProprietarios
                     .Where(p => p.Id.Equals(id))
                     .Include(e => e.Proprietario)
-                    .ToList()
-                    .FirstOrDefault(p => p.Id == id);
-
-
+                    .FirstOrDefault();
 
                 return View(animaisProprietario);
             }
@@ -282,6 +287,7 @@ namespace WebProjVet.Controllers
                 .FirstOrDefault(p => p.Id == animaisProprietario.Id);
 
             registro.DataDesassociacao = animaisProprietario.DataDesassociacao;
+            registro.Motivo = animaisProprietario.Motivo;
         
             _context.AnimaisProprietarios.Update(registro);
             _context.SaveChanges();
@@ -358,6 +364,7 @@ namespace WebProjVet.Controllers
 
                         if (count == 0)
                         {
+                            ObjAnimaisProprietarios.DataDesassociacao = Convert.ToDateTime("31/12/9999");
                             _context.AnimaisProprietarios.Add(ObjAnimaisProprietarios);
                             _context.SaveChanges();
                             retorno = "NOVO";
@@ -400,15 +407,56 @@ namespace WebProjVet.Controllers
 
                         AnimaisServicos ObjAnimaisServicos = JsonConvert.DeserializeObject<AnimaisServicos>(requestBody);
 
-                        //string teste = ObjAnimaisServicos.ValorOriginal
-                        
+                        //Se animal for Doadora ou Garanhão
+                        var inClause = new List<string> { "1", "2" };
+                        int regra = _context.Animais
+                            .Where(a => inClause.Contains(a.AnimalTipo.ToString()) 
+                            && 
+                            //.Where(a => 
+                            a.Id == ObjAnimaisServicos.AnimaisId)
+                            //.Select(a => a.Id)
+                            .Count();
+                        // O animal é garanhão ou doadora e deve ter pelo menos um proprietário ativo e vigente.
+                        if (regra >= 1)
+                        {
+
+                            //Verifica se o animal precisa ter proprietário
+                            int total = (from ap in _context.AnimaisProprietarios
+                                         join p in _context.Proprietarios on ap.ProprietarioId equals p.Id
+                                         join a in _context.Animais on ap.AnimaisId equals a.Id
+                                         where ap.AnimaisId == ObjAnimaisServicos.AnimaisId
+                                         && p.Situacao == Situacao.ATIVO
+                                         && ap.DataAquisicao <= ObjAnimaisServicos.Data                                 
+                                         && ap.DataDesassociacao >=ObjAnimaisServicos.Data
+                                         select p.Id).Count();
+                            //Se possui proprietário ativo ou vigente
+                            if (total >= 1)
+                            {
+                                //Loop de Proprietarios com rateio
+
+
+                                _context.AnimaisServicos.Add(ObjAnimaisServicos);
+                                _context.SaveChanges();
+                                retorno = "NOVO";
+                            }
+                            else
+                            {
+                                retorno = "SEMPROPRIETARIO";
+                            }
+                        }
+                        else
+                        {//Animal não é do tipo Doadora ou garanhão
+                            _context.AnimaisServicos.Add(ObjAnimaisServicos);
+                            _context.SaveChanges();
+                            retorno = "NOVO";
+                        }
+
+
                         //string valor = ObjAnimaisServicos.Valor.ToString().Replace(",", ".");
                         //https://pt.stackoverflow.com/questions/243124/como-limitar-casas-decimais-usando-c
                         //ObjAnimaisServicos.Valor = Convert.ToDecimal(ObjAnimaisServicos.Valor, new CultureInfo("pt-BR"));                        
 
-                        _context.AnimaisServicos.Add(ObjAnimaisServicos);
-                        _context.SaveChanges();
-                        retorno = "NOVO";
+
                         return new JsonResult(retorno);
 
                     }
@@ -462,16 +510,61 @@ namespace WebProjVet.Controllers
         }
 
 
+        [Route("api/[controller]/GetTotalProprietario/{id}")]
+        public IActionResult GetTotalProprietario(int id)
+        {
+            //int total = _context.AnimaisProprietarios.Where(x => x.AnimaisId.Equals(id)).Count();
+
+            var total = (from ap in _context.AnimaisProprietarios
+                        join p in _context.Proprietarios on ap.ProprietarioId equals p.Id
+                        where ap.AnimaisId == id
+                        && p.Situacao == Situacao.ATIVO
+                        select p.Id).Count();
+                                              
+            return new JsonResult(total);
+        }
+
+
+
         public IActionResult EditLancamentoServico(int id)
         {
             if (id > 0)
             {
                 ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
 
+                ViewBag.DoadoraId = _context.Animais
+                                    .Where(x => x.AnimalTipo == AnimalTipo.DOADORA
+                                    && x.Situacao == Situacao.ATIVO)
+                                    .ToList();
+                ViewBag.GaranhaoId = _context.Animais
+                                    .Where(x => x.AnimalTipo == AnimalTipo.GARANHÃO
+                                    && x.Situacao == Situacao.ATIVO)
+                                    .ToList();
+                ViewBag.ReceptoraId = _context.Animais
+                                    .Where(x => x.AnimalTipo == AnimalTipo.RECEPTORA
+                                    && x.Situacao == Situacao.ATIVO)
+                                    .ToList();
+                ViewBag.SemenId = _context.Animais
+                                    .Where(x => x.AnimalTipo == AnimalTipo.SÉMEN
+                                    && x.Situacao == Situacao.ATIVO)
+                                    .ToList();
+
+                
+
+
                 AnimaisServicos servicoLancado = _context.AnimaisServicos
                     .Include(p => p.Servico)
+                    .Include(a => a.Animais)
                     .ToList()
                     .FirstOrDefault(p => p.Id == id);
+
+
+
+                #region Processo que envia o tipo do animal para o processo de edição do serviço lançado.
+                string tipo = _context.Animais.Where(x => x.Id == servicoLancado.AnimaisId).Select(p => p.AnimalTipo.ToString() ).FirstOrDefault();
+
+                ViewBag.TipoAnimal = tipo;
+                #endregion
 
                 return View(servicoLancado);
 
@@ -492,6 +585,7 @@ namespace WebProjVet.Controllers
                 animaisServicos.DataCancelamento = null;
             }
 
+           
             _context.AnimaisServicos.Update(animaisServicos);
             _context.SaveChanges();
 
@@ -499,7 +593,38 @@ namespace WebProjVet.Controllers
         }
 
 
+        public IActionResult EditEntrada(int id)
+        {
+            ViewBag.Diaria = _context.Servicos.Where(s => s.ServicoTipo == ServicoTipo.DIÁRIA && s.Situacao == Situacao.ATIVO).ToList();
 
+            var animaisEntrada = _context.AnimaisEntradas.FirstOrDefault(p => p.Id == id);
+
+            AnimaisServicos servicoLancado = _context.AnimaisServicos
+                    .Include(p => p.Servico)
+                    .Include(a => a.Animais)
+                    .ToList()
+                    .FirstOrDefault(p => p.Id == id);
+
+
+            return View(animaisEntrada);
+        }
+
+        [HttpPost]
+        public IActionResult EditEntrada(AnimaisEntrada animaisEntrada)
+        {
+            /*if(animaisEntrada.CobraDiaria == EnumSimNao.NÃO)
+            {
+                //animaisEntrada.ServicoId = null;
+                animaisEntrada.Valor = null;
+                animaisEntrada.ValorOriginal = null;
+
+            }*/
+
+            _context.AnimaisEntradas.Update(animaisEntrada);
+            _context.SaveChanges();
+
+            return RedirectToRoute(new { Controller = "Animal", Action = "Edit", id = animaisEntrada.AnimaisId });
+        }
 
 
 

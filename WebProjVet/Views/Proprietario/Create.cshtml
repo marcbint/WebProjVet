@@ -15,6 +15,7 @@
                                 <select id="idTipo" asp-for="PessoaTipo" asp-items="Html.GetEnumSelectList<PessoaTipo>()" class="form-control">
                                     <option selected="selected" value="">SELECIONE</option>
                                 </select>
+                                <span asp-validation-for="PessoaTipo" class="text-danger"></span>
                             </div>
                             <div class="col-lg-3">
                                 <label asp-for="Documento" class="control-label"></label>
@@ -58,6 +59,7 @@
                                 <select asp-for="Situacao" asp-items="Html.GetEnumSelectList<Situacao>()" class="form-control">
                                     <option selected="selected" value="" disabled>SELECIONE</option>
                                 </select>
+                                <span asp-validation-for="Situacao" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -175,6 +177,9 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()

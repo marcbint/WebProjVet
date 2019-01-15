@@ -31,20 +31,20 @@ namespace WebProjVet.Models
 
         [Display(Name = "NASCIMENTO"), MaxLength(10)]
         [StringLength(10)]
-        [Required(ErrorMessage = "{0} deve ser informado!")]
+        //[Required(ErrorMessage = "{0} deve ser informado!")]
         public string DataNascimento { get; set; }
 
         [Display(Name = "MÃE"), MaxLength(100)]
-        [Required(ErrorMessage = "{0} deve ser informada!")]
+        //[Required(ErrorMessage = "{0} deve ser informada!")]
         public string Mae { get; set; }
 
         [Display(Name = "PAI"), MaxLength(100)]
-        [Required(ErrorMessage = "{0} deve ser informado!")]
+        //[Required(ErrorMessage = "{0} deve ser informado!")]
         public string Pai { get; set; }
 
         [Display(Name = "PELAGEM"), MaxLength(50)]
         [StringLength(50)]
-        [Required(ErrorMessage = "{0} deve ser informada!")]
+        //[Required(ErrorMessage = "{0} deve ser informada!")]
         public string Pelagem { get; set; }
 
         [NotMapped]

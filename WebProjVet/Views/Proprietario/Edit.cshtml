@@ -21,6 +21,7 @@
                                 <select id="idTipo" asp-for="PessoaTipo" asp-items="Html.GetEnumSelectList<PessoaTipo>()" class="form-control">
                                     <option selected="selected" value="">SELECIONE</option>
                                 </select>
+                                <span asp-validation-for="PessoaTipo" class="text-danger"></span>
                             </div>
                             <div class="col-lg-3">
                                 <label asp-for="Documento" class="control-label"></label>
@@ -64,6 +65,7 @@
                                 <select asp-for="Situacao" asp-items="Html.GetEnumSelectList<Situacao>()" class="form-control">
                                     <option selected="selected" value="">SELECIONE</option>
                                 </select>
+                                <span asp-validation-for="Situacao" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -112,7 +114,7 @@
                                                                 </div>
                                                                 <div class="col-lg-4">
                                                                     <label class="control-label">NOME LOCALIDADE</label>
-                                                                    <input id="txtLocalNome" class="form-control" />
+                                                                    <input type="text" id="txtLocalNome" class="form-control" />
                                                                     <span id="spaLocalNome" class="text-danger"></span>
                                                                 </div>
                                                                 <div class="col-lg-6">
@@ -155,7 +157,7 @@
                                                                 </div>
                                                                 <div id="divCodigoRural" class="col-lg-2">
                                                                     <label class="control-label">CÓDIGO RURAL</label>
-                                                                    <input id="txtLocalCodigoRural" class="form-control" />
+                                                                    <input type="text" id="txtLocalCodigoRural" class="form-control" />
                                                                     <span id="spaLocalCodigoRural" class="text-danger"></span>
                                                                 </div>
                                                                 <div class="col-lg-3 pull-right form-inline">

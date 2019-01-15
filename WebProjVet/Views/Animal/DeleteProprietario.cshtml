@@ -72,15 +72,20 @@
                                 <label asp-for="DataDesassociacao" class="control-label"></label>
                                 <input id="dtDesassociacao" asp-for="DataDesassociacao" type="date" class="form-control"
                                        data-toggle="tooltip" data-placement="top"
+                                       data-val-required="A data deve ser informada!"
                                        title="Os serviços realizados no animal não serão cobrados a este proprietário a partir da data informada." required />
                                 <span asp-validation-for="DataDesassociacao" class="text-danger"></span>
+                                <span id="spanDatadesassociacao" class="text-danger field-validation-valid"
+                                      data-valmsg-for="dtDesassociacao" data-valmsg-replace="true"></span>
                             </div>
                         </div>
                         <div class="row" style="padding-top:10px">
                             <div class="col-lg-12">
                                 <label asp-for="Motivo" class="control-label">MOTIVO</label>
-                                <textarea id="txtMotivo" asp-for="Motivo" class="form-control" rows="5"></textarea>
-                                <span id="spanMotivo" class="text-danger"></span>
+                                <textarea id="txtMotivo" asp-for="Motivo" 
+                                class="form-control" rows="5"></textarea>                                
+                                <span id="spanMotivo" class="text-danger field-validation-valid"
+                                      data-valmsg-for="txtMotivo" data-valmsg-replace="true"></span>
                             </div>
                         </div>
                     </div>
@@ -124,12 +129,15 @@
 
             var dataDesassociacao = $("#dtDesassociacao").val();
 
-            if (dataDesassociacao != "") {
+            if (dataDesassociacao != "9999-12-31") {
+
                 $('#dtDesassociacao').prop('readonly', true);
                 $('#btnDesassociar').attr('disabled', true);
                 $("#h3Desassociado").removeAttr("hidden");
                 $("#h3Desassociar").attr("hidden", true);
                 $("#txtMotivo").prop('readonly', true);
+            } else {
+                $("#dtDesassociacao").val("");
             }
 
         });

@@ -29,7 +29,7 @@ namespace WebProjVet.Models
 
         [Display(Name = "DATA DESASSOCIAÇÃO")]
         [DataType(DataType.Date)]
-        public DateTime? DataDesassociacao { get; set; }
+        public DateTime DataDesassociacao { get; set; }
 
         [Display(Name = "DATA INCLUSAO")]
         [DataType(DataType.Date)]
@@ -38,6 +38,8 @@ namespace WebProjVet.Models
         [Display(Name = "MOTIVO")]
         [MaxLength(300), StringLength(300)]
         public string Motivo { get; set; }
+
+        
 
     }
 }
