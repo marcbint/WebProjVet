@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebProjVet.Models
 {
-    public class FaturamentoServicos
+    public class FaturamentoEntradas
     {
         [Key]
         public int Id { get; set; }
@@ -17,10 +17,10 @@ namespace WebProjVet.Models
         [ForeignKey("ProprietarioId")]
         public Proprietario Proprietario { get; set; }
 
-        public int AnimaisServicosId { get; set; }
+        public int AnimaisEntradasId { get; set; }
 
-        [ForeignKey("AnimaisServicosId")]
-        public AnimaisServicos AnimaisServicos { get; set; }
+        [ForeignKey("AnimaisEntradasId")]
+        public AnimaisEntrada AnimaisEntradas { get; set; }
 
         public int AnimaisId { get; set; }
 
@@ -32,20 +32,16 @@ namespace WebProjVet.Models
         [ForeignKey("ServicoId")]
         public Servico Servico { get; set; }
 
+        public int Dias { get; set; }
+
+        public decimal Diaria { get; set; }
+
         public string Valor { get; set; }
 
         public DateTime DataFaturamento { get; set; }
 
         public string Referencia { get; set; }
-      
-        public string DoadoraId { get; set; }
 
-        public string GaranhaoId { get; set; }
-
-        public string ReceptoraId { get; set; }
-    
-        public string SemenId { get; set; }
-        
 
     }
 }

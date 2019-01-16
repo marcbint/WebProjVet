@@ -32,6 +32,8 @@ namespace WebProjVet.Models
         [Required(ErrorMessage ="{0} deve ser informada!")]
         public string Referencia { get; set; }
 
+        [NotMapped]
+        public DateTime? DataApuracao { get; set; }
 
 
     }

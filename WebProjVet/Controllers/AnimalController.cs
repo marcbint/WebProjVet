@@ -253,9 +253,6 @@ namespace WebProjVet.Controllers
 
         public IActionResult DeleteProprietario(int id)
         {
-
-
-
             if (id > 0)
             {
                 //ViewBag.ProprietarioId = _context.Proprietarios.ToList();
@@ -287,6 +284,7 @@ namespace WebProjVet.Controllers
                 .FirstOrDefault(p => p.Id == animaisProprietario.Id);
 
             registro.DataDesassociacao = animaisProprietario.DataDesassociacao;
+            registro.DataValidade = animaisProprietario.DataDesassociacao;
             registro.Motivo = animaisProprietario.Motivo;
         
             _context.AnimaisProprietarios.Update(registro);
@@ -364,7 +362,8 @@ namespace WebProjVet.Controllers
 
                         if (count == 0)
                         {
-                            ObjAnimaisProprietarios.DataDesassociacao = Convert.ToDateTime("31/12/9999");
+                            //ObjAnimaisProprietarios.DataDesassociacao = Convert.ToDateTime("31/12/9999");
+                            ObjAnimaisProprietarios.DataValidade = Convert.ToDateTime("31/12/9999");
                             _context.AnimaisProprietarios.Add(ObjAnimaisProprietarios);
                             _context.SaveChanges();
                             retorno = "NOVO";
@@ -427,7 +426,7 @@ namespace WebProjVet.Controllers
                                          where ap.AnimaisId == ObjAnimaisServicos.AnimaisId
                                          && p.Situacao == Situacao.ATIVO
                                          && ap.DataAquisicao <= ObjAnimaisServicos.Data                                 
-                                         && ap.DataDesassociacao >=ObjAnimaisServicos.Data
+                                         && ap.DataValidade >=ObjAnimaisServicos.Data //desassociação e validade devem ser iguais
                                          select p.Id).Count();
                             //Se possui proprietário ativo ou vigente
                             if (total >= 1)
@@ -495,6 +494,9 @@ namespace WebProjVet.Controllers
                         //string valor = ObjAnimaisServicos.Valor.ToString().Replace(",", ".");
                         //https://pt.stackoverflow.com/questions/243124/como-limitar-casas-decimais-usando-c
                         //ObjAnimaisServicos.Valor = Convert.ToDecimal(ObjAnimaisServicos.Valor, new CultureInfo("pt-BR"));                        
+
+                        ObjAnimaisEntrada.DataValidade = Convert.ToDateTime("31/12/9999");
+                        ObjAnimaisEntrada.DataUltimaApuracao = ObjAnimaisEntrada.DataEntrada;
 
                         _context.AnimaisEntradas.Add(ObjAnimaisEntrada);
                         _context.SaveChanges();
@@ -619,7 +621,7 @@ namespace WebProjVet.Controllers
                 animaisEntrada.ValorOriginal = null;
 
             }*/
-
+            animaisEntrada.DataValidade = animaisEntrada.DataSaida;
             _context.AnimaisEntradas.Update(animaisEntrada);
             _context.SaveChanges();
 

@@ -156,7 +156,8 @@
                                                                             </td>
                                                                             <td>
                                                                                 @{
-                                                                                    string parameterDtDesassociacao = item.DataDesassociacao.ToString("dd/MM/yyyy");
+                                                                                    @*string parameterDtDesassociacao = item.DataDesassociacao.ToString("dd/MM/yyyy");*@
+                                                                                    string parameterDtDesassociacao = item.DataDesassociacao.ToString();
                                                                                     if (parameterDtDesassociacao == "31/12/9999")
                                                                                     {
                                                                                         parameterDtDesassociacao = null;

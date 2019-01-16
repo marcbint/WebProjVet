@@ -133,9 +133,10 @@ namespace WebProjVet.Migrations
                     AnimaisId = table.Column<int>(nullable: false),
                     ProprietarioId = table.Column<int>(nullable: false),
                     DataAquisicao = table.Column<DateTime>(nullable: false),
-                    DataDesassociacao = table.Column<DateTime>(nullable: false),
+                    DataDesassociacao = table.Column<DateTime>(nullable: true),
                     DataInclusao = table.Column<DateTime>(nullable: false),
-                    Motivo = table.Column<string>(maxLength: 300, nullable: true)
+                    Motivo = table.Column<string>(maxLength: 300, nullable: true),
+                    DataValidade = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -279,7 +280,9 @@ namespace WebProjVet.Migrations
                     Anemia = table.Column<int>(nullable: false),
                     Mormo = table.Column<int>(nullable: false),
                     AnimalTipoCasco = table.Column<int>(nullable: false),
-                    ObservacoesClinicas = table.Column<string>(maxLength: 300, nullable: true)
+                    ObservacoesClinicas = table.Column<string>(maxLength: 300, nullable: true),
+                    DataUltimaApuracao = table.Column<DateTime>(nullable: true),
+                    DataValidade = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -424,6 +427,51 @@ namespace WebProjVet.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FaturamentoEntradas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ProprietarioId = table.Column<int>(nullable: false),
+                    AnimaisEntradasId = table.Column<int>(nullable: false),
+                    AnimaisId = table.Column<int>(nullable: false),
+                    ServicoId = table.Column<int>(nullable: false),
+                    Dias = table.Column<int>(nullable: false),
+                    Diaria = table.Column<decimal>(nullable: false),
+                    Valor = table.Column<string>(nullable: true),
+                    DataFaturamento = table.Column<DateTime>(nullable: false),
+                    Referencia = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FaturamentoEntradas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FaturamentoEntradas_AnimalEntradas_AnimaisEntradasId",
+                        column: x => x.AnimaisEntradasId,
+                        principalTable: "AnimalEntradas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FaturamentoEntradas_Animais_AnimaisId",
+                        column: x => x.AnimaisId,
+                        principalTable: "Animais",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FaturamentoEntradas_Proprietarios_ProprietarioId",
+                        column: x => x.ProprietarioId,
+                        principalTable: "Proprietarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FaturamentoEntradas_Servicos_ServicoId",
+                        column: x => x.ServicoId,
+                        principalTable: "Servicos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FaturamentoServicos",
                 columns: table => new
                 {
@@ -435,7 +483,7 @@ namespace WebProjVet.Migrations
                     ServicoId = table.Column<int>(nullable: false),
                     Valor = table.Column<string>(nullable: true),
                     DataFaturamento = table.Column<DateTime>(nullable: false),
-                    Referencia = table.Column<DateTime>(nullable: false),
+                    Referencia = table.Column<string>(nullable: true),
                     DoadoraId = table.Column<string>(nullable: true),
                     GaranhaoId = table.Column<string>(nullable: true),
                     ReceptoraId = table.Column<string>(nullable: true),
@@ -516,6 +564,26 @@ namespace WebProjVet.Migrations
                 column: "ProprietarioId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FaturamentoEntradas_AnimaisEntradasId",
+                table: "FaturamentoEntradas",
+                column: "AnimaisEntradasId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FaturamentoEntradas_AnimaisId",
+                table: "FaturamentoEntradas",
+                column: "AnimaisId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FaturamentoEntradas_ProprietarioId",
+                table: "FaturamentoEntradas",
+                column: "ProprietarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FaturamentoEntradas_ServicoId",
+                table: "FaturamentoEntradas",
+                column: "ServicoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FaturamentoServicos_AnimaisId",
                 table: "FaturamentoServicos",
                 column: "AnimaisId");
@@ -584,9 +652,6 @@ namespace WebProjVet.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AnimalEntradas");
-
-            migrationBuilder.DropTable(
                 name: "AnimalProprietario");
 
             migrationBuilder.DropTable(
@@ -594,6 +659,9 @@ namespace WebProjVet.Migrations
 
             migrationBuilder.DropTable(
                 name: "Faturamento");
+
+            migrationBuilder.DropTable(
+                name: "FaturamentoEntradas");
 
             migrationBuilder.DropTable(
                 name: "FaturamentoServicos");
@@ -618,6 +686,9 @@ namespace WebProjVet.Migrations
 
             migrationBuilder.DropTable(
                 name: "Doadoras");
+
+            migrationBuilder.DropTable(
+                name: "AnimalEntradas");
 
             migrationBuilder.DropTable(
                 name: "AnimalServicos");

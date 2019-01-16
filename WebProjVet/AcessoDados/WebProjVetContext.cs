@@ -22,6 +22,7 @@ namespace WebProjVet.AcessoDados
         public DbSet<AnimaisEntrada> AnimaisEntradas { get; set; }
         public DbSet<Faturamento> Faturamentos { get; set; }
         public DbSet<FaturamentoServicos> FaturamentoServicos { get; set; }
+        public DbSet<FaturamentoEntradas> FaturamentoEntradas { get; set; }
 
         public WebProjVetContext(DbContextOptions<WebProjVetContext> options) : base(options)
         {

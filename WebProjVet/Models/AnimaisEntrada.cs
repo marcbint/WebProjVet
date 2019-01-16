@@ -79,7 +79,9 @@ namespace WebProjVet.Models
         public string ObservacoesClinicas { get; set; }
 
 
+        public DateTime? DataUltimaApuracao { get; set; }
 
+        public DateTime? DataValidade { get; set; }
 
     }
 }

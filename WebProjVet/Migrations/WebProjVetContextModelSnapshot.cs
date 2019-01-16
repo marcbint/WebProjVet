@@ -67,6 +67,10 @@ namespace WebProjVet.Migrations
 
                     b.Property<DateTime?>("DataSaida");
 
+                    b.Property<DateTime?>("DataUltimaApuracao");
+
+                    b.Property<DateTime?>("DataValidade");
+
                     b.Property<int>("DiariaSituacao");
 
                     b.Property<string>("Gta")
@@ -104,9 +108,11 @@ namespace WebProjVet.Migrations
 
                     b.Property<DateTime>("DataAquisicao");
 
-                    b.Property<DateTime>("DataDesassociacao");
+                    b.Property<DateTime?>("DataDesassociacao");
 
                     b.Property<DateTime>("DataInclusao");
+
+                    b.Property<DateTime?>("DataValidade");
 
                     b.Property<string>("Motivo")
                         .HasMaxLength(300);
@@ -229,6 +235,42 @@ namespace WebProjVet.Migrations
                     b.ToTable("Faturamento");
                 });
 
+            modelBuilder.Entity("WebProjVet.Models.FaturamentoEntradas", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AnimaisEntradasId");
+
+                    b.Property<int>("AnimaisId");
+
+                    b.Property<DateTime>("DataFaturamento");
+
+                    b.Property<decimal>("Diaria");
+
+                    b.Property<int>("Dias");
+
+                    b.Property<int>("ProprietarioId");
+
+                    b.Property<string>("Referencia");
+
+                    b.Property<int>("ServicoId");
+
+                    b.Property<string>("Valor");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimaisEntradasId");
+
+                    b.HasIndex("AnimaisId");
+
+                    b.HasIndex("ProprietarioId");
+
+                    b.HasIndex("ServicoId");
+
+                    b.ToTable("FaturamentoEntradas");
+                });
+
             modelBuilder.Entity("WebProjVet.Models.FaturamentoServicos", b =>
                 {
                     b.Property<int>("Id")
@@ -248,7 +290,7 @@ namespace WebProjVet.Migrations
 
                     b.Property<string>("ReceptoraId");
 
-                    b.Property<DateTime>("Referencia");
+                    b.Property<string>("Referencia");
 
                     b.Property<string>("SemenId");
 
@@ -580,6 +622,29 @@ namespace WebProjVet.Migrations
                     b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
                         .WithMany("Faturamentos")
                         .HasForeignKey("ProprietarioId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WebProjVet.Models.FaturamentoEntradas", b =>
+                {
+                    b.HasOne("WebProjVet.Models.AnimaisEntrada", "AnimaisEntradas")
+                        .WithMany()
+                        .HasForeignKey("AnimaisEntradasId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebProjVet.Models.Animais", "Animais")
+                        .WithMany()
+                        .HasForeignKey("AnimaisId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
+                        .WithMany()
+                        .HasForeignKey("ProprietarioId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebProjVet.Models.Servico", "Servico")
+                        .WithMany()
+                        .HasForeignKey("ServicoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
