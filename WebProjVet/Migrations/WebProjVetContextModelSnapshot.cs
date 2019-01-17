@@ -112,7 +112,9 @@ namespace WebProjVet.Migrations
 
                     b.Property<DateTime>("DataInclusao");
 
-                    b.Property<DateTime?>("DataValidade");
+                    b.Property<DateTime?>("DataUltimaApuracao");
+
+                    b.Property<DateTime>("DataValidade");
 
                     b.Property<string>("Motivo")
                         .HasMaxLength(300);

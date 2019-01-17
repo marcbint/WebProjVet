@@ -9,7 +9,7 @@ using WebProjVet.AcessoDados;
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    [Migration("20190116033303_Projeto_MVP")]
+    [Migration("20190117051458_Projeto_MVP")]
     partial class Projeto_MVP
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,7 +114,9 @@ namespace WebProjVet.Migrations
 
                     b.Property<DateTime>("DataInclusao");
 
-                    b.Property<DateTime?>("DataValidade");
+                    b.Property<DateTime?>("DataUltimaApuracao");
+
+                    b.Property<DateTime>("DataValidade");
 
                     b.Property<string>("Motivo")
                         .HasMaxLength(300);

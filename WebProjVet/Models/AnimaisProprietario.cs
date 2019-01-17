@@ -39,8 +39,11 @@ namespace WebProjVet.Models
         [MaxLength(300), StringLength(300)]
         public string Motivo { get; set; }
 
-        public DateTime? DataValidade { get; set; }
-        
+        public DateTime DataValidade { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? DataUltimaApuracao { get; set; }
+
 
     }
 }

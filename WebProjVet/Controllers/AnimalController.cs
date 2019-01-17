@@ -284,7 +284,7 @@ namespace WebProjVet.Controllers
                 .FirstOrDefault(p => p.Id == animaisProprietario.Id);
 
             registro.DataDesassociacao = animaisProprietario.DataDesassociacao;
-            registro.DataValidade = animaisProprietario.DataDesassociacao;
+             registro.DataValidade = (DateTime)animaisProprietario.DataDesassociacao;
             registro.Motivo = animaisProprietario.Motivo;
         
             _context.AnimaisProprietarios.Update(registro);
@@ -364,6 +364,7 @@ namespace WebProjVet.Controllers
                         {
                             //ObjAnimaisProprietarios.DataDesassociacao = Convert.ToDateTime("31/12/9999");
                             ObjAnimaisProprietarios.DataValidade = Convert.ToDateTime("31/12/9999");
+                            ObjAnimaisProprietarios.DataUltimaApuracao = ObjAnimaisProprietarios.DataAquisicao;
                             _context.AnimaisProprietarios.Add(ObjAnimaisProprietarios);
                             _context.SaveChanges();
                             retorno = "NOVO";

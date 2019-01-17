@@ -136,7 +136,8 @@ namespace WebProjVet.Migrations
                     DataDesassociacao = table.Column<DateTime>(nullable: true),
                     DataInclusao = table.Column<DateTime>(nullable: false),
                     Motivo = table.Column<string>(maxLength: 300, nullable: true),
-                    DataValidade = table.Column<DateTime>(nullable: true)
+                    DataValidade = table.Column<DateTime>(nullable: false),
+                    DataUltimaApuracao = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
