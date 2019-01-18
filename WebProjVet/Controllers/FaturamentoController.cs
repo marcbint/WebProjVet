@@ -20,202 +20,31 @@ namespace WebProjVet.Controllers
         {
             _context = webProjVetContext;
 
-            //IFaturamentoRepository faturamentoRepository,
-            //_faturamentoRepository = faturamentoRepository;
         }
 
         public IActionResult Index()
         {
-            //Linq Exemplos
-            //https://www.devmedia.com.br/linq-e-csharp-efetuando-consultas-com-lambda-expressions/38863
-            //http://www.macoratti.net/10/05/c_ulinq.htm
+            //https://stackoverflow.com/questions/1989674/how-to-use-orderby-with-2-fields-in-linq
+            var faturamento = (from f in _context.Faturamentos
+                               join p in _context.Proprietarios on f.ProprietarioId equals p.Id
+                               orderby Convert.ToDateTime(f.Referencia) descending, f.Proprietario.Nome
+                               select new Faturamento
+                               {
+                                   Proprietario = p,
+                                   ProprietarioId = f.ProprietarioId,
+                                   Id = f.Id,
+                                   Referencia = f.Referencia,
+                                   Valor = f.Valor,
+                                   Situacao = f.Situacao
+                                   
 
+                               }
+                               ).ToList();
 
-            /////////Faturamento dos serviços apurados
-            List<Faturamento> LstFaturamento = (from fs in _context.FaturamentoServicos
-                                                join p in _context.Proprietarios on fs.ProprietarioId equals p.Id
-                                                group new { fs.ProprietarioId, fs.Referencia, fs.Valor} by new { fs.ProprietarioId, fs.Referencia } into g
-                                                select new Faturamento
-                                                {
-                                                    ProprietarioId = g.First().ProprietarioId,
-                                                    Valor = Math.Round(g.Sum(s => Convert.ToDecimal(s.Valor)),2).ToString(),
-                                                    Situacao = FaturamentoSituacao.PENDENTE,
-                                                    Referencia = g.First().Referencia
-                                                    
-                                                }
-                                                ).ToList();
-
-
-            List<Faturamento> LstFaturamentoEntrada = (from fe in _context.FaturamentoEntradas
-                                                join p in _context.Proprietarios on fe.ProprietarioId equals p.Id
-                                                group new { fe.ProprietarioId, fe.Referencia, fe.Valor } by new { fe.ProprietarioId, fe.Referencia }  into g
-                                                select new Faturamento
-                                                {
-                                                    ProprietarioId = g.First().ProprietarioId,
-                                                    Valor = Math.Round(g.Sum(s => Convert.ToDecimal(s.Valor) ), 2).ToString(),
-                                                    Situacao = FaturamentoSituacao.PENDENTE,
-                                                    Referencia = g.First().Referencia
-
-                                                }
-                                                ).ToList();
-
-            
-
-            List<Faturamento> LstFaturamentoGeral = new List<Faturamento>();
-            LstFaturamentoGeral = LstFaturamento.Union(LstFaturamentoEntrada).ToList();
-            LstFaturamentoGeral.GroupBy(s => new
-            {
-                s.Proprietario,
-                s.Referencia,
-                s.Situacao
-            });
-
-
-            var LstFaturamentoTeste = (from fs in _context.FaturamentoServicos
-                                                join p in _context.Proprietarios on fs.ProprietarioId equals p.Id
-                                                group fs by fs.Proprietario into g
-                                                select new Faturamento
-                                                {
-                                                    ProprietarioId = g.First().ProprietarioId,
-                                                    Valor = Math.Round(g.Sum(s => Convert.ToDecimal(s.Valor)), 2).ToString()
-                                                    
-
-                                                }
-                                                ).ToList();
-
-            var LstFaturamentoEntradaTeste = (from fe in _context.FaturamentoEntradas
-                                                       join p in _context.Proprietarios on fe.ProprietarioId equals p.Id
-                                                       group fe by fe.Proprietario into g
-                                                       select new Faturamento
-                                                       {
-                                                           ProprietarioId = g.First().ProprietarioId,
-                                                           Valor = Math.Round(g.Sum(s => Convert.ToDecimal(s.Valor)), 2).ToString()
-
-                                                       }
-                                                            ).ToList();
-            
-            //Exemplo de remoção de duplicidades
-            var result = LstFaturamento.Union(LstFaturamentoEntrada, new FaturamentoEqualityComparer());
-
-            var concattedUniqueList = LstFaturamento
-                .Concat(LstFaturamentoEntrada)
-                .OrderBy(f => f.ProprietarioId)
-                .GroupBy(f => new
-                            { f.ProprietarioId,
-                                f.Referencia, 
-                                f.Situacao
-                            })
-                .Select(g => new Faturamento
-                {
-                    ProprietarioId = g.First().ProprietarioId,
-                    Valor = g.Sum(s => Convert.ToDecimal(s.Valor)).ToString(),
-                    Situacao = FaturamentoSituacao.PENDENTE,
-                    Referencia = g.First().Referencia
-                }
-                        );
-
-
-            var lstProprietarioTeste = LstFaturamentoTeste.Union(LstFaturamentoEntradaTeste).Distinct().ToList();
-        
-            lstProprietarioTeste
-                .GroupBy(s => s.ProprietarioId)
-                .Select( p => new Faturamento {
-                    ProprietarioId = p.First().ProprietarioId,
-                    Valor =  p.Sum(s => Convert.ToDecimal( s.Valor)).ToString()
-
-                }).Distinct();
-
-
-
-
-
-            //List com Union
-            List<Faturamento> listServico = (from p in _context.Proprietarios
-                                             join ap in _context.AnimaisProprietarios on p.Id equals ap.ProprietarioId
-                                             join a in _context.Animais on ap.AnimaisId equals a.Id
-                                             join aass in _context.AnimaisServicos on a.Id equals aass.AnimaisId
-                                             select new Faturamento
-                                             {
-                                                 ProprietarioId = p.Id
-
-                                             }).ToList();
-
-            List<Faturamento> listDiaria = (from p in _context.Proprietarios
-                                            join ap in _context.AnimaisProprietarios on p.Id equals ap.ProprietarioId
-                                            join a in _context.Animais on ap.AnimaisId equals a.Id
-                                            join ae in _context.AnimaisEntradas on a.Id equals ae.AnimaisId
-                                            select new Faturamento
-                                            {
-                                                ProprietarioId = p.Id
-                                            }).ToList();
-
-            List<Faturamento> lstProprietario = listServico.Union(listDiaria).Distinct().ToList();
-
-
-
-            /*
-                        var lstServicoProprietario = (from ap in _context.AnimaisProprietarios
-                                     join a in _context.Animais on ap.AnimaisId equals a.Id
-                                     join aass in _context.AnimaisServicos on a.Id equals aass.AnimaisId
-                                     group aass.AnimaisProprietarios.FirstOrDefault()
-
-                                     by ap into g
-                                     select new 
-                                     {
-                                         ProprietarioId = g.FirstOrDefault(),
-                                         Valor = g.Sum(s => Convert.ToDecimal(s.Valor) / 100).ToString()
-
-                                     }
-                         ).ToList();
-
-
-                        List<Faturamento> listaClientesVM = new List<Faturamento>();
-
-                        foreach (var item in lstServicoProprietario)
-                        {
-                            Faturamento cliVM = new Faturamento(); //ViewModel
-                            cliVM.ProprietarioId  = item.ProprietarioId;
-                            cliVM.Valor = item.Valor;
-
-                            listaClientesVM.Add(cliVM);
-                        }*/
-
-
-            List<FaturamentoServicos> listServicoProprietario = (from p in _context.Proprietarios
-                                             join ap in _context.AnimaisProprietarios on p.Id equals ap.ProprietarioId
-                                             join a in _context.Animais on ap.AnimaisId equals a.Id
-                                             join aass in _context.AnimaisServicos on a.Id equals aass.AnimaisId
-                                             select new FaturamentoServicos
-                                             {
-                                                 ProprietarioId = p.Id,
-                                                 AnimaisServicosId = aass.Id,
-                                                 AnimaisId = a.Id,
-                                                 ServicoId = aass.ServicoId,
-                                                 Valor = aass.ValorTotal,                                                 
-                                                 DataFaturamento = DateTime.Now
-                                                 //,Referencia = DateTime.Now
-
-                                             }).ToList();
-
-            /*
-            foreach(var item in listServicoProprietario)
-            {
-                //FaturamentoServicosProprietario fat= new FaturamentoServicosProprietario(); //ViewModel
-                _context.FaturamentoServicos.Add(item);
-                _context.SaveChanges();
-            }*/
-
-
-            //FaturaProprietario(1);
 
             //Retorna as informações para View
-            return View(concattedUniqueList);
+            return View(faturamento);
 
-        }
-
-        public IActionResult ServicosAnimais()
-        {
-            return null;
         }
 
 
@@ -226,12 +55,37 @@ namespace WebProjVet.Controllers
             return View();
         }
 
+
         [HttpPost]
         public IActionResult Create(Faturamento faturamento)
         {
             string mes = faturamento.DataApuracao.Value.Month.ToString().PadLeft(2, '0');
             string ano = faturamento.DataApuracao.Value.Year.ToString();
             string referencia = mes + "/" + ano;
+            Faturamento objFaturamento = new Faturamento();
+
+
+            //Verifica se já existe faturamento para o proprietário para o mês de referência
+            int FaturaId = RetornaFatura(faturamento.ProprietarioId, referencia);
+
+            if (FaturaId == 0)
+            {
+                //Cria o registro de faturamento
+                
+                objFaturamento.ProprietarioId = faturamento.ProprietarioId;
+                objFaturamento.Valor = "0,00";
+                objFaturamento.Situacao = FaturamentoSituacao.PENDENTE;
+                objFaturamento.Data = DateTime.Now;
+                objFaturamento.Referencia = faturamento.Referencia;
+
+                _context.Faturamentos.Add(objFaturamento);
+                _context.SaveChanges();
+
+                FaturaId = objFaturamento.Id;
+            }
+
+
+
 
 
             List<AnimaisServicos> listServicoProprietario = new List<AnimaisServicos>();
@@ -278,6 +132,8 @@ namespace WebProjVet.Controllers
             }
             #endregion
 
+            //Verifica se existe fatura o Proprietário para referência informada
+            FaturaId = RetornaFatura(faturamento.ProprietarioId, referencia);
 
             foreach (var item in listServicoProprietario)
             {
@@ -324,6 +180,7 @@ namespace WebProjVet.Controllers
 
                             //DateTime dataReferenciaFormatada = Convert.ToDateTime(faturamento.Referencia);
                             faturamentoServicos.Referencia = referencia;
+                            faturamentoServicos.FaturamentoId = FaturaId;
 
                             //Adiciona o serviço que passou pelo rateio na lista de serviços do proprietário.
                             _context.FaturamentoServicos.Add(faturamentoServicos);
@@ -344,6 +201,7 @@ namespace WebProjVet.Controllers
 
                         //DateTime dataReferenciaFormatada = Convert.ToDateTime(faturamento.Referencia);
                         faturamentoServicos.Referencia = referencia;
+                        faturamentoServicos.FaturamentoId = FaturaId;
 
                         _context.FaturamentoServicos.Add(faturamentoServicos);
                         _context.SaveChanges();
@@ -421,6 +279,8 @@ namespace WebProjVet.Controllers
             }
             #endregion
 
+
+
             foreach (var item in listEntradasProprietario)
             {
                 if (listEntradasProprietario.Count > 0)
@@ -490,6 +350,10 @@ namespace WebProjVet.Controllers
                     if (totalProprietario > 0)
                     {
 
+                        //Verifica se existe fatura o Proprietário para referência informada
+                        FaturaId = RetornaFatura(faturamento.ProprietarioId, referencia);
+
+
                         //Quando o animal do serviço realizado possui mais de um proprietário realiza loop para rateio do serviço que será faturado.
                         if (totalProprietario >= 2)
                         {
@@ -520,6 +384,7 @@ namespace WebProjVet.Controllers
                                 faturamentoEntradas.Valor = (diaria * dias).ToString();
                                 faturamentoEntradas.DataFaturamento = DateTime.Now;
                                 faturamentoEntradas.Referencia = referencia;
+                                faturamentoEntradas.FaturamentoId = FaturaId;
 
                                 //Adiciona o serviço que passou pelo rateio na lista de serviços do proprietário.
                                 _context.FaturamentoEntradas.Add(faturamentoEntradas);
@@ -556,6 +421,7 @@ namespace WebProjVet.Controllers
                             faturamentoEntradas.Valor = (diaria * dias).ToString();
                             faturamentoEntradas.DataFaturamento = DateTime.Now;
                             faturamentoEntradas.Referencia = referencia;
+                            faturamentoEntradas.FaturamentoId = FaturaId;
 
                             //Adiciona o serviço que passou pelo rateio na lista de serviços do proprietário.
                             _context.FaturamentoEntradas.Add(faturamentoEntradas);
@@ -577,11 +443,42 @@ namespace WebProjVet.Controllers
                 }
             }
 
-
+            AtualizaFaturamento(FaturaId);
 
             return RedirectToAction("Index");
         }
 
+
+        public IActionResult DetalheFatura(int Id)
+        {
+            var detalheFatura = _context.Faturamentos
+                .Include(p => p.Proprietario)
+
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(s => s.Servico)
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(ma => ma.Animais)
+
+                .Include(fe => fe.FaturamentoEntradas)
+                    .ThenInclude(s => s.Servico)
+                .Include(fe => fe.FaturamentoEntradas)
+                    .ThenInclude(ma => ma.Animais)
+
+                .Where(f => f.Id.Equals(Id))
+                .FirstOrDefault();
+
+            
+            //List<FaturamentoServicos> faturamentoServicos
+
+
+            return View(detalheFatura);
+        }
+
+
+        public IActionResult ServicosAnimais()
+        {
+            return null;
+        }
 
 
         public void FaturaProprietario(int idAnimalServico)
@@ -662,6 +559,117 @@ namespace WebProjVet.Controllers
 
 
 
+        }
+
+
+        public void AtualizaFaturamento(int FaturaId)
+        {
+
+            //Linq Exemplos
+            //https://www.devmedia.com.br/linq-e-csharp-efetuando-consultas-com-lambda-expressions/38863
+            //http://www.macoratti.net/10/05/c_ulinq.htm
+
+
+            /////////Faturamento dos serviços apurados
+            List<Faturamento> LstFaturamento = (from fs in _context.FaturamentoServicos
+                                                join p in _context.Proprietarios on fs.ProprietarioId equals p.Id
+                                                where fs.FaturamentoId == FaturaId
+                                                group new { fs.ProprietarioId, fs.Referencia, fs.Valor } by new { fs.ProprietarioId, fs.Referencia } into g
+                                                select new Faturamento
+                                                {
+                                                    ProprietarioId = g.First().ProprietarioId,
+                                                    Valor = Math.Round(g.Sum(s => Convert.ToDecimal(s.Valor)), 2).ToString(),
+                                                    Situacao = FaturamentoSituacao.PENDENTE,
+                                                    Referencia = g.First().Referencia
+
+                                                }
+                                                ).ToList();
+
+
+            List<Faturamento> LstFaturamentoEntrada = (from fe in _context.FaturamentoEntradas
+                                                       join p in _context.Proprietarios on fe.ProprietarioId equals p.Id
+                                                       where fe.FaturamentoId == FaturaId
+                                                       group new { fe.ProprietarioId, fe.Referencia, fe.Valor } by new { fe.ProprietarioId, fe.Referencia } into g
+                                                       select new Faturamento
+                                                       {
+                                                           ProprietarioId = g.First().ProprietarioId,
+                                                           Valor = Math.Round(g.Sum(s => Convert.ToDecimal(s.Valor)), 2).ToString(),
+                                                           Situacao = FaturamentoSituacao.PENDENTE,
+                                                           Referencia = g.First().Referencia
+
+                                                       }
+                                                ).ToList();
+
+
+
+            var concattedUniqueList = LstFaturamento
+                .Concat(LstFaturamentoEntrada)
+                .OrderBy(f => f.ProprietarioId)
+                .GroupBy(f => new
+                {
+                    f.ProprietarioId,
+                    f.Referencia,
+                    f.Situacao
+                })
+                .Select(g => new Faturamento
+                {
+                    ProprietarioId = g.First().ProprietarioId,
+                    Valor = g.Sum(s => Convert.ToDecimal(s.Valor)).ToString(),
+                    Situacao = FaturamentoSituacao.PENDENTE,
+                    Referencia = g.First().Referencia
+                }
+                );
+
+
+
+            foreach (var fat in concattedUniqueList)
+            {
+                Faturamento objFaturamento = _context.Faturamentos.FirstOrDefault(f => f.Id.Equals(FaturaId));
+
+                //objFaturamento.ProprietarioId = fat.ProprietarioId;
+                objFaturamento.Valor = fat.Valor;
+                //objFaturamento.Situacao = fat.Situacao;
+                //objFaturamento.Data = DateTime.Now;
+                //objFaturamento.Referencia = fat.Referencia;
+                //objFaturamento.Id = FaturaId;
+
+
+                _context.Faturamentos.Update(objFaturamento);
+                _context.SaveChanges();
+
+            }
+
+
+        }
+
+
+        public int RetornaFatura(int proprietario, string referencia)
+        {
+            //Verifica se já existe faturamento para o proprietário para o mês de referência
+
+            string faturamentoExistente = _context.Faturamentos
+                                        .Where(f => f.ProprietarioId == proprietario
+                                        && f.Referencia == referencia).FirstOrDefault()?.Id.ToString();
+
+
+            if (faturamentoExistente == null)
+            {
+                Faturamento objFaturamento = new Faturamento();
+
+                objFaturamento.ProprietarioId = proprietario;
+                objFaturamento.Valor = "0,00";
+                objFaturamento.Situacao = FaturamentoSituacao.PENDENTE;
+                objFaturamento.Data = DateTime.Now;
+                objFaturamento.Referencia = referencia;
+
+
+                _context.Faturamentos.Add(objFaturamento);
+                _context.SaveChanges();
+
+                faturamentoExistente = objFaturamento.Id.ToString();
+            }
+
+            return Convert.ToInt32(faturamentoExistente);
         }
     }
 }

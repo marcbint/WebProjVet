@@ -1,0 +1,120 @@
+﻿@model WebProjVet.Models.Faturamento
+@{
+    ViewData["Title"] = "DetalheFatura";
+}
+
+<h2>DetalheFatura</h2>
+
+<div class="container" style="padding-top:50px">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-table">
+                <div class="panel-heading">
+                    <h3 class="text-center">RELATÓRIO MENSAL</h3>
+                    <h4 class="text-center col-lg-12">PROPRIETÁRIO: <p>@Model.Proprietario.Nome</p></h4>
+
+                    @foreach (var item in Model.FaturamentoEntradas)
+                    {
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-12">
+                                <label class="control-label d-block p-2 bg-primary text-white">ESTADIA MENSAL DO ANIMAL ALOJADO:</label>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-4">
+                                <label class="control-label">@Html.DisplayFor(modelItem => item.Animais.Nome)</label>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-4">
+                                <label class="control-label">VALOR / ANIMAL / MÊS:</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="control-label">@Html.DisplayFor(modelItem => item.Valor)</label>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-4">
+                                <label class="control-label">DATA FECHAMENTO:</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="control-label">@Html.DisplayFor(modelItem => item.DataFaturamento)</label>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-4">
+                                <label class="control-label">TOTAL DE DIAS:</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="control-label">@Html.DisplayFor(modelItem => item.Dias)</label>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-4">
+                                <label class="control-label">VALOR TOTAL:</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="control-label">@Html.DisplayFor(modelItem => item.Valor)</label>
+                            </div>
+                        </div>
+
+
+                    }
+
+                    @foreach (var item in Model.FaturamentoServicos)
+                    {
+                        <div class="row" style="padding-top:30px">
+                            <div class="col-lg-12">
+                                <label class="control-label d-block p-2 bg-primary text-white">@Html.DisplayFor(modelItem => item.Servico.Nome)</label>
+                            </div>
+                        </div>
+                   
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-lg-4">
+                                <label class="control-label">VALOR TOTAL:</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="control-label">@Html.DisplayFor(modelItem => item.Valor)</label>
+                            </div>
+                        </div>
+
+
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <input type="submit" value="REGISTRAR" class="btn btn-success btn-lg btn-block" />
+        </div>
+    </div>
+    <div class="row" style="padding-top:20px">
+        <div class="col-md-12">
+            <a asp-action="Index" class="btn btn-info btn-lg btn-block">VOLTAR</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

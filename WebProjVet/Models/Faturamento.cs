@@ -35,6 +35,12 @@ namespace WebProjVet.Models
         [NotMapped]
         public DateTime? DataApuracao { get; set; }
 
+        
+        public virtual ICollection<FaturamentoEntradas> FaturamentoEntradas { get; set; }
+
+        
+        public virtual ICollection<FaturamentoServicos> FaturamentoServicos { get; set; }
+
 
     }
 }

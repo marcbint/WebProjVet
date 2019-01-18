@@ -231,6 +231,8 @@
     <Compile Remove="Migrations\20190116012006_Projeto_MVP.Designer.cs" />
     <Compile Remove="Migrations\20190117050126_Projeto_MVP.cs" />
     <Compile Remove="Migrations\20190117050126_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190117051458_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190117051458_Projeto_MVP.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

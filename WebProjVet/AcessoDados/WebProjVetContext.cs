@@ -31,7 +31,8 @@ namespace WebProjVet.AcessoDados
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FaturamentoServicos>().HasKey(p => p.Id);  
+            
+            
 
             modelBuilder.Entity<Receptora>().ToTable("Receptora");
             modelBuilder.Entity<Receptora>().HasKey(p => p.Id);
@@ -200,10 +201,33 @@ namespace WebProjVet.AcessoDados
 
             modelBuilder.Entity<Faturamento>().ToTable("Faturamento");
             modelBuilder.Entity<Faturamento>().HasKey(f => f.Id);
+            modelBuilder.Entity<Faturamento>()        
+                .HasMany(fs => fs.FaturamentoServicos)
+                .WithOne(f => f.Faturamento);
+            modelBuilder.Entity<Faturamento>()
+                .HasMany(fe => fe.FaturamentoEntradas)
+                .WithOne(f => f.Faturamento);
+
+
+            modelBuilder.Entity<FaturamentoServicos>().HasKey(p => p.Id);
+            modelBuilder.Entity<FaturamentoServicos>()
+                .HasOne(f => f.Faturamento)
+                .WithMany(fs => fs.FaturamentoServicos)
+                .HasForeignKey(fs => fs.FaturamentoId);
            
 
 
+            modelBuilder.Entity<FaturamentoEntradas>().HasKey(p => p.Id);
+            modelBuilder.Entity<FaturamentoEntradas>()
+                .HasOne(f => f.Faturamento)
+                .WithMany(fe => fe.FaturamentoEntradas)
+                .HasForeignKey(fe => fe.FaturamentoId);
 
+            /*
+            modelBuilder.Entity<Servico>().HasKey(p => p.Id);
+            modelBuilder.Entity<Servico>()
+                .HasMany(fs => fs.FaturamentoServicos)
+                .WithOne(s => s.Servico);*/
 
             base.OnModelCreating(modelBuilder);
         }

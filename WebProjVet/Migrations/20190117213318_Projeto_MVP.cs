@@ -441,6 +441,7 @@ namespace WebProjVet.Migrations
                     Diaria = table.Column<decimal>(nullable: false),
                     Valor = table.Column<string>(nullable: true),
                     DataFaturamento = table.Column<DateTime>(nullable: false),
+                    FaturamentoId = table.Column<int>(nullable: false),
                     Referencia = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -456,6 +457,12 @@ namespace WebProjVet.Migrations
                         name: "FK_FaturamentoEntradas_Animais_AnimaisId",
                         column: x => x.AnimaisId,
                         principalTable: "Animais",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FaturamentoEntradas_Faturamento_FaturamentoId",
+                        column: x => x.FaturamentoId,
+                        principalTable: "Faturamento",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -484,6 +491,7 @@ namespace WebProjVet.Migrations
                     ServicoId = table.Column<int>(nullable: false),
                     Valor = table.Column<string>(nullable: true),
                     DataFaturamento = table.Column<DateTime>(nullable: false),
+                    FaturamentoId = table.Column<int>(nullable: false),
                     Referencia = table.Column<string>(nullable: true),
                     DoadoraId = table.Column<string>(nullable: true),
                     GaranhaoId = table.Column<string>(nullable: true),
@@ -503,6 +511,12 @@ namespace WebProjVet.Migrations
                         name: "FK_FaturamentoServicos_AnimalServicos_AnimaisServicosId",
                         column: x => x.AnimaisServicosId,
                         principalTable: "AnimalServicos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FaturamentoServicos_Faturamento_FaturamentoId",
+                        column: x => x.FaturamentoId,
+                        principalTable: "Faturamento",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -575,6 +589,11 @@ namespace WebProjVet.Migrations
                 column: "AnimaisId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FaturamentoEntradas_FaturamentoId",
+                table: "FaturamentoEntradas",
+                column: "FaturamentoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FaturamentoEntradas_ProprietarioId",
                 table: "FaturamentoEntradas",
                 column: "ProprietarioId");
@@ -593,6 +612,11 @@ namespace WebProjVet.Migrations
                 name: "IX_FaturamentoServicos_AnimaisServicosId",
                 table: "FaturamentoServicos",
                 column: "AnimaisServicosId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FaturamentoServicos_FaturamentoId",
+                table: "FaturamentoServicos",
+                column: "FaturamentoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FaturamentoServicos_ProprietarioId",
@@ -659,9 +683,6 @@ namespace WebProjVet.Migrations
                 name: "DoadoraProprietario");
 
             migrationBuilder.DropTable(
-                name: "Faturamento");
-
-            migrationBuilder.DropTable(
                 name: "FaturamentoEntradas");
 
             migrationBuilder.DropTable(
@@ -695,10 +716,10 @@ namespace WebProjVet.Migrations
                 name: "AnimalServicos");
 
             migrationBuilder.DropTable(
-                name: "Garanhao");
+                name: "Faturamento");
 
             migrationBuilder.DropTable(
-                name: "Proprietarios");
+                name: "Garanhao");
 
             migrationBuilder.DropTable(
                 name: "Tratamentos");
@@ -708,6 +729,9 @@ namespace WebProjVet.Migrations
 
             migrationBuilder.DropTable(
                 name: "Servicos");
+
+            migrationBuilder.DropTable(
+                name: "Proprietarios");
         }
     }
 }

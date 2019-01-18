@@ -40,6 +40,11 @@ namespace WebProjVet.Models
 
         public DateTime DataFaturamento { get; set; }
 
+        public int FaturamentoId { get; set; }
+
+        [ForeignKey("FaturamentoId")]
+        public Faturamento Faturamento { get; set; }
+
         public string Referencia { get; set; }
 
 

@@ -25,16 +25,21 @@ namespace WebProjVet.Models
         public int AnimaisId { get; set; }
 
         [ForeignKey("AnimaisId")]
-        public Animais Animais { get; set; }
+        public virtual Animais Animais { get; set; }
 
         public int ServicoId { get; set; }
 
         [ForeignKey("ServicoId")]
-        public Servico Servico { get; set; }
+        public virtual Servico Servico { get; set; }
 
         public string Valor { get; set; }
 
         public DateTime DataFaturamento { get; set; }
+
+        public int FaturamentoId { get; set; }
+
+        [ForeignKey("FaturamentoId")]
+        public Faturamento Faturamento { get; set; }
 
         public string Referencia { get; set; }
       
@@ -45,7 +50,9 @@ namespace WebProjVet.Models
         public string ReceptoraId { get; set; }
     
         public string SemenId { get; set; }
-        
+
+
+
 
     }
 }

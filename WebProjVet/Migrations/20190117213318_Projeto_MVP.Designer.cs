@@ -9,7 +9,7 @@ using WebProjVet.AcessoDados;
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    [Migration("20190117051458_Projeto_MVP")]
+    [Migration("20190117213318_Projeto_MVP")]
     partial class Projeto_MVP
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -254,6 +254,8 @@ namespace WebProjVet.Migrations
 
                     b.Property<int>("Dias");
 
+                    b.Property<int>("FaturamentoId");
+
                     b.Property<int>("ProprietarioId");
 
                     b.Property<string>("Referencia");
@@ -267,6 +269,8 @@ namespace WebProjVet.Migrations
                     b.HasIndex("AnimaisEntradasId");
 
                     b.HasIndex("AnimaisId");
+
+                    b.HasIndex("FaturamentoId");
 
                     b.HasIndex("ProprietarioId");
 
@@ -288,6 +292,8 @@ namespace WebProjVet.Migrations
 
                     b.Property<string>("DoadoraId");
 
+                    b.Property<int>("FaturamentoId");
+
                     b.Property<string>("GaranhaoId");
 
                     b.Property<int>("ProprietarioId");
@@ -307,6 +313,8 @@ namespace WebProjVet.Migrations
                     b.HasIndex("AnimaisId");
 
                     b.HasIndex("AnimaisServicosId");
+
+                    b.HasIndex("FaturamentoId");
 
                     b.HasIndex("ProprietarioId");
 
@@ -641,6 +649,11 @@ namespace WebProjVet.Migrations
                         .HasForeignKey("AnimaisId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("WebProjVet.Models.Faturamento", "Faturamento")
+                        .WithMany("FaturamentoEntradas")
+                        .HasForeignKey("FaturamentoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
                         .WithMany()
                         .HasForeignKey("ProprietarioId")
@@ -662,6 +675,11 @@ namespace WebProjVet.Migrations
                     b.HasOne("WebProjVet.Models.AnimaisServicos", "AnimaisServicos")
                         .WithMany()
                         .HasForeignKey("AnimaisServicosId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebProjVet.Models.Faturamento", "Faturamento")
+                        .WithMany("FaturamentoServicos")
+                        .HasForeignKey("FaturamentoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
