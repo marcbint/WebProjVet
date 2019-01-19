@@ -44,6 +44,7 @@ namespace WebProjVet.Models
         public string Referencia { get; set; }
       
         public string DoadoraId { get; set; }
+        public virtual Animais Doadora { get; set; }
 
         public string GaranhaoId { get; set; }
 

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebProjVet.AcessoDados;
 
 namespace WebProjVet.Migrations
 {
     [DbContext(typeof(WebProjVetContext))]
-    partial class WebProjVetContextModelSnapshot : ModelSnapshot
+    [Migration("20190119052616_Projeto_MVP_1.2")]
+    partial class Projeto_MVP_12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,7 +145,7 @@ namespace WebProjVet.Migrations
 
                     b.Property<DateTime?>("DataCancelamento");
 
-                    b.Property<int>("DoadoraId");
+                    b.Property<int?>("DoadoraId1");
 
                     b.Property<string>("Faturamento")
                         .HasMaxLength(1);
@@ -176,7 +178,7 @@ namespace WebProjVet.Migrations
 
                     b.HasIndex("AnimaisId1");
 
-                    b.HasIndex("DoadoraId");
+                    b.HasIndex("DoadoraId1");
 
                     b.HasIndex("ServicoId");
 
@@ -624,8 +626,7 @@ namespace WebProjVet.Migrations
 
                     b.HasOne("WebProjVet.Models.Animais", "Doadora")
                         .WithMany()
-                        .HasForeignKey("DoadoraId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("DoadoraId1");
 
                     b.HasOne("WebProjVet.Models.Servico", "Servico")
                         .WithMany("AnimaisServicos")

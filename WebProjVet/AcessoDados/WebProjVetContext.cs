@@ -175,6 +175,15 @@ namespace WebProjVet.AcessoDados
                 .WithMany(s => s.AnimaisServicos)
                 .HasForeignKey(sas => sas.ServicoId);
 
+
+            modelBuilder.Entity<AnimaisServicos>()
+                .HasOne(d => d.Doadora)
+                .WithMany()
+                .HasForeignKey(aass => aass.DoadoraId);
+            
+
+           
+
             //Relacionamento para informar animais associados no lançamento do serviço.
             /*modelBuilder.Entity<AnimaisServicos>()
                  .HasOne(sas => sas.Doadora);

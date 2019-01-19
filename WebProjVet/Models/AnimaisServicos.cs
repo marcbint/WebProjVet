@@ -9,6 +9,9 @@ namespace WebProjVet.Models
 {
     public class AnimaisServicos
     {
+        //https://pt.stackoverflow.com/questions/89436/substitui%C3%A7%C3%A3o-para-a-fluent-api?rq=1
+        //https://stackoverflow.com/questions/32313842/mapping-foreign-key-in-hasoptional-withoptionaldependent-relation-in-entity
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
@@ -56,10 +59,9 @@ namespace WebProjVet.Models
         public string ValorTotal { get; set; }
 
 
-        public string DoadoraId { get; set; }
+        public int DoadoraId { get; set; }
 
-        //[ForeignKey("DoadoraId")]
-        //public virtual Animais Doadora { get; set; }
+        public virtual Animais Doadora { get; set; }
 
         
         public string GaranhaoId { get; set; }

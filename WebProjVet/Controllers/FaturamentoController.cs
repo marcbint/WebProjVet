@@ -458,6 +458,9 @@ namespace WebProjVet.Controllers
                     .ThenInclude(s => s.Servico)
                 .Include(fs => fs.FaturamentoServicos)
                     .ThenInclude(ma => ma.Animais)
+                    
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(ma => ma.Doadora)
 
                 .Include(fe => fe.FaturamentoEntradas)
                     .ThenInclude(s => s.Servico)

@@ -67,6 +67,8 @@ namespace WebProjVet.Models
 
         public virtual ICollection<AnimaisEntrada> AnimaisEntradas { get; set; }
 
+        public virtual ICollection<AnimaisServicos> DoadorasAnimaisServicos { get; set; }
+
         //public virtual ICollection<AnimalServicosVinculoAnimais> AnimalServicosVinculoAnimais { get; set; }
 
         public Animais()
