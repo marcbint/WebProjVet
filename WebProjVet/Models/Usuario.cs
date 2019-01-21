@@ -8,19 +8,25 @@ namespace WebProjVet.Models
 {
     public class Usuario
     {
+
+        [Key]
+        public virtual int Id { get; set; }
+
         [Required(ErrorMessage = "{0} deve ser informado.")]
-        public string Nome { get; set; }
+        public virtual string Nome { get; set; }
 
         [Required(ErrorMessage = "{0} deve ser informado.")]
         [DataType(DataType.EmailAddress)]
         [EmailAddress(ErrorMessage = "{0} informado é inválido.")]
-        public string Email { get; set; }
+        public virtual string Login { get; set; }
 
         [Required(ErrorMessage = "{0} deve ser informado.")]
-        public string Senha { get; set; }
+        public virtual string Senha { get; set; }
+
+        public virtual string Salt { get; set; }
 
         [EnumDataType(typeof(Situacao))]
-        public Situacao StatusEnum { get; set; }
-        
+        public virtual Situacao Status { get; set; }
+
     }
 }

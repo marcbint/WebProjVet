@@ -62,178 +62,180 @@
                                 <span asp-validation-for="Situacao" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="row" style="padding-top:20px">
-                            <div class="col-md-4">
-                                <label for="exampleFormControlSelect2">LANÇAMENTO PERMITIDO</label>
-                                <select multiple class="form-control" asp-for="AnimalTipo" asp-items="Html.GetEnumSelectList<AnimalTipo>()" id="exampleFormControlSelect2">                    
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="control-label">LANÇAMENTO PERMITIDO:</label>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkLpDoadora" type="checkbox" name="check" value="1" checked> <span class="label-text">DOADORA</span>
-                                    </label>
+                        @*
+                            <div class="row" style="padding-top:20px">
+                                <div class="col-md-4">
+                                    <label for="exampleFormControlSelect2">LANÇAMENTO PERMITIDO</label>
+                                    <select multiple class="form-control" asp-for="AnimalTipo" asp-items="Html.GetEnumSelectList<AnimalTipo>()" id="exampleFormControlSelect2">
+                                    </select>
                                 </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkLpGaranhao" type="checkbox" name="check" value="2"> <span class="label-text">GARANHÃO</span>
-                                    </label>
+                                <div class="col-md-4">
+                                    <label class="control-label">LANÇAMENTO PERMITIDO:</label>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkLpDoadora" type="checkbox" name="check" value="1" checked> <span class="label-text">DOADORA</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkLpGaranhao" type="checkbox" name="check" value="2"> <span class="label-text">GARANHÃO</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkLpReceptora" type="checkbox" name="check" value="3"> <span class="label-text">RECEPTORA</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkLpSemen" type="checkbox" name="check" value="4"> <span class="label-text">SÉMEN</span>
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkLpReceptora" type="checkbox" name="check" value="3"> <span class="label-text">RECEPTORA</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkLpSemen" type="checkbox" name="check" value="4"> <span class="label-text">SÉMEN</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div id="divIncObri" class="col-md-4">
-                                <label class="control-label">INCLUSÃO OBRIGATÓRIA:</label>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkIoDoadora" type="checkbox" name="check" value="1" checked> <span class="label-text">DOADORA</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkIoGaranhao" type="checkbox" name="check" value="2"> <span class="label-text">GARANHÃO</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkIoReceptora" type="checkbox" name="check" value="3"> <span class="label-text">RECEPTORA</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkIoSemen" type="checkbox" name="check" value="4"> <span class="label-text">SÉMEN</span>
-                                    </label>
-                                </div>
+                                <div id="divIncObri" class="col-md-4">
+                                    <label class="control-label">INCLUSÃO OBRIGATÓRIA:</label>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkIoDoadora" type="checkbox" name="check" value="1" checked> <span class="label-text">DOADORA</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkIoGaranhao" type="checkbox" name="check" value="2"> <span class="label-text">GARANHÃO</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkIoReceptora" type="checkbox" name="check" value="3"> <span class="label-text">RECEPTORA</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkIoSemen" type="checkbox" name="check" value="4"> <span class="label-text">SÉMEN</span>
+                                        </label>
+                                    </div>
 
-                            </div>
-                            <div class="col-md-4">
-                                <label class="control-label">INCLUSÃO OPCIONAL:</label>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkIopDoadora" type="checkbox" name="check" value="1" checked> <span class="label-text">DOADORA</span>
-                                    </label>
                                 </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkIopGaranhao" type="checkbox" name="check" value="2"> <span class="label-text">GARANHÃO</span>
-                                    </label>
+                                <div class="col-md-4">
+                                    <label class="control-label">INCLUSÃO OPCIONAL:</label>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkIopDoadora" type="checkbox" name="check" value="1" checked> <span class="label-text">DOADORA</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkIopGaranhao" type="checkbox" name="check" value="2"> <span class="label-text">GARANHÃO</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkIopReceptora" type="checkbox" name="check" value="3"> <span class="label-text">RECEPTORA</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input id="chkIopSemen" type="checkbox" name="check" value="4"> <span class="label-text">SÉMEN</span>
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkIopReceptora" type="checkbox" name="check" value="3"> <span class="label-text">RECEPTORA</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input id="chkIopSemen" type="checkbox" name="check" value="4"> <span class="label-text">SÉMEN</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                            </div>*@
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container" style="padding-top:50px">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default panel-table">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-md-4">
+    @*
+        <div class="container" style="padding-top:50px">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default panel-table">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-4">
 
-                                <p>1. Customs Checkboxes</p>
-                                <div class="form-check">
-                                    <label>
-                                        <input type="checkbox" name="check" checked> <span class="label-text">Option 01</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input type="checkbox" name="check"> <span class="label-text">Option 02</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input type="checkbox" name="check"> <span class="label-text">Option 03</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input type="checkbox" name="check" disabled> <span class="label-text">Option 04</span>
-                                    </label>
-                                </div>
+                                    <p>1. Customs Checkboxes</p>
+                                    <div class="form-check">
+                                        <label>
+                                            <input type="checkbox" name="check" checked> <span class="label-text">Option 01</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input type="checkbox" name="check"> <span class="label-text">Option 02</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input type="checkbox" name="check"> <span class="label-text">Option 03</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input type="checkbox" name="check" disabled> <span class="label-text">Option 04</span>
+                                        </label>
+                                    </div>
 
-                            </div>
-                            <div class="col-md-4">
+                                </div>
+                                <div class="col-md-4">
 
-                                <p>2. Customs Radios</p>
-                                <div class="form-check">
-                                    <label>
-                                        <input type="radio" name="radio" checked> <span class="label-text">Option 01</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input type="radio" name="radio"> <span class="label-text">Option 02</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input type="radio" name="radio"> <span class="label-text">Option 03</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label>
-                                        <input type="radio" name="radio" disabled> <span class="label-text">Option 04</span>
-                                    </label>
-                                </div>
+                                    <p>2. Customs Radios</p>
+                                    <div class="form-check">
+                                        <label>
+                                            <input type="radio" name="radio" checked> <span class="label-text">Option 01</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input type="radio" name="radio"> <span class="label-text">Option 02</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input type="radio" name="radio"> <span class="label-text">Option 03</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label>
+                                            <input type="radio" name="radio" disabled> <span class="label-text">Option 04</span>
+                                        </label>
+                                    </div>
 
-                            </div>
-                            <div class="col-md-4">
+                                </div>
+                                <div class="col-md-4">
 
-                                <p>3.Radios Toggles</p>
-                                <div class="form-check">
-                                    <label class="toggle">
-                                        <input type="radio" name="toggle" checked> <span class="label-text">Option 01</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="toggle">
-                                        <input type="radio" name="toggle"> <span class="label-text">Option 02</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="toggle">
-                                        <input type="radio" name="toggle"> <span class="label-text">Option 03</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="toggle">
-                                        <input type="radio" name="toggle" disabled> <span class="label-text">Option 04</span>
-                                    </label>
+                                    <p>3.Radios Toggles</p>
+                                    <div class="form-check">
+                                        <label class="toggle">
+                                            <input type="radio" name="toggle" checked> <span class="label-text">Option 01</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="toggle">
+                                            <input type="radio" name="toggle"> <span class="label-text">Option 02</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="toggle">
+                                            <input type="radio" name="toggle"> <span class="label-text">Option 03</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="toggle">
+                                            <input type="radio" name="toggle" disabled> <span class="label-text">Option 04</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </div>*@
 
-
+    
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -248,31 +250,6 @@
     </div>
 </form>
 
-
-
-<div class="example">
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#boot-multiselect-demo').multiselect({
-                includeSelectAllOption: true,
-                buttonWidth: 250,
-                enableFiltering: true
-            });
-        });
-    </script>
-    <select id="boot-multiselect-demo" multiple="multiple">
-        <option value="jQuery">jQuery Tutorials</option>
-        <option value="Bootstrap">Bootstrap Framework</option>
-        <option value="HTML">HTML</option>
-        <option value="CSS">CSS</option>
-        <option value="Angular">Angular</option>
-        <option value="Angular">javascript</option>
-        <option value="Java">Java</option>
-        <option value="Python">Python</option>
-        <option value="MySQL">MySQL</option>
-        <option value="Oracle">Oracle</option>
-    </select>
-</div>
 
 
 @section Scripts {

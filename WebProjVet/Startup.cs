@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using jsreport.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Rotativa.AspNetCore;
 using WebProjVet.AcessoDados;
 using WebProjVet.AcessoDados.Interfaces;
 using WebProjVet.AcessoDados.Repository;
 using WebProjVet.AcessoDados.Servicos;
-using WebProjVet.Models;
+using jsreport.Binary;
+using jsreport.Local;
 
 namespace WebProjVet
 {
@@ -57,6 +55,13 @@ namespace WebProjVet
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // Configuração do JS Report para gerar o relatório em PDF
+            services.AddJsReport(new LocalReporting()
+                    .UseBinary(JsReportBinary.GetBinary())
+                    .AsUtility()
+                    .Create());
+
 
             //Adicionar Session
             services.AddDistributedMemoryCache();
@@ -112,7 +117,10 @@ namespace WebProjVet
                 
 
             });
-            
+
+            RotativaConfiguration.Setup(env);
+
+
         }
     }
 }

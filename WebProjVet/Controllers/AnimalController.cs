@@ -173,8 +173,7 @@ namespace WebProjVet.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Animais animais)
         {
-            if (ModelState.IsValid)
-            {
+           
                 _animalRepository.Editar(animais);
                 var animaisId = animais.Id;
 
@@ -206,8 +205,7 @@ namespace WebProjVet.Controllers
 
                 _context.SaveChanges();
                 return RedirectToAction("Index");
-            }
-            return View(animais);
+            
         }
 
 

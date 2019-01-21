@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Rotativa.AspNetCore;
 using WebProjVet.AcessoDados;
 using WebProjVet.AcessoDados.Interfaces;
 using WebProjVet.Models;
@@ -63,12 +64,13 @@ namespace WebProjVet.Controllers
             string ano = faturamento.DataApuracao.Value.Year.ToString();
             string referencia = mes + "/" + ano;
             Faturamento objFaturamento = new Faturamento();
-
+            int FaturaId = 0;
 
             //Verifica se já existe faturamento para o proprietário para o mês de referência
-            int FaturaId = RetornaFatura(faturamento.ProprietarioId, referencia);
+            //int FaturaId = RetornaFatura(faturamento.ProprietarioId, referencia);
 
-            if (FaturaId == 0)
+            /*
+            if (FaturaId == null)
             {
                 //Cria o registro de faturamento
                 
@@ -82,10 +84,7 @@ namespace WebProjVet.Controllers
                 _context.SaveChanges();
 
                 FaturaId = objFaturamento.Id;
-            }
-
-
-
+            }*/
 
 
             List<AnimaisServicos> listServicoProprietario = new List<AnimaisServicos>();
@@ -132,89 +131,108 @@ namespace WebProjVet.Controllers
             }
             #endregion
 
-            //Verifica se existe fatura o Proprietário para referência informada
-            FaturaId = RetornaFatura(faturamento.ProprietarioId, referencia);
-
-            foreach (var item in listServicoProprietario)
+            //Inicia o processo apenas se existirem serviços lançados em animais que possuem proprietário
+            if (listServicoProprietario.Count > 0)
             {
-                AnimaisServicos ObjAnimaisServicos = _context.AnimaisServicos.FirstOrDefault(s => s.Id == item.Id);
 
-                if (listServicoProprietario.Count > 0)
+
+
+                foreach (var item in listServicoProprietario)
                 {
-                
-                    //Verifica se o animal possui proprietário apto para cobrança de acordo com a data de realização do serviço.
-                    List<Proprietario> LstProprietario = (from ap in _context.AnimaisProprietarios
-                                                          join p in _context.Proprietarios on ap.ProprietarioId equals p.Id
-                                                          join a in _context.Animais on ap.AnimaisId equals a.Id
-                                                          join aass in _context.AnimaisServicos on a.Id equals aass.AnimaisId
-                                                          where aass.Id == item.Id
-                                                          && ap.AnimaisId == ObjAnimaisServicos.AnimaisId
-                                                          && p.Situacao == Situacao.ATIVO
-                                                          && ap.DataAquisicao <= ObjAnimaisServicos.Data
-                                                          && ap.DataValidade > ObjAnimaisServicos.Data
-                                                          && aass.Faturamento == "N"
-                                                          && aass.ServicoSituacao == ServicoSituacao.REALIZADO
-                                                          select p).ToList();
+                    AnimaisServicos ObjAnimaisServicos = _context.AnimaisServicos.FirstOrDefault(s => s.Id == item.Id);
 
-                    int totalProprietario = LstProprietario.Count();
-
-                    //Quando o animal do serviço realizado possui mais de um proprietário realiza loop para rateio do serviço que será faturado.
-                    if (totalProprietario >= 2)
+                    if (listServicoProprietario.Count > 0)
                     {
 
-                        for (int i = 0; i < LstProprietario.Count(); i++)
+                        //Verifica se o animal possui proprietário apto para cobrança de acordo com a data de realização do serviço.
+                        List<Proprietario> LstProprietario = (from ap in _context.AnimaisProprietarios
+                                                              join p in _context.Proprietarios on ap.ProprietarioId equals p.Id
+                                                              join a in _context.Animais on ap.AnimaisId equals a.Id
+                                                              join aass in _context.AnimaisServicos on a.Id equals aass.AnimaisId
+                                                              where aass.Id == item.Id
+                                                              && ap.AnimaisId == ObjAnimaisServicos.AnimaisId
+                                                              && p.Situacao == Situacao.ATIVO
+                                                              && ap.DataAquisicao <= ObjAnimaisServicos.Data
+                                                              && ap.DataValidade > ObjAnimaisServicos.Data
+                                                              && aass.Faturamento == "N"
+                                                              && aass.ServicoSituacao == ServicoSituacao.REALIZADO
+                                                              select p).ToList();
+
+                        int totalProprietario = LstProprietario.Count();
+
+                        //Quando o animal do serviço realizado possui mais de um proprietário realiza loop para rateio do serviço que será faturado.
+                        if (totalProprietario >= 2)
                         {
+
+                            for (int i = 0; i < LstProprietario.Count(); i++)
+                            {
+                                //Verifica se existe fatura o Proprietário para referência informada
+                                FaturaId = RetornaFatura(LstProprietario[i].Id, referencia);
+
+                                FaturamentoServicos faturamentoServicos = new FaturamentoServicos();
+
+                                faturamentoServicos.ProprietarioId = LstProprietario[i].Id;
+                                faturamentoServicos.AnimaisServicosId = ObjAnimaisServicos.Id;
+                                faturamentoServicos.AnimaisId = ObjAnimaisServicos.AnimaisId;
+                                faturamentoServicos.ServicoId = ObjAnimaisServicos.ServicoId;
+
+                                decimal valor = ((Convert.ToDecimal(ObjAnimaisServicos.ValorTotal) / 100) / totalProprietario);
+                                //faturamentoServicos.Valor  = Decimal.Round((valor), 2).ToString();
+
+                                faturamentoServicos.Valor = Convert.ToDecimal(valor).ToString();
+
+                                faturamentoServicos.DataFaturamento = DateTime.Now;
+
+                                //DateTime dataReferenciaFormatada = Convert.ToDateTime(faturamento.Referencia);
+                                faturamentoServicos.Referencia = referencia;
+                                faturamentoServicos.FaturamentoId = FaturaId;
+
+                                faturamentoServicos.DoadoraId = ObjAnimaisServicos.DoadoraId;
+                                faturamentoServicos.GaranhaoId = ObjAnimaisServicos.GaranhaoId;
+                                faturamentoServicos.ReceptoraId = ObjAnimaisServicos.ReceptoraId;
+                                faturamentoServicos.SemenId = ObjAnimaisServicos.SemenId;
+
+                                //Adiciona o serviço que passou pelo rateio na lista de serviços do proprietário.
+                                _context.FaturamentoServicos.Add(faturamentoServicos);
+                                _context.SaveChanges();
+
+                            }
+                        }
+                        else
+                        {
+                            //Verifica se existe fatura o Proprietário para referência informada
+                            FaturaId = RetornaFatura(LstProprietario[0].Id, referencia);
+
                             FaturamentoServicos faturamentoServicos = new FaturamentoServicos();
 
-                            faturamentoServicos.ProprietarioId = LstProprietario[i].Id;
+                            faturamentoServicos.ProprietarioId = LstProprietario[0].Id;
                             faturamentoServicos.AnimaisServicosId = ObjAnimaisServicos.Id;
                             faturamentoServicos.AnimaisId = ObjAnimaisServicos.AnimaisId;
                             faturamentoServicos.ServicoId = ObjAnimaisServicos.ServicoId;
-
-                            decimal valor = ((Convert.ToDecimal(ObjAnimaisServicos.ValorTotal) / 100) / totalProprietario) ;
-                            //faturamentoServicos.Valor  = Decimal.Round((valor), 2).ToString();
-
-                            faturamentoServicos.Valor = Convert.ToDecimal(valor).ToString();
-
+                            faturamentoServicos.Valor = (Convert.ToDecimal(ObjAnimaisServicos.ValorTotal) / 100).ToString();
                             faturamentoServicos.DataFaturamento = DateTime.Now;
 
                             //DateTime dataReferenciaFormatada = Convert.ToDateTime(faturamento.Referencia);
                             faturamentoServicos.Referencia = referencia;
                             faturamentoServicos.FaturamentoId = FaturaId;
 
-                            //Adiciona o serviço que passou pelo rateio na lista de serviços do proprietário.
+                            faturamentoServicos.DoadoraId = ObjAnimaisServicos.DoadoraId;
+                            faturamentoServicos.GaranhaoId = ObjAnimaisServicos.GaranhaoId;
+                            faturamentoServicos.ReceptoraId = ObjAnimaisServicos.ReceptoraId;
+                            faturamentoServicos.SemenId = ObjAnimaisServicos.SemenId;
+
                             _context.FaturamentoServicos.Add(faturamentoServicos);
                             _context.SaveChanges();
 
                         }
-                    }
-                    else
-                    {
-                        FaturamentoServicos faturamentoServicos = new FaturamentoServicos();
-
-                        faturamentoServicos.ProprietarioId = LstProprietario[0].Id;
-                        faturamentoServicos.AnimaisServicosId = ObjAnimaisServicos.Id;
-                        faturamentoServicos.AnimaisId = ObjAnimaisServicos.AnimaisId;
-                        faturamentoServicos.ServicoId = ObjAnimaisServicos.ServicoId;
-                        faturamentoServicos.Valor = (Convert.ToDecimal(ObjAnimaisServicos.ValorTotal) / 100).ToString();
-                        faturamentoServicos.DataFaturamento = DateTime.Now;
-
-                        //DateTime dataReferenciaFormatada = Convert.ToDateTime(faturamento.Referencia);
-                        faturamentoServicos.Referencia = referencia;
-                        faturamentoServicos.FaturamentoId = FaturaId;
-
-                        _context.FaturamentoServicos.Add(faturamentoServicos);
-                        _context.SaveChanges();
 
                     }
-                   
+                    //Atualiza o serviço realizado no animal para item incluído no processo de faturamento.
+                    ObjAnimaisServicos.Faturamento = "S";
+                    _context.AnimaisServicos.Update(ObjAnimaisServicos);
+                    _context.SaveChanges();
                 }
-                //Atualiza o serviço realizado no animal para item incluído no processo de faturamento.
-                ObjAnimaisServicos.Faturamento = "S";
-                _context.AnimaisServicos.Update(ObjAnimaisServicos);
-                _context.SaveChanges();
             }
-
 
             //Após o processo de validação e rateio dos serviços do proprietário devem ser criadas as informações na tabela Faturamento
             //e atualizar os vinculos com a tabela faturamentoservicos.
@@ -280,11 +298,13 @@ namespace WebProjVet.Controllers
             #endregion
 
 
-
-            foreach (var item in listEntradasProprietario)
+            //Inicia o processo se encontrar lançamentos de diárias para animais que possuem proprietário
+            if (listEntradasProprietario.Count > 0)
             {
-                if (listEntradasProprietario.Count > 0)
+
+                foreach (var item in listEntradasProprietario)
                 {
+
                     //Verifica as informações de datas que devem ser cobradas para cada proprietário do animal.
                     var dadosFat = (from ap in _context.AnimaisProprietarios
                                     join a in _context.Animais on ap.AnimaisId equals a.Id
@@ -295,7 +315,7 @@ namespace WebProjVet.Controllers
                                     ).ToList();
 
 
-                    List<DadosProprietarioEntrada> objDados = new List< DadosProprietarioEntrada>();
+                    List<DadosProprietarioEntrada> objDados = new List<DadosProprietarioEntrada>();
                     foreach (var iFat in dadosFat)
                     {
                         DateTime PrimeiroDiadoMes = DateTime.Parse("01/" + referencia);
@@ -303,11 +323,12 @@ namespace WebProjVet.Controllers
                         DadosProprietarioEntrada objDadosProprietario = new DadosProprietarioEntrada();
                         objDadosProprietario.DataAquisicao = iFat.DataAquisicao;
                         objDadosProprietario.DataUltimaApuracao = (DateTime)iFat.DataUltimaApuracao;
-                        objDadosProprietario.ProprietarioId = iFat.ProprietarioId;     
-                        
-                        if(PrimeiroDiadoMes > iFat.DataUltimaApuracao)
+                        objDadosProprietario.ProprietarioId = (int)iFat.ProprietarioId;
+
+                        if (PrimeiroDiadoMes > iFat.DataUltimaApuracao)
                         {
-                            objDadosProprietario.Dias = faturamento.DataApuracao.Value.Subtract(PrimeiroDiadoMes).Days; }
+                            objDadosProprietario.Dias = faturamento.DataApuracao.Value.Subtract(PrimeiroDiadoMes).Days;
+                        }
                         else
                         {
                             objDadosProprietario.Dias = faturamento.DataApuracao.Value.Subtract((DateTime)iFat.DataUltimaApuracao).Days;
@@ -328,38 +349,36 @@ namespace WebProjVet.Controllers
                     List<AnimaisProprietario> LstProprietarioTeste = (from ap in _context.AnimaisProprietarios
                                                                       join a in _context.Animais on ap.AnimaisId equals a.Id
                                                                       where a.Id == ObjAnimaisEntradas.AnimaisId
-                                                                      && Convert.ToDateTime( ap.DataValidade.ToString("MM/yyyy")) > Convert.ToDateTime(referencia)
+                                                                      && Convert.ToDateTime(ap.DataValidade.ToString("MM/yyyy")) > Convert.ToDateTime(referencia)
                                                                       select ap
                                                                      ).ToList();
-                                 
+
 
                     //Verifica se o animal possui proprietário apto para cobrança de acordo com a data de realização do serviço.
-                    List < Proprietario > LstProprietario = (from ap in _context.AnimaisProprietarios
-                                                             join p in _context.Proprietarios on ap.ProprietarioId equals p.Id
-                                                             join a in _context.Animais on ap.AnimaisId equals a.Id
-                                                             join aa in _context.AnimaisEntradas on a.Id equals aa.AnimaisId
-                                                             where aa.Id == item.Id
-                                                             && ap.AnimaisId == ObjAnimaisEntradas.AnimaisId
-                                                             && p.Situacao == Situacao.ATIVO
-                                                             && ap.DataAquisicao < faturamento.DataApuracao
-                                                             && ap.DataValidade >= faturamento.DataApuracao
-                                                             select p).ToList();
+                    List<Proprietario> LstProprietario = (from ap in _context.AnimaisProprietarios
+                                                          join p in _context.Proprietarios on ap.ProprietarioId equals p.Id
+                                                          join a in _context.Animais on ap.AnimaisId equals a.Id
+                                                          join aa in _context.AnimaisEntradas on a.Id equals aa.AnimaisId
+                                                          where aa.Id == item.Id
+                                                          && ap.AnimaisId == ObjAnimaisEntradas.AnimaisId
+                                                          && p.Situacao == Situacao.ATIVO
+                                                          && ap.DataAquisicao < faturamento.DataApuracao
+                                                          && ap.DataValidade >= faturamento.DataApuracao
+                                                          select p).ToList();
 
                     int totalProprietario = LstProprietario.Count();
 
                     if (totalProprietario > 0)
                     {
-
-                        //Verifica se existe fatura o Proprietário para referência informada
-                        FaturaId = RetornaFatura(faturamento.ProprietarioId, referencia);
-
-
                         //Quando o animal do serviço realizado possui mais de um proprietário realiza loop para rateio do serviço que será faturado.
                         if (totalProprietario >= 2)
                         {
 
                             for (int i = 0; i < LstProprietario.Count(); i++)
                             {
+                                //Verifica se existe fatura o Proprietário para referência informada
+                                FaturaId = RetornaFatura(LstProprietario[i].Id, referencia);
+
                                 FaturamentoEntradas faturamentoEntradas = new FaturamentoEntradas();
 
                                 faturamentoEntradas.ProprietarioId = LstProprietario[i].Id;
@@ -401,6 +420,9 @@ namespace WebProjVet.Controllers
                         }
                         else if (totalProprietario == 1)
                         {
+                            //Verifica se existe fatura o Proprietário para referência informada
+                            FaturaId = RetornaFatura(LstProprietario[0].Id, referencia);
+
                             FaturamentoEntradas faturamentoEntradas = new FaturamentoEntradas();
 
                             faturamentoEntradas.ProprietarioId = listEntradasProprietario[0].Id;
@@ -440,10 +462,15 @@ namespace WebProjVet.Controllers
                         _context.AnimaisEntradas.Update(ObjAnimaisEntradas);
                         _context.SaveChanges();
                     }
+
                 }
             }
 
-            AtualizaFaturamento(FaturaId);
+            //Atualiza o faturamento apenas se existerem registros de entradas ou serviços
+            if (listServicoProprietario.Count > 0 || listEntradasProprietario.Count > 0)
+            {
+                AtualizaFaturamento(FaturaId);
+            }
 
             return RedirectToAction("Index");
         }
@@ -462,6 +489,15 @@ namespace WebProjVet.Controllers
                 .Include(fs => fs.FaturamentoServicos)
                     .ThenInclude(ma => ma.Doadora)
 
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(ma => ma.Garanhao)
+
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(ma => ma.Receptora)
+
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(ma => ma.Semen)
+
                 .Include(fe => fe.FaturamentoEntradas)
                     .ThenInclude(s => s.Servico)
                 .Include(fe => fe.FaturamentoEntradas)
@@ -470,13 +506,48 @@ namespace WebProjVet.Controllers
                 .Where(f => f.Id.Equals(Id))
                 .FirstOrDefault();
 
-            
-            //List<FaturamentoServicos> faturamentoServicos
-
-
             return View(detalheFatura);
         }
 
+       
+        public IActionResult DetalheFaturaPdf(int Id)
+        {
+            //https://medium.com/@erikthiago/gerador-de-pdf-no-asp-net-core-e494650eb3c9
+            //https://www.c-sharpcorner.com/article/net-core-html-to-pdf-generation-using-node/
+            //https://www.nrecosite.com/pdf_generator_net.aspx
+
+            var detalheFatura = _context.Faturamentos
+                .Include(p => p.Proprietario)
+
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(s => s.Servico)
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(ma => ma.Animais)
+
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(ma => ma.Doadora)
+
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(ma => ma.Garanhao)
+
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(ma => ma.Receptora)
+
+                .Include(fs => fs.FaturamentoServicos)
+                    .ThenInclude(ma => ma.Semen)
+
+                .Include(fe => fe.FaturamentoEntradas)
+                    .ThenInclude(s => s.Servico)
+                .Include(fe => fe.FaturamentoEntradas)
+                    .ThenInclude(ma => ma.Animais)
+
+                .Where(f => f.Id.Equals(Id))
+                .FirstOrDefault();
+
+            var pdf = new ViewAsPdf(detalheFatura);
+
+            return pdf;
+        }
 
         public IActionResult ServicosAnimais()
         {
@@ -649,30 +720,37 @@ namespace WebProjVet.Controllers
         public int RetornaFatura(int proprietario, string referencia)
         {
             //Verifica se já existe faturamento para o proprietário para o mês de referência
-
-            string faturamentoExistente = _context.Faturamentos
-                                        .Where(f => f.ProprietarioId == proprietario
-                                        && f.Referencia == referencia).FirstOrDefault()?.Id.ToString();
-
-
-            if (faturamentoExistente == null)
+            if (proprietario != 0)
             {
-                Faturamento objFaturamento = new Faturamento();
 
-                objFaturamento.ProprietarioId = proprietario;
-                objFaturamento.Valor = "0,00";
-                objFaturamento.Situacao = FaturamentoSituacao.PENDENTE;
-                objFaturamento.Data = DateTime.Now;
-                objFaturamento.Referencia = referencia;
+                string faturamentoExistente = _context.Faturamentos
+                                            .Where(f => f.ProprietarioId == proprietario
+                                            && f.Referencia == referencia).FirstOrDefault()?.Id.ToString();
 
 
-                _context.Faturamentos.Add(objFaturamento);
-                _context.SaveChanges();
+                if (faturamentoExistente == null)
+                {
+                    Faturamento objFaturamento = new Faturamento();
 
-                faturamentoExistente = objFaturamento.Id.ToString();
+                    objFaturamento.ProprietarioId = proprietario;
+                    objFaturamento.Valor = "0,00";
+                    objFaturamento.Situacao = FaturamentoSituacao.PENDENTE;
+                    objFaturamento.Data = DateTime.Now;
+                    objFaturamento.Referencia = referencia;
+
+
+                    _context.Faturamentos.Add(objFaturamento);
+                    _context.SaveChanges();
+
+                    faturamentoExistente = objFaturamento.Id.ToString();
+                }
+
+                return Convert.ToInt32(faturamentoExistente);
             }
-
-            return Convert.ToInt32(faturamentoExistente);
+            else
+            {               
+                return 0;
+            }
         }
     }
 }

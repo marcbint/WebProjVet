@@ -25,32 +25,31 @@
                             <th>VALOR</th>
                             <th>REFERÊNCIA</th>
                             <th>SITUAÇÃO</th>
-                            <th>AÇÃO</th>
-                            <th>AÇÃO2</th>
+                            <th><em class="fa fa-cog"></em></th>
                         </tr>
                     </thead>
                     <tbody id="myTable">
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Proprietario.Documento)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Proprietario.Nome)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Valor)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Referencia)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Situacao)
-                            </td>
-                            <td><p data-placement="top" data-toggle="tooltip" title="Clique aqui para lançar serviços, associar proprietários e atualizar dados cadastrais do animal."><a asp-action="DetalheFatura" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></p></td>
-                            <td><p data-placement="top" data-toggle="tooltip" title="EXCLUIR"><a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a></p></td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Proprietario.Documento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Proprietario.Nome)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Valor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Referencia)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Situacao)
+                                </td>
+                                <td><p data-placement="top" data-toggle="tooltip" title="Clique aqui para visualizar o detalhe da fatura."><a asp-action="DetalheFatura" asp-route-id="@item.Id" class="btn btn-primary btn-xs">DETALHE</a></p></td>
+
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -74,5 +73,11 @@
                 });
             });
         });
+    </script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
 }

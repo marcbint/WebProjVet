@@ -42,15 +42,26 @@ namespace WebProjVet.Models
         public Faturamento Faturamento { get; set; }
 
         public string Referencia { get; set; }
-      
-        public string DoadoraId { get; set; }
+
+
+        public int? DoadoraId { get; set; }
+        [ForeignKey("DoadoraId")]
         public virtual Animais Doadora { get; set; }
 
-        public string GaranhaoId { get; set; }
 
-        public string ReceptoraId { get; set; }
-    
-        public string SemenId { get; set; }
+        public int? GaranhaoId { get; set; }
+        [ForeignKey("GaranhaoId")]
+        public virtual Animais Garanhao { get; set; }
+
+
+        public int? ReceptoraId { get; set; }
+        [ForeignKey("ReceptoraId")]
+        public virtual Animais Receptora { get; set; }
+
+
+        public int? SemenId { get; set; }
+        [ForeignKey("SemenId")]
+        public virtual Animais Semen { get; set; }
 
 
 

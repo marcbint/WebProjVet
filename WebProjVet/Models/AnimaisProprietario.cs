@@ -18,7 +18,7 @@ namespace WebProjVet.Models
         [ForeignKey("AnimaisId")]
         public virtual Animais Animais { get; set; }
 
-        public int ProprietarioId { get; set; }
+        public int? ProprietarioId { get; set; }
 
         [ForeignKey("ProprietarioId")]
         public virtual Proprietario Proprietario { get; set; }

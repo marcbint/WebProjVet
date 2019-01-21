@@ -175,25 +175,28 @@ namespace WebProjVet.AcessoDados
                 .WithMany(s => s.AnimaisServicos)
                 .HasForeignKey(sas => sas.ServicoId);
 
-
+            //Relacionamento para informar animais associados no lançamento do serviço.
             modelBuilder.Entity<AnimaisServicos>()
                 .HasOne(d => d.Doadora)
-                .WithMany()
+                .WithMany(aass => aass.DoadorasAnimaisServicos)
                 .HasForeignKey(aass => aass.DoadoraId);
-            
+
+            modelBuilder.Entity<AnimaisServicos>()
+                .HasOne(d => d.Garanhao)
+                .WithMany(aass => aass.GaranhoesAnimaisServicos)
+                .HasForeignKey(aass => aass.GaranhaoId);
+
+            modelBuilder.Entity<AnimaisServicos>()
+                .HasOne(d => d.Receptora)
+                .WithMany(aass => aass.ReceptorasAnimaisServicos)
+                .HasForeignKey(aass => aass.ReceptoraId);
+
+            modelBuilder.Entity<AnimaisServicos>()
+                .HasOne(d => d.Semen)
+                .WithMany(aass => aass.SemenAnimaisServicos)
+                .HasForeignKey(aass => aass.SemenId);
 
            
-
-            //Relacionamento para informar animais associados no lançamento do serviço.
-            /*modelBuilder.Entity<AnimaisServicos>()
-                 .HasOne(sas => sas.Doadora);
-            modelBuilder.Entity<AnimaisServicos>()
-                 .HasOne(sas => sas.Garanhao);
-            modelBuilder.Entity<AnimaisServicos>()
-                 .HasOne(sas => sas.Receptora);
-            modelBuilder.Entity<AnimaisServicos>()
-                 .HasOne(sas => sas.Semen);*/
-
 
             //Relacionamento Many to Many entre Animais e serviços de diárias
             modelBuilder.Entity<AnimaisEntrada>().ToTable("AnimalEntradas");
@@ -223,7 +226,27 @@ namespace WebProjVet.AcessoDados
                 .HasOne(f => f.Faturamento)
                 .WithMany(fs => fs.FaturamentoServicos)
                 .HasForeignKey(fs => fs.FaturamentoId);
-           
+
+            modelBuilder.Entity<FaturamentoServicos>()
+                .HasOne(d => d.Doadora)
+                .WithMany(aass => aass.DoadorasFaturamentoServicos)
+                .HasForeignKey(aass => aass.DoadoraId);
+
+            modelBuilder.Entity<FaturamentoServicos>()
+                .HasOne(d => d.Garanhao)
+                .WithMany(aass => aass.GarahoesFaturamentoServicos)
+                .HasForeignKey(aass => aass.GaranhaoId);
+
+            modelBuilder.Entity<FaturamentoServicos>()
+                .HasOne(d => d.Receptora)
+                .WithMany(aass => aass.ReceptorasFaturamentoServicos)
+                .HasForeignKey(aass => aass.ReceptoraId);
+
+            modelBuilder.Entity<FaturamentoServicos>()
+                .HasOne(d => d.Semen)
+                .WithMany(aass => aass.SemenFaturamentoServicos)
+                .HasForeignKey(aass => aass.SemenId);
+
 
 
             modelBuilder.Entity<FaturamentoEntradas>().HasKey(p => p.Id);

@@ -74,8 +74,7 @@ namespace WebProjVet.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Servico servico)
         {
-            if (ModelState.IsValid)
-            {
+            
                 /*
 
                 string texto = servico.Valor.ToString();
@@ -91,8 +90,7 @@ namespace WebProjVet.Controllers
                 _servicoRepository.Editar(servico);
                 
                 return RedirectToAction("Index");
-            }
-            return View(servico);
+            
         }
 
 

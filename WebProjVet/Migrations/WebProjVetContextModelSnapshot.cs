@@ -119,7 +119,7 @@ namespace WebProjVet.Migrations
                     b.Property<string>("Motivo")
                         .HasMaxLength(300);
 
-                    b.Property<int>("ProprietarioId");
+                    b.Property<int?>("ProprietarioId");
 
                     b.HasKey("Id");
 
@@ -137,27 +137,25 @@ namespace WebProjVet.Migrations
 
                     b.Property<int>("AnimaisId");
 
-                    b.Property<int?>("AnimaisId1");
-
                     b.Property<DateTime>("Data");
 
                     b.Property<DateTime?>("DataCancelamento");
 
-                    b.Property<int>("DoadoraId");
+                    b.Property<int?>("DoadoraId");
 
                     b.Property<string>("Faturamento")
                         .HasMaxLength(1);
 
-                    b.Property<string>("GaranhaoId");
+                    b.Property<int?>("GaranhaoId");
 
                     b.Property<string>("Motivo")
                         .HasMaxLength(100);
 
                     b.Property<int>("Quantidade");
 
-                    b.Property<string>("ReceptoraId");
+                    b.Property<int?>("ReceptoraId");
 
-                    b.Property<string>("SemenId");
+                    b.Property<int?>("SemenId");
 
                     b.Property<int>("ServicoId");
 
@@ -174,9 +172,13 @@ namespace WebProjVet.Migrations
 
                     b.HasIndex("AnimaisId");
 
-                    b.HasIndex("AnimaisId1");
-
                     b.HasIndex("DoadoraId");
+
+                    b.HasIndex("GaranhaoId");
+
+                    b.HasIndex("ReceptoraId");
+
+                    b.HasIndex("SemenId");
 
                     b.HasIndex("ServicoId");
 
@@ -294,21 +296,19 @@ namespace WebProjVet.Migrations
 
                     b.Property<DateTime>("DataFaturamento");
 
-                    b.Property<string>("DoadoraId");
-
-                    b.Property<int?>("DoadoraId1");
+                    b.Property<int?>("DoadoraId");
 
                     b.Property<int>("FaturamentoId");
 
-                    b.Property<string>("GaranhaoId");
+                    b.Property<int?>("GaranhaoId");
 
                     b.Property<int>("ProprietarioId");
 
-                    b.Property<string>("ReceptoraId");
+                    b.Property<int?>("ReceptoraId");
 
                     b.Property<string>("Referencia");
 
-                    b.Property<string>("SemenId");
+                    b.Property<int?>("SemenId");
 
                     b.Property<int>("ServicoId");
 
@@ -320,11 +320,17 @@ namespace WebProjVet.Migrations
 
                     b.HasIndex("AnimaisServicosId");
 
-                    b.HasIndex("DoadoraId1");
+                    b.HasIndex("DoadoraId");
 
                     b.HasIndex("FaturamentoId");
 
+                    b.HasIndex("GaranhaoId");
+
                     b.HasIndex("ProprietarioId");
+
+                    b.HasIndex("ReceptoraId");
+
+                    b.HasIndex("SemenId");
 
                     b.HasIndex("ServicoId");
 
@@ -607,8 +613,7 @@ namespace WebProjVet.Migrations
 
                     b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
                         .WithMany("AnimaisProprietarios")
-                        .HasForeignKey("ProprietarioId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProprietarioId");
                 });
 
             modelBuilder.Entity("WebProjVet.Models.AnimaisServicos", b =>
@@ -618,14 +623,21 @@ namespace WebProjVet.Migrations
                         .HasForeignKey("AnimaisId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("WebProjVet.Models.Animais")
-                        .WithMany("DoadorasAnimaisServicos")
-                        .HasForeignKey("AnimaisId1");
-
                     b.HasOne("WebProjVet.Models.Animais", "Doadora")
-                        .WithMany()
-                        .HasForeignKey("DoadoraId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany("DoadorasAnimaisServicos")
+                        .HasForeignKey("DoadoraId");
+
+                    b.HasOne("WebProjVet.Models.Animais", "Garanhao")
+                        .WithMany("GaranhoesAnimaisServicos")
+                        .HasForeignKey("GaranhaoId");
+
+                    b.HasOne("WebProjVet.Models.Animais", "Receptora")
+                        .WithMany("ReceptorasAnimaisServicos")
+                        .HasForeignKey("ReceptoraId");
+
+                    b.HasOne("WebProjVet.Models.Animais", "Semen")
+                        .WithMany("SemenAnimaisServicos")
+                        .HasForeignKey("SemenId");
 
                     b.HasOne("WebProjVet.Models.Servico", "Servico")
                         .WithMany("AnimaisServicos")
@@ -695,18 +707,30 @@ namespace WebProjVet.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebProjVet.Models.Animais", "Doadora")
-                        .WithMany()
-                        .HasForeignKey("DoadoraId1");
+                        .WithMany("DoadorasFaturamentoServicos")
+                        .HasForeignKey("DoadoraId");
 
                     b.HasOne("WebProjVet.Models.Faturamento", "Faturamento")
                         .WithMany("FaturamentoServicos")
                         .HasForeignKey("FaturamentoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("WebProjVet.Models.Animais", "Garanhao")
+                        .WithMany("GarahoesFaturamentoServicos")
+                        .HasForeignKey("GaranhaoId");
+
                     b.HasOne("WebProjVet.Models.Proprietario", "Proprietario")
                         .WithMany()
                         .HasForeignKey("ProprietarioId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebProjVet.Models.Animais", "Receptora")
+                        .WithMany("ReceptorasFaturamentoServicos")
+                        .HasForeignKey("ReceptoraId");
+
+                    b.HasOne("WebProjVet.Models.Animais", "Semen")
+                        .WithMany("SemenFaturamentoServicos")
+                        .HasForeignKey("SemenId");
 
                     b.HasOne("WebProjVet.Models.Servico", "Servico")
                         .WithMany("FaturamentoServicos")

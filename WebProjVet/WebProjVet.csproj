@@ -233,10 +233,21 @@
     <Compile Remove="Migrations\20190117050126_Projeto_MVP.Designer.cs" />
     <Compile Remove="Migrations\20190117051458_Projeto_MVP.cs" />
     <Compile Remove="Migrations\20190117051458_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190117213318_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190117213318_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190119043122_Projeto_MVP_1.1.cs" />
+    <Compile Remove="Migrations\20190119043122_Projeto_MVP_1.1.Designer.cs" />
+    <Compile Remove="Migrations\20190119174718_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190119174718_Projeto_MVP.Designer.cs" />
+    <Compile Remove="Migrations\20190119190443_Projeto_MVP.cs" />
+    <Compile Remove="Migrations\20190119190443_Projeto_MVP.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="4.2.1" />
+    <PackageReference Include="jsreport.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="jsreport.Binary" Version="2.3.1" />
+    <PackageReference Include="jsreport.Local" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4">
@@ -245,6 +256,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -272,9 +284,19 @@
     <Content Update="Views\Doadora\Edit-bkp.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Faturamento\DetalheFaturaPdf.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Proprietario\Create - Cópia.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Shared\_LayoutPDF.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\rotativa\" />
   </ItemGroup>
 
 </Project>

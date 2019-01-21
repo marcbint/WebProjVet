@@ -3,231 +3,594 @@
     ViewData["Title"] = "DetalheFatura";
 }
 
-<div class="container" style="padding-top:50px">
-    
-    <div class="row">
-        <div class="col-md-12">
-            <div class="">
-                <div class="media">
-                    <img  class="align-self-center img-responsive" src="~/images/cabecalhoCH.png" alt="CH REPRODUÇÃO" />
-                </div>
-                <div class="panel-heading">
-                    <div class="row" style="padding-top:10px; padding-left:10px">
-                        <h3 class="text-center">RELATÓRIO MENSAL</h3>
-                        <div class="form-inline">
-                            <h4 class="text-center col-lg-12">PROPRIETÁRIO: <p>@Model.Proprietario.Nome</p></h4>
-                        </div>
-                    </div>
+@using System.Globalization
 
-                    @foreach (var item in Model.FaturamentoEntradas)
-                    {
-                        <div class="row" style="padding-top:20px">
-
-                        </div>
-
-                        <div class="row table-bordered" style="padding-top:10px; padding-left:10px">
-                            <div class="row" style="padding-top:10px">
-                                <div class="col-lg-3">
-                                    <label class="control-label">ESTADIA MENSAL DO ANIMAL:</label>
-                                </div>
-                                <div class="col-lg-4 text-left">
-                                    <label class="control-label">@Html.DisplayFor(modelItem => item.Animais.Nome)</label>
-                                </div>
-                            </div>
-
-                            <div class="row" style="padding-top:10px">
-                                <div class="col-lg-3 text-right">
-                                </div>
-                                <div class="col-lg-4 text-right">
-                                    <label class="control-label">VALOR / ANIMAL / MÊS:</label>
-                                </div>
-                                <div class="col-lg-4 text-left">
-                                    <label class="control-label">@Html.DisplayFor(modelItem => item.Valor)</label>
-                                </div>
-                            </div>
-
-                            <div class="row" style="padding-top:10px">
-                                <div class="col-lg-3 text-right">
-                                </div>
-                                <div class="col-lg-4 text-right">
-                                    <label class="control-label">DATA FECHAMENTO:</label>
-                                </div>
-                                <div class="col-lg-4 text-left">
-                                    <label class="control-label">@Html.DisplayFor(modelItem => item.DataFaturamento)</label>
-                                </div>
-                            </div>
-
-                            <div class="row" style="padding-top:10px">
-                                <div class="col-lg-3 text-right">
-                                </div>
-                                <div class="col-lg-4 text-right">
-                                    <label class="control-label">TOTAL DE DIAS:</label>
-                                </div>
-                                <div class="col-lg-4 text-left">
-                                    <label class="control-label">@Html.DisplayFor(modelItem => item.Dias)</label>
-                                </div>
-                            </div>
-
-                            <div class="row" style="padding-top:10px">
-                                <div class="col-lg-3 text-right">
-                                </div>
-                                <div class="col-lg-4 text-right">
-                                    <label class="control-label">VALOR TOTAL:</label>
-                                </div>
-                                <div class="col-lg-4 text-left">
-                                    <label class="control-label">@Html.DisplayFor(modelItem => item.Valor)</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" style="padding-top:20px">
-
-                        </div>
-
-
-                    }
-
-                    @foreach (var item in Model.FaturamentoServicos)
-                    {
-                        <div class="row table-bordered" style="padding-top:10px">
-                            <div>
-                                <div class="col-lg-12">
-                                    <label class="control-label">@Html.DisplayFor(modelItem => item.Servico.Nome)</label>
-                                </div>
-                            </div>
-
-                            <div class="row" style="padding-top:10px">
-                                <div class="col-lg-3 text-right">
-                                </div>
-                                <div class="col-lg-4 text-right">
-                                    <label class="control-label">VALOR TOTAL:</label>
-                                </div>
-                                <div class="col-lg-4 text-left">
-                                    <label class="control-label">@Html.DisplayFor(modelItem => item.Valor)</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" style="padding-top:20px">
-
-                        </div>
-
-                    }
-
-                    <div class="row table-bordered" style="padding-top:10px">
-                        <div>
-                            <div class="col-lg-12">
-                                <label class="control-label">CONTA PARA DEPÓSITO</label>
-                            </div>
-                        </div>
-
-                        <div class="row" style="padding-top:10px">
-                            <div class="col-lg-3 text-right">
-                            </div>
-                            <div class="col-lg-4 text-right">
-                                <label class="control-label">BANCO:</label>
-                            </div>
-                            <div class="col-lg-4 text-left">
-                                <label class="control-label">BRADESCO</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-3 text-right">
-                            </div>
-                            <div class="col-lg-4 text-right">
-                                <label class="control-label">AGÊNCIA:</label>
-                            </div>
-                            <div class="col-lg-4 text-left">
-                                <label class="control-label">056</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-3 text-right">
-                            </div>
-                            <div class="col-lg-4 text-right">
-                                <label class="control-label">CONTA CORRENTE:</label>
-                            </div>
-                            <div class="col-lg-4 text-left">
-                                <label class="control-label">103157-0</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-3 text-right">
-                            </div>
-                            <div class="col-lg-4 text-right">
-                                <label class="control-label">CPF:</label>
-                            </div>
-                            <div class="col-lg-4 text-left">
-                                <label class="control-label">301.572.928-43</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-3 text-right">
-                            </div>
-                            <div class="col-lg-4 text-right">
-                                <label class="control-label">TITULAR:</label>
-                            </div>
-                            <div class="col-lg-4 text-left">
-                                <label class="control-label">CLAUDIO HAGA</label>
-                            </div>
-                        </div>
-
-                        <div class="row" style="padding-top:20px">
-                            <div class="col-lg-3 text-right">
-                            </div>
-                            <div class="col-lg-4 text-right">
-                                <label class="control-label">VENCIMENTO:</label>
-                            </div>
-                            <div class="col-lg-4 text-left">
-                                @{
-                                    DateTime vencimento = Model.Data.AddDays(10);
-                                }
-                                <label class="control-label">@vencimento.ToString("dd/MM/yyyy")</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-3 text-right">
-                            </div>
-                            <div class="col-lg-4 text-right">
-                                <label class="control-label">VALOR TOTAL DA FATURA:</label>
-                            </div>
-                            <div class="col-lg-4 text-left">
-                                <label class="control-label">@Model.Valor</label>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row" style="padding-top:20px"></div>
-                </div>
-        </div>
-    </div>
-</div>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <input type="submit" value="REGISTRAR" class="btn btn-success btn-lg btn-block" />
-        </div>
+
+    <div class="media row table-bordered">
+        <img class="align-self-center img-responsive" src="~/images/cabecalhoCH.png" alt="CH REPRODUÇÃO" />
     </div>
-    <div class="row" style="padding-top:20px">
-        <div class="col-md-12">
-            <a asp-action="Index" class="btn btn-info btn-lg btn-block">VOLTAR</a>
-        </div>
+
+    @*Introdução*@
+    <div class="row table-bordered">
+        <table class="col-sm-12" id="datatable" cellspacing="0" width="100%">
+            <thead class="bg-primary">
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                <tr>
+                    <td>
+                        <div class="text-center">
+                            <h3 class="text-center">RELATÓRIO MENSAL</h3>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="text-center">
+                            <h4 class="text-center col-lg-12">PROPRIETÁRIO: <p>@Model.Proprietario.Nome</p></h4>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
+
+    @*Estadia*@
+    <div class="row table-bordered">
+        <table class="col-sm-12" id="datatable" cellspacing="0" width="100%">
+            <thead class="bg-primary">
+                <tr>
+                    <th>DIÁRIAS</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model.FaturamentoEntradas
+                                            .GroupBy(x => x.AnimaisId)
+                                            .Select(g => new FaturamentoEntradas
+                                            {
+                                                Animais = g.FirstOrDefault().Animais,
+                                                Valor = g.Sum(s => Convert.ToDecimal(s.Valor)).ToString(),
+                                                Dias = g.Sum(s => s.Dias),
+                                                Diaria = g.FirstOrDefault().Diaria,
+                                                DataFaturamento = g.LastOrDefault().DataFaturamento
+                                            }
+                                            ))
+
+                {
+                    <tr>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">ESTADIA MENSAL DO ANIMAL:</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">@Html.DisplayFor(modelItem => item.Animais.Nome)</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">VALOR / ANIMAL / DIA:</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            @{
+                                double paramDoubleDiaria = Convert.ToDouble(item.Diaria);
+
+                                string paramValorDiaria = string.Format("R$ {0:0,0.00}", paramDoubleDiaria);
+                            }
+                            <div>
+                                <label class="control-label">@paramValorDiaria</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">DATA FECHAMENTO:</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">@Html.DisplayFor(modelItem => item.DataFaturamento)</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">TOTAL DE DIAS:</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">@Html.DisplayFor(modelItem => item.Dias)</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label text-primary">VALOR TOTAL:</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            @{
+                                double paramDoubleValorEntrada = Convert.ToDouble(item.Valor);
+
+                                string paramValorEntrada = string.Format("R$ {0:0,0.00}", paramDoubleValorEntrada);
+                            }
+                            <div>
+                                <label class="control-label text-primary">@paramValorEntrada</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+
+    @*Serviço*@
+    <div class="row table-bordered">
+
+        <table class="col-sm-12" id="tblServicos" cellspacing="0" width="100%">
+            <thead class="bg-primary">
+                <tr>
+                    <th>SERVIÇOS</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tbServicos">
+
+                @foreach (var item in Model.FaturamentoServicos
+                                                            .GroupBy(x => new
+                                                            {
+                                                                ServicoId = x.ServicoId,
+                                                                AnimaisId = x.AnimaisId,
+                                                                DoadoraId = x.DoadoraId,
+                                                                GaranhaoId = x.GaranhaoId,
+                                                                ReceptoraId = x.ReceptoraId,
+                                                                SemenId = x.SemenId
+
+                                                            }
+                                                            ).Select(g => new FaturamentoServicos
+                                                            {
+                                                                Valor = g.Sum(s => Convert.ToDecimal(s.Valor)).ToString(),
+                                                                Servico = g.FirstOrDefault().Servico,
+                                                                Animais = g.FirstOrDefault().Animais,
+                                                                Doadora = g.FirstOrDefault().Doadora,
+                                                                Garanhao = g.FirstOrDefault().Garanhao,
+                                                                Receptora = g.FirstOrDefault().Receptora,
+                                                                Semen = g.FirstOrDefault().Semen
+                                                            }))
+                {
+
+
+
+                    <tr>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">@Html.DisplayFor(modelItem => item.Servico.Nome)</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">ANIMAL:</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">@Html.DisplayFor(modelItem => item.Animais.Nome)</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label text-primary">VALOR TOTAL:</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            <div>
+                                @{
+                                    //https://pt.stackoverflow.com/questions/48012/formatar-valor-com-m%C3%A1scara-de-moeda-brasileira
+
+                                    double paramDouble = Convert.ToDouble(item.Valor);
+
+                                    string paramValor = string.Format("R$ {0:0,0.00}", paramDouble);
+
+                                    //string.Format(CultureInfo.GetCultureInfo("pt-BR"), "R$ {0:#,###.##}", paramDouble.ToString());
+
+
+                                }
+                                <label class="control-label text-primary">@paramValor</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr id="trDoadora">
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3">
+                            <div id="divLblDoadora">
+                                <label class="control-label">DOADORA:</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label id="lblDoadora" class="control-label">@Html.DisplayFor(modelItem => item.Doadora.Nome)</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr id="trGaranhao">
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">GARANHÃO:</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label id="lblGaranhao" class="control-label">@Html.DisplayFor(modelItem => item.Garanhao.Nome)</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr id="trReceptora">
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">RECEPTORA:</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label id="lblReceptora" class="control-label">@Html.DisplayFor(modelItem => item.Receptora.Nome)</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr id="trSemen">
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label class="control-label">SÉMEN:</label>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            <div>
+                                <label id="lblSemen" class="control-label">@Html.DisplayFor(modelItem => item.Semen.Nome)</label>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+
+    @*Conta Depósito*@
+    <div class="row table-bordered">
+        <table class="col-sm-12" id="datatable" cellspacing="0" width="100%">
+            <thead class="bg-primary">
+                <tr>
+                    <th>CONTA PARA DEPÓSITO</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                <tr>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label">BANCO:</label>
+                        </div>
+                    </td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label">BRADESCO</label>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label">AGÊNCIA:</label>
+                        </div>
+                    </td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label">056</label>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label">CONTA CORRENTE:</label>
+                        </div>
+                    </td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label">103157-0</label>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label">CPF:</label>
+                        </div>
+                    </td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label">301.572.928-43</label>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label">TITULAR:</label>
+                        </div>
+                    </td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label">CLAUDIO HAGA</label>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label">VENCIMENTO:</label>
+                        </div>
+                    </td>
+                    <td class="col-sm-3">
+                        <div>
+                            @{
+                                DateTime vencimentoFatura = Model.Data.AddDays(10);
+                            }
+                            <label class="control-label">@vencimentoFatura.ToString("dd/MM/yyyy")</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3"></td>
+                    <td class="col-sm-3">
+                        <div>
+                            <label class="control-label text-primary">VALOR TOTAL DA FATURA:</label>
+                        </div>
+                    </td>
+                    <td class="col-sm-3">
+                        @{
+                            //http://www.macoratti.net/17/11/c_curform1.htm
+                            //https://pt.stackoverflow.com/questions/48012/formatar-valor-com-m%C3%A1scara-de-moeda-brasileira
+                            double paramDoubleValorTotal = Convert.ToDouble(Model.Valor);
+
+                            string paramValorTotal = string.Format("R$ {0:0,0.00}", paramDoubleValorTotal);
+                        }
+                        <div>
+                            <label class="control-label text-primary">@paramValorTotal</label>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+
+    @*Contato*@
+    <div class="row table-bordered">
+        <table class="col-sm-12" id="datatable" cellspacing="0" width="100%">
+            <thead class="bg-primary">
+                <tr>
+                    <th>CONTATO</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                <tr>
+                    <td>
+                        <div class="text-center">
+
+                            <label class="control-label">CLAUDIO HAGA - REPRODUÇÃO ANIMAL</label>
+
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="text-center">
+
+                            <label class="control-label">Rua Espanha, 12 - Parque das Nações - CEP 17800-000 - Adamantina - SP</label>
+
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="text-center">
+
+                            <label class="control-label">Fone: (14) 99745-2182</label>
+
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="text-center">
+
+                            <label class="control-label">E-mails: m.v.haga@gmail.com - chreproducao@gmail.com</label>
+
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+
 </div>
 
 
 
+<div class="container">
+    <div class="row" style="padding-top:20px">
+        <a asp-action="DetalheFaturaPdf" asp-route-id="@Model.Id" class="btn btn-success btn-lg btn-block">GERAR PDF</a>
+        @*<input type="submit" asp-action="VisualizarComoPDF" asp-controller="Faturamento" asp-route-id="@Model.Id" value="REGISTRAR" class="btn btn-success btn-lg btn-block" />*@
+    </div>
+    <div class="row" style="padding-top:20px">
+        <a asp-action="Index" class="btn btn-info btn-lg btn-block">VOLTAR</a>
+    </div>
+</div>
 
 
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $('#tblServicos').each(function () {
+
+                doadora = $("#lblDoadora").text();
+                garanhao = $("#lblGaranhao").text();
+                receptora = $("#lblReceptora").text();
+                semen = $("#lblSemen").text();
 
 
+                if (doadora.length == "0") {
+
+                    $("#trDoadora").remove();
+
+                } else
+
+                    if (garanhao.length == "0") {
+
+                        $("#trGaranhao").remove();
+
+                    } else
+
+                        if (receptora.length == "0") {
+
+                            $("#trReceptora").remove();
+
+                        } else
+
+                            if (semen.length == "0") {
+
+                                $("#trSemen").remove();
+
+                            }
+
+            });
+
+            $('#tbServicos  > tr').each(function () {
+
+                doadora = $("#lblDoadora").text();
+                garanhao = $("#lblGaranhao").text();
+                receptora = $("#lblReceptora").text();
+                semen = $("#lblSemen").text();
 
 
+                if (doadora.length == "0") {
 
+                    $("#trDoadora").remove();
 
+                } else
 
+                    if (garanhao.length == "0") {
 
+                        $("#trGaranhao").remove();
+
+                    } else
+
+                        if (receptora.length == "0") {
+
+                            $("#trReceptora").remove();
+
+                        } else
+
+                            if (semen.length == "0") {
+
+                                $("#trSemen").remove();
+
+                            }
+            });  
+        })
+
+    </script>
+
+}

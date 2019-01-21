@@ -6754,4 +6754,11 @@ button.close {
     display: none !important;
   }
 }
+.navbar-marcelo {
+    color: #333;
+    background-color: #871818;
+}
+.navbar-default-cc .navbar-nav-cc > li > a {
+    color: #FFF;
+}
 /*# sourceMappingURL=bootstrap.css.map */
