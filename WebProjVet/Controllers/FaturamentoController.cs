@@ -62,7 +62,8 @@ namespace WebProjVet.Controllers
         {
             string mes = faturamento.DataApuracao.Value.Month.ToString().PadLeft(2, '0');
             string ano = faturamento.DataApuracao.Value.Year.ToString();
-            string referencia = mes + "/" + ano;
+            //string referencia = mes + "/" + ano;
+            string referencia = faturamento.Referencia;
             Faturamento objFaturamento = new Faturamento();
             int FaturaId = 0;
 

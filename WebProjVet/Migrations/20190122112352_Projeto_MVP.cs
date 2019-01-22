@@ -43,6 +43,20 @@ namespace WebProjVet.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Empresas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nome = table.Column<string>(maxLength: 100, nullable: false),
+                    Situacao = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Empresas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Garanhao",
                 columns: table => new
                 {
@@ -122,6 +136,30 @@ namespace WebProjVet.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tratamentos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nome = table.Column<string>(maxLength: 100, nullable: false),
+                    Login = table.Column<string>(maxLength: 30, nullable: false),
+                    Senha = table.Column<string>(maxLength: 100, nullable: false),
+                    Salt = table.Column<string>(nullable: true),
+                    Situacao = table.Column<int>(nullable: false),
+                    EmpresaId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Usuarios_Empresas_EmpresaId",
+                        column: x => x.EmpresaId,
+                        principalTable: "Empresas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -760,6 +798,11 @@ namespace WebProjVet.Migrations
                 name: "IX_TratamentoServico_TratamentoId",
                 table: "TratamentoServico",
                 column: "TratamentoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_EmpresaId",
+                table: "Usuarios",
+                column: "EmpresaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -795,6 +838,9 @@ namespace WebProjVet.Migrations
                 name: "TratamentoServico");
 
             migrationBuilder.DropTable(
+                name: "Usuarios");
+
+            migrationBuilder.DropTable(
                 name: "Doadoras");
 
             migrationBuilder.DropTable(
@@ -811,6 +857,9 @@ namespace WebProjVet.Migrations
 
             migrationBuilder.DropTable(
                 name: "Tratamentos");
+
+            migrationBuilder.DropTable(
+                name: "Empresas");
 
             migrationBuilder.DropTable(
                 name: "Animais");

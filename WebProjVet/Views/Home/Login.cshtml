@@ -1,4 +1,7 @@
 ﻿@model Usuario
+@{
+    Layout = "~/Views/Shared/_LayoutPDF.cshtml";
+}
 <style type="text/css">
 
     .login-form {
@@ -33,12 +36,12 @@
 </style>
 
 <div class="media">
-    <img  class="align-self-center img-responsive" src="~/images/cabecalhoCH.png" alt="CH REPRODUÇÃO" />
+    <img class="align-self-center img-responsive" src="~/images/cabecalhoCH.png" alt="CH REPRODUÇÃO" />
 </div>
 
 <div class="login-form">
-    <form asp-controller="Home" asp-action="Login" method="post">
-        <h2 class="text-center">Sistema WebProjVet</h2>
+    <form asp-controller="Usuario" asp-action="Login" method="post">
+        <h2 class="text-center">Sistema Vet Gestão</h2>
         <div class="form-group">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>

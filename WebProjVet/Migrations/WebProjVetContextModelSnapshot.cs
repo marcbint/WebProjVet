@@ -222,6 +222,22 @@ namespace WebProjVet.Migrations
                     b.ToTable("DoadoraProprietario");
                 });
 
+            modelBuilder.Entity("WebProjVet.Models.Empresa", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<int>("Situacao");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Empresas");
+                });
+
             modelBuilder.Entity("WebProjVet.Models.Faturamento", b =>
                 {
                     b.Property<int>("Id")
@@ -591,6 +607,36 @@ namespace WebProjVet.Migrations
                     b.ToTable("TratamentoServico");
                 });
 
+            modelBuilder.Entity("WebProjVet.Models.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("EmpresaId");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(30);
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Salt");
+
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<int>("Situacao");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmpresaId");
+
+                    b.ToTable("Usuarios");
+                });
+
             modelBuilder.Entity("WebProjVet.Models.AnimaisEntrada", b =>
                 {
                     b.HasOne("WebProjVet.Models.Animais", "Animais")
@@ -795,6 +841,14 @@ namespace WebProjVet.Migrations
                     b.HasOne("WebProjVet.Models.Tratamento", "Tratamento")
                         .WithMany("TratamentoServicos")
                         .HasForeignKey("TratamentoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WebProjVet.Models.Usuario", b =>
+                {
+                    b.HasOne("WebProjVet.Models.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("EmpresaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

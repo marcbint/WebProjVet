@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebProjVet</title>
+    <title>@ViewData["Title"] - Vet Gestão</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -35,11 +35,13 @@
                     <li><a asp-area="" asp-controller="Proprietario" asp-action="Index">PROPRIETÁRIOS</a></li>
                     <li><a asp-area="" asp-controller="Animal" asp-action="Index">ANIMAIS</a></li>
                     @*<li><a asp-area="" asp-controller="Doadora" asp-action="Index">DOADORAS</a></li>
-        <li><a asp-area="" asp-controller="Garanhao" asp-action="Index">GARANHÕES</a></li>
-        <li><a asp-area="" asp-controller="Receptora" asp-action="Index">RECEPTORAS</a></li>*@
+                        <li><a asp-area="" asp-controller="Garanhao" asp-action="Index">GARANHÕES</a></li>
+                        <li><a asp-area="" asp-controller="Receptora" asp-action="Index">RECEPTORAS</a></li>*@
                     <li><a asp-area="" asp-controller="Servico" asp-action="Index">SERVIÇOS</a></li>
                     @*<li><a asp-area="" asp-controller="Tratamento" asp-action="Index">TRATAMENTOS</a></li>*@
                     <li><a asp-area="" asp-controller="Faturamento" asp-action="Index">FATURAMENTO</a></li>
+                    <li><a asp-area="" asp-controller="Usuario" asp-action="Create">USUÁRIOS</a></li>
+                    <li><a asp-area="" asp-controller="Empresa" asp-action="Create">EMPRESAS</a></li>
                 </ul>
             </div>
         </div>
@@ -51,7 +53,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - WebProjVet</p>
+            <p>&copy; 2019 - Vet Gestão</p>
         </footer>
     </div>
 

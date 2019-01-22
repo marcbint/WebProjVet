@@ -23,7 +23,7 @@ namespace WebProjVet.Controllers
         //private readonly Proprietario _proprietariolViewModel;
 
         private readonly WebProjVetContext _context;
-        
+
 
 
 
@@ -35,7 +35,7 @@ namespace WebProjVet.Controllers
             _animalRepository = animalRepository;
             _proprietarioRepository = proprietarioRepository;
             _context = webProjVetContext;
-            
+
         }
 
 
@@ -57,7 +57,7 @@ namespace WebProjVet.Controllers
         }
 
 
-        
+
         public IActionResult Create()
         {
             ViewBag.ProprietarioId = _context.Proprietarios.OrderBy(x => x.Nome).ToList();
@@ -87,7 +87,7 @@ namespace WebProjVet.Controllers
                         {
                             AnimaisProprietario objLista = new AnimaisProprietario();
                             objLista.AnimaisId = animaisId;
-                            objLista.ProprietarioId = lista[i].ProprietarioId;                      
+                            objLista.ProprietarioId = lista[i].ProprietarioId;
                             objLista.DataInclusao = DateTime.Now;
 
                             _context.AnimaisProprietarios.Add(objLista);
@@ -97,14 +97,14 @@ namespace WebProjVet.Controllers
                     }
                 }
             }
-            
-            
+
+
             //return RedirectToAction("Index");
             return RedirectToRoute(new { Controller = "Animal", Action = "Edit", id = animais.Id });
 
         }
 
-       
+
         public IActionResult Edit(int id)
         {
             if (id > 0)
@@ -113,7 +113,7 @@ namespace WebProjVet.Controllers
                 #region Processo de somatória dos serviços realizados           
                 var lstItens = new List<double>();
                 List<AnimaisServicos> Lista = _context.AnimaisServicos
-                    .Where(x => x.AnimaisId == id 
+                    .Where(x => x.AnimaisId == id
                     && x.ServicoSituacao != ServicoSituacao.CANCELADO)
                     .ToList();
 
@@ -133,7 +133,7 @@ namespace WebProjVet.Controllers
                 ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
                 ViewBag.Diaria = _context.Servicos.Where(s => s.ServicoTipo == ServicoTipo.DIÁRIA && s.Situacao == Situacao.ATIVO).ToList();
                 ViewBag.DoadoraId = _context.Animais
-                                    .Where(x => x.AnimalTipo == AnimalTipo.DOADORA 
+                                    .Where(x => x.AnimalTipo == AnimalTipo.DOADORA
                                     && x.Situacao == Situacao.ATIVO)
                                     .ToList();
                 ViewBag.GaranhaoId = _context.Animais
@@ -161,7 +161,7 @@ namespace WebProjVet.Controllers
                     .Include(s => s.AnimaisServicos)
                     .Include(t => t.AnimaisEntradas)
                     .ToList()
-                    .FirstOrDefault(p => p.Id == id);                
+                    .FirstOrDefault(p => p.Id == id);
 
                 return View(animais);
             }
@@ -173,39 +173,39 @@ namespace WebProjVet.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Animais animais)
         {
-           
-                _animalRepository.Editar(animais);
-                var animaisId = animais.Id;
 
-                //Realiza a inclusão se existirem itens
-                /*
-                if (animais.AnimaisProprietariosJson != null)
+            _animalRepository.Editar(animais);
+            var animaisId = animais.Id;
+
+            //Realiza a inclusão se existirem itens
+            /*
+            if (animais.AnimaisProprietariosJson != null)
+            {
+                //Processo de inclusão de itens
+                List<AnimaisProprietario> lista = JsonConvert.DeserializeObject<List<AnimaisProprietario>>(animais.AnimaisProprietariosJson);
+
+                if (lista.Count > 0)
                 {
-                    //Processo de inclusão de itens
-                    List<AnimaisProprietario> lista = JsonConvert.DeserializeObject<List<AnimaisProprietario>>(animais.AnimaisProprietariosJson);
-
-                    if (lista.Count > 0)
+                    for (int i = 0; i < lista.Count; i++)
                     {
-                        for (int i = 0; i < lista.Count; i++)
+                        if (lista[i].Id == 0)
                         {
-                            if (lista[i].Id == 0)
-                            {
-                                AnimaisProprietario objLista = new AnimaisProprietario();
-                                objLista.AnimaisId = animaisId;
-                                objLista.ProprietarioId = lista[i].ProprietarioId;
-                                objLista.DataInclusao = DateTime.Now;
+                            AnimaisProprietario objLista = new AnimaisProprietario();
+                            objLista.AnimaisId = animaisId;
+                            objLista.ProprietarioId = lista[i].ProprietarioId;
+                            objLista.DataInclusao = DateTime.Now;
 
-                                _context.AnimaisProprietarios.Add(objLista);
-                                
-                            }
+                            _context.AnimaisProprietarios.Add(objLista);
 
                         }
-                    }
-                }*/
 
-                _context.SaveChanges();
-                return RedirectToAction("Index");
-            
+                    }
+                }
+            }*/
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+
         }
 
 
@@ -217,7 +217,7 @@ namespace WebProjVet.Controllers
                 //Somar o valor de serviços lançados no animal
                 ViewBag.Total = _context.AnimaisServicos
                     .Where(x => x.AnimaisId == id)
-                    .Sum(x => Convert.ToDecimal( x.Valor));
+                    .Sum(x => Convert.ToDecimal(x.Valor));
                 ViewBag.ProprietarioId = _context.Proprietarios.OrderBy(x => x.Nome).ToList();
                 ViewBag.ServicoId = _context.Servicos.OrderBy(x => x.Nome).Where(s => s.ServicoTipo != ServicoTipo.DIÁRIA).ToList();
 
@@ -226,7 +226,7 @@ namespace WebProjVet.Controllers
                     .Include(e => e.AnimaisProprietarios)
                     .ToList()
                     .FirstOrDefault(p => p.Id == id);
-              
+
                 return View(animais);
             }
 
@@ -276,15 +276,15 @@ namespace WebProjVet.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteProprietario(AnimaisProprietario animaisProprietario)
         {
-            
+
             AnimaisProprietario registro = _context.AnimaisProprietarios
                 .Where(p => p.Id.Equals(animaisProprietario.Id))
                 .FirstOrDefault(p => p.Id == animaisProprietario.Id);
 
             registro.DataDesassociacao = animaisProprietario.DataDesassociacao;
-             registro.DataValidade = (DateTime)animaisProprietario.DataDesassociacao;
+            registro.DataValidade = (DateTime)animaisProprietario.DataDesassociacao;
             registro.Motivo = animaisProprietario.Motivo;
-        
+
             _context.AnimaisProprietarios.Update(registro);
             _context.SaveChanges();
 
@@ -299,14 +299,14 @@ namespace WebProjVet.Controllers
             {
                 //ViewBag.ProprietarioId = _context.Proprietarios.ToList();
 
-                
+
                 var animaisProprietario = _context.AnimaisProprietarios
                     .Where(p => p.Id.Equals(id))
                     .Include(e => e.Proprietario)
                     .ToList()
                     .FirstOrDefault(p => p.Id == id);
-                    
-              
+
+
 
                 return View(animaisProprietario);
             }
@@ -323,12 +323,12 @@ namespace WebProjVet.Controllers
                 .FirstOrDefault(p => p.Id == animaisProprietario.Id);
 
             _context.AnimaisProprietarios.Remove(registro);
-            _context.SaveChanges();            
-            
+            _context.SaveChanges();
+
             return RedirectToRoute(new { Controller = "Animal", Action = "Edit", id = animaisProprietario.AnimaisId });
 
         }
-    
+
 
         [Route("api/[controller]/AddProprietario/{idAnimais}")]
         public IActionResult AddProprietario(int idAnimais)
@@ -408,8 +408,8 @@ namespace WebProjVet.Controllers
                         //Se animal for Doadora ou Garanhão
                         var inClause = new List<string> { "1", "2" };
                         int regra = _context.Animais
-                            .Where(a => inClause.Contains(a.AnimalTipo.ToString()) 
-                            && 
+                            .Where(a => inClause.Contains(a.AnimalTipo.ToString())
+                            &&
                             //.Where(a => 
                             a.Id == ObjAnimaisServicos.AnimaisId)
                             //.Select(a => a.Id)
@@ -424,8 +424,8 @@ namespace WebProjVet.Controllers
                                          join a in _context.Animais on ap.AnimaisId equals a.Id
                                          where ap.AnimaisId == ObjAnimaisServicos.AnimaisId
                                          && p.Situacao == Situacao.ATIVO
-                                         && ap.DataAquisicao <= ObjAnimaisServicos.Data                                 
-                                         && ap.DataValidade >=ObjAnimaisServicos.Data //desassociação e validade devem ser iguais
+                                         && ap.DataAquisicao <= ObjAnimaisServicos.Data
+                                         && ap.DataValidade >= ObjAnimaisServicos.Data //desassociação e validade devem ser iguais
                                          select p.Id).Count();
                             //Se possui proprietário ativo ou vigente
                             if (total >= 1)
@@ -517,11 +517,11 @@ namespace WebProjVet.Controllers
             //int total = _context.AnimaisProprietarios.Where(x => x.AnimaisId.Equals(id)).Count();
 
             var total = (from ap in _context.AnimaisProprietarios
-                        join p in _context.Proprietarios on ap.ProprietarioId equals p.Id
-                        where ap.AnimaisId == id
-                        && p.Situacao == Situacao.ATIVO
-                        select p.Id).Count();
-                                              
+                         join p in _context.Proprietarios on ap.ProprietarioId equals p.Id
+                         where ap.AnimaisId == id
+                         && p.Situacao == Situacao.ATIVO
+                         select p.Id).Count();
+
             return new JsonResult(total);
         }
 
@@ -550,7 +550,7 @@ namespace WebProjVet.Controllers
                                     && x.Situacao == Situacao.ATIVO)
                                     .ToList();
 
-                
+
 
 
                 AnimaisServicos servicoLancado = _context.AnimaisServicos
@@ -562,7 +562,7 @@ namespace WebProjVet.Controllers
 
 
                 #region Processo que envia o tipo do animal para o processo de edição do serviço lançado.
-                string tipo = _context.Animais.Where(x => x.Id == servicoLancado.AnimaisId).Select(p => p.AnimalTipo.ToString() ).FirstOrDefault();
+                string tipo = _context.Animais.Where(x => x.Id == servicoLancado.AnimaisId).Select(p => p.AnimalTipo.ToString()).FirstOrDefault();
 
                 ViewBag.TipoAnimal = tipo;
                 #endregion
@@ -586,7 +586,7 @@ namespace WebProjVet.Controllers
                 animaisServicos.DataCancelamento = null;
             }
 
-           
+
             _context.AnimaisServicos.Update(animaisServicos);
             _context.SaveChanges();
 

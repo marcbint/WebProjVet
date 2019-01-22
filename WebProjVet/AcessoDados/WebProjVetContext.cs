@@ -23,6 +23,9 @@ namespace WebProjVet.AcessoDados
         public DbSet<Faturamento> Faturamentos { get; set; }
         public DbSet<FaturamentoServicos> FaturamentoServicos { get; set; }
         public DbSet<FaturamentoEntradas> FaturamentoEntradas { get; set; }
+        public DbSet<Empresa> Empresas { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+
 
         public WebProjVetContext(DbContextOptions<WebProjVetContext> options) : base(options)
         {
@@ -254,6 +257,10 @@ namespace WebProjVet.AcessoDados
                 .HasOne(f => f.Faturamento)
                 .WithMany(fe => fe.FaturamentoEntradas)
                 .HasForeignKey(fe => fe.FaturamentoId);
+
+            modelBuilder.Entity<Empresa>().HasKey(p => p.Id);
+
+            modelBuilder.Entity<Usuario>().HasKey(p => p.Id);
 
             /*
             modelBuilder.Entity<Servico>().HasKey(p => p.Id);
